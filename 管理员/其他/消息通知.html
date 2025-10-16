@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>消息通知 - 云间小阁</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image:
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+
+        /* 确保 <a> 标签及其父元素没有设置下划线 */
+        a,
+        a * {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 顶部导航 */
+        .main-header {
+            background: rgba(255, 253, 245, 0.9);
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+            margin-bottom: 25px;
+            border: 1px solid #d6ccc2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.2rem;
+            color: #8c3c2c;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-role {
+            background: #f1e9dd;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #8c6d46;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .header-btn {
+            padding: 8px 15px;
+            background: #8c6d46;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .header-btn:hover {
+            background: #745b3a;
+        }
+
+        /* 消息中心主体 */
+        .notification-center {
+            display: flex;
+            gap: 25px;
+        }
+
+        /* 侧边栏 */
+        .sidebar {
+            width: 250px;
+            background: rgba(255, 253, 245, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+            padding: 20px;
+            border: 1px solid #d6ccc2;
+            align-self: flex-start;
+        }
+
+        .sidebar-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.5rem;
+            color: #8c3c2c;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9e1d5;
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            color: #5c4c3e;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #f1e9dd;
+            color: #8c3c2c;
+        }
+
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .badge {
+            position: absolute;
+            right: 15px;
+            background: #8c3c2c;
+            color: #fff;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+        }
+
+        /* 消息内容区域 */
+        .notification-content {
+            flex: 1;
+            background: rgba(255, 253, 245, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+            padding: 25px;
+            border: 1px solid #d6ccc2;
+            min-height: 600px;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9e1d5;
+        }
+
+        .content-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2rem;
+            color: #8c3c2c;
+        }
+
+        .content-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 8px 15px;
+            background: none;
+            border: 1px solid #d6ccc2;
+            border-radius: 5px;
+            color: #5c4c3e;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .action-btn:hover {
+            background: #8c6d46;
+            color: #fff;
+        }
+
+        /* 消息列表 */
+        .notification-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .notification-item {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #e9e1d5;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .notification-item:hover {
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .notification-item.unread {
+            background: #f9f5eb;
+            border-left: 4px solid #8c6d46;
+        }
+
+        .notification-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f1e9dd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: #8c6d46;
+            font-size: 1.2rem;
+        }
+
+        .notification-type {
+            font-weight: bold;
+            color: #8c3c2c;
+            margin-right: 10px;
+        }
+
+        .notification-time {
+            color: #8c6d46;
+            font-size: 0.9rem;
+            margin-left: auto;
+        }
+
+        .notification-body {
+            margin-left: 55px;
+        }
+
+        .notification-text {
+            margin-bottom: 10px;
+            color: #5c4c3e;
+        }
+
+        .notification-target {
+            color: #8c6d46;
+            font-weight: bold;
+        }
+
+        .notification-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            margin-left: 55px;
+        }
+
+        .btn-small {
+            padding: 5px 12px;
+            background: none;
+            border: 1px solid #d6ccc2;
+            border-radius: 5px;
+            color: #5c4c3e;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-small:hover {
+            background: #8c6d46;
+            color: #fff;
+        }
+
+        /* 回复区域 */
+        .reply-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e9e1d5;
+            display: none;
+        }
+
+        .reply-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d6ccc2;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .reply-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #d6ccc2;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: #8c6d46;
+            margin-bottom: 15px;
+        }
+
+        .empty-state p {
+            color: #5c4c3e;
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+
+        /* 页脚 */
+        .main-footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            color: #8c6d46;
+            font-size: 0.9rem;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .notification-center {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .user-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .notification-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .notification-time {
+                margin-left: 0;
+                margin-top: 5px;
+            }
+
+            .notification-body,
+            .notification-actions {
+                margin-left: 0;
+            }
+        }
+
+        .decoration {
+            position: absolute;
+            opacity: 0.1;
+            z-index: -1;
+            font-family: 'Ma Shan Zheng', cursive;
+            color: #8c3c2c;
+        }
+
+        .decoration-1 {
+            top: 50px;
+            left: 5%;
+            font-size: 6rem;
+            transform: rotate(-10deg);
+        }
+
+        .decoration-2 {
+            bottom: 100px;
+            right: 5%;
+            font-size: 5rem;
+            transform: rotate(15deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="decoration decoration-1">讯</div>
+    <div class="decoration decoration-2">息</div>
+
+    <div class="container">
+        <header class="main-header">
+            <div class="logo">
+                <i class="fas fa-feather-alt"></i>
+                <span>云间小阁</span>
+            </div>
+
+            <div class="user-info">
+                <div class="user-role">
+                    <i class="fas fa-user"></i> 普通用户
+                </div>
+                <div class="user-name">王用户</div>
+            </div>
+
+            <div class="header-actions">
+                <a href="../../官网.html">
+                    <button class="header-btn">
+                        <i class="fas fa-home"></i> 首页
+                    </button>
+                </a>
+                <a href="通知设置.html">
+                    <button class="header-btn">
+                        <i class="fas fa-cog"></i> 设置
+                    </button>
+                </a>
+            </div>
+        </header>
+
+        <div class="notification-center">
+            <aside class="sidebar">
+                <h2 class="sidebar-title">消息中心</h2>
+
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active">
+                            <i class="fas fa-bell"></i>
+                            <span>全部通知</span>
+                            <span class="badge">12</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-heart"></i>
+                            <span>认同消息</span>
+                            <span class="badge">5</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-bookmark"></i>
+                            <span>收藏消息</span>
+                            <span class="badge">3</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-comment"></i>
+                            <span>评论消息</span>
+                            <span class="badge">4</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-reply"></i>
+                            <span>回复消息</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-check-circle"></i>
+                            <span>已读消息</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+
+            <main class="notification-content">
+                <div class="content-header">
+                    <h2 class="content-title">全部通知</h2>
+                    <div class="content-actions">
+                        <button class="action-btn">
+                            <i class="fas fa-check-double"></i> 全部标记为已读
+                        </button>
+                        <button class="action-btn">
+                            <i class="fas fa-trash"></i> 清空消息
+                        </button>
+                    </div>
+                </div>
+
+                <div class="notification-list">
+                    <!-- 认同消息 -->
+                    <div class="notification-item unread">
+                        <div class="notification-header">
+                            <div class="notification-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <span class="notification-type">认同了你的文章</span>
+                            <span class="notification-time">2小时前</span>
+                        </div>
+                        <div class="notification-body">
+                            <p class="notification-text">
+                                <span class="user-name">李读者</span> 认同了你的文章
+                                <a href="#" class="notification-target">《中国茶文化的历史演变》</a>
+                            </p>
+                            <div class="notification-actions">
+                                <button class="btn-small" onclick="toggleReply(this)">
+                                    <i class="fas fa-reply"></i> 回复
+                                </button>
+                                <button class="btn-small">
+                                    <i class="fas fa-check"></i> 标记已读
+                                </button>
+                                <button class="btn-small">
+                                    <i class="fas fa-trash"></i> 删除
+                                </button>
+                            </div>
+                            <div class="reply-section">
+                                <textarea class="reply-input" placeholder="回复李读者..."></textarea>
+                                <div class="reply-actions">
+                                    <button class="btn-small">取消</button>
+                                    <button class="btn-small">发送</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 收藏消息 -->
+                    <div class="notification-item unread">
+                        <div class="notification-header">
+                            <div class="notification-icon">
+                                <i class="fas fa-bookmark"></i>
+                            </div>
+                            <span class="notification-type">收藏了你的文章</span>
+                            <span class="notification-time">5小时前</span>
+                        </div>
+                        <div class="notification-body">
+                            <p class="notification-text">
+                                <span class="user-name">张文化</span> 收藏了你的文章
+                                <a href="#" class="notification-target">《明清宫廷建筑艺术》</a>
+                            </p>
+                            <div class="notification-actions">
+                                <button class="btn-small" onclick="toggleReply(this)">
+                                    <i class="fas fa-reply"></i> 回复
+                                </button>
+                                <button class="btn-small">
+                                    <i class="fas fa-check"></i> 标记已读
+                                </button>
+                                <button class="btn-small">
+                                    <i class="fas fa-trash"></i> 删除
+                                </button>
+                            </div>
+                            <div class="reply-section">
+                                <textarea class="reply-input" placeholder="回复张文化..."></textarea>
+                                <div class="reply-actions">
+                                    <button class="btn-small">取消</button>
+                                    <button class="btn-small">发送</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 评论消息 -->
+                    <div class="notification-item unread">
+                        <div class="notification-header">
+                            <div class="notification-icon">
+                                <i class="fas fa-comment"></i>
+                            </div>
+                            <span class="notification-type">评论了你的文章</span>
+                            <span class="notification-time">昨天 14:30</span>
+                        </div>
+                        <div class="notification-body">
+                            <p class="notification-text">
+                                <span class="user-name">赵评论员</span> 评论了你的文章
+                                <a href="#" class="notification-target">《传统剪纸技艺的现代传承》</a>
+                            </p>
+                            <p class="notification-comment">
+                                "这篇文章写得非常深入，特别是关于现代传承的部分，给了我很多启发！"
+                            </p>
+                            <div class="notification-actions">
+                                <button class="btn-small" onclick="toggleReply(this)">
+                                    <i class="fas fa-reply"></i> 回复
+                                </button>
+                                <button class="btn-small">
+                                    <i class="fas fa-check"></i> 标记已读
+                                </button>
+                                <button class="btn-small">
+                                    <i class="fas fa-trash"></i> 删除
+                                </button>
+                            </div>
+                            <div class="reply-section">
+                                <textarea class="reply-input" placeholder="回复赵评论员..."></textarea>
+                                <div class="reply-actions">
+                                    <button class="btn-small">取消</button>
+                                    <button class="btn-small">发送</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 回复消息 -->
+                    <div class="notification-item">
+                        <div class="notification-header">
+                            <div class="notification-icon">
+                                <i class="fas fa-reply"></i>
+                            </div>
+                            <span class="notification-type">回复了你的评论</span>
+                            <span class="notification-time">昨天 10:15</span>
+                        </div>
+                        <div class="notification-body">
+                            <p class="notification-text">
+                                <span class="user-name">钱学者</span> 回复了你在文章
+                                <a href="#" class="notification-target">《宋代瓷器的发展与特点》</a>
+                                中的评论
+                            </p>
+                            <p class="notification-comment">
+                                "感谢你的补充，确实如你所说，宋代瓷器的釉色处理是其独特之处。"
+                            </p>
+                            <div class="notification-actions">
+                                <button class="btn-small" onclick="toggleReply(this)">
+                                    <i class="fas fa-reply"></i> 回复
+                                </button>
+                                <button class="btn-small">
+                                    <i class="fas fa-check"></i> 标记已读
+                                </button>
+                                <button class="btn-small">
+                                    <i class="fas fa-trash"></i> 删除
+                                </button>
+                            </div>
+                            <div class="reply-section">
+                                <textarea class="reply-input" placeholder="回复钱学者..."></textarea>
+                                <div class="reply-actions">
+                                    <button class="btn-small">取消</button>
+                                    <button class="btn-small">发送</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 系统消息 -->
+                    <div class="notification-item">
+                        <div class="notification-header">
+                            <div class="notification-icon">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <span class="notification-type">系统通知</span>
+                            <span class="notification-time">3天前</span>
+                        </div>
+                        <div class="notification-body">
+                            <p class="notification-text">
+                                您的文章 <a href="#" class="notification-target">《公益组织在文化保护中的作用》</a> 已通过审核并发布
+                            </p>
+                            <div class="notification-actions">
+                                <button class="btn-small">
+                                    <i class="fas fa-check"></i> 标记已读
+                                </button>
+                                <button class="btn-small">
+                                    <i class="fas fa-trash"></i> 删除
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <footer class="main-footer">
+            <p>© 2023 云间小阁 | 文化传承，知识共享</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleReply(button) {
+            const replySection = button.closest('.notification-body').querySelector('.reply-section');
+            const isVisible = replySection.style.display === 'block';
+
+            // 隐藏所有回复框
+            document.querySelectorAll('.reply-section').forEach(section => {
+                section.style.display = 'none';
+            });
+
+            // 切换当前回复框
+            replySection.style.display = isVisible ? 'none' : 'block';
+
+            // 如果展开回复框，滚动到可见区域
+            if (!isVisible) {
+                replySection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        // 标记为已读功能
+        document.querySelectorAll('.btn-small').forEach(button => {
+            if (button.textContent.includes('标记已读')) {
+                button.addEventListener('click', function () {
+                    const notificationItem = this.closest('.notification-item');
+                    notificationItem.classList.remove('unread');
+
+                    // 更新未读计数
+                    const badge = document.querySelector('.nav-link.active .badge');
+                    if (badge) {
+                        let count = parseInt(badge.textContent);
+                        if (count > 0) {
+                            badge.textContent = count - 1;
+                        }
+                    }
+
+                    // 显示操作反馈
+                    alert('已标记为已读');
+                });
+            }
+        });
+
+        // 分类筛选功能
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // 移除所有活动状态
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+
+                // 添加当前活动状态
+                this.classList.add('active');
+
+                // 这里可以添加实际的筛选逻辑
+                const category = this.querySelector('span').textContent;
+                document.querySelector('.content-title').textContent = category;
+
+                // 模拟筛选结果
+                alert(`已筛选: ${category}`);
+            });
+        });
+
+        // 全部标记为已读
+        document.querySelector('.content-actions .action-btn').addEventListener('click', function () {
+            document.querySelectorAll('.notification-item.unread').forEach(item => {
+                item.classList.remove('unread');
+            });
+
+            // 重置所有未读计数
+            document.querySelectorAll('.badge').forEach(badge => {
+                badge.textContent = '0';
+            });
+
+            alert('所有消息已标记为已读');
+        });
+    </script>
+</body>
+
+</html>

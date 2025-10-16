@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>爱心故事预览 - 仁爱之心公益社区</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+        }
+        
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 顶部导航栏 */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 2px solid #d6ccc2;
+        }
+        
+        .logo {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.2rem;
+            color: #8c6d46;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            margin-left: 10px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-link {
+            color: #5c4c3e;
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding: 5px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #8c6d46;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        /* 页面标题 */
+        .page-header {
+            text-align: center;
+            padding: 40px 0 30px;
+            position: relative;
+        }
+        
+        .page-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.8rem;
+            color: #5c4c3e;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .page-title::before, .page-title::after {
+            content: "❤";
+            position: relative;
+            margin: 0 15px;
+            color: #c4a77d;
+            font-size: 1.8rem;
+        }
+        
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #745b3a;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* 故事筛选 */
+        .stories-filter {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+            background: transparent;
+            color: #8c6d46;
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background: #8c6d46;
+            color: white;
+        }
+        
+        /* 故事列表 */
+        .stories-list {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .story-item {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .story-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.25);
+        }
+        
+        .story-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 15px;
+            border: 2px solid #c4a77d;
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .user-info {
+            flex: 1;
+        }
+        
+        .user-name {
+            font-weight: bold;
+            color: #5c4c3e;
+            font-size: 1.2rem;
+        }
+        
+        .story-time {
+            color: #8c6d46;
+            font-size: 0.9rem;
+            margin-top: 3px;
+        }
+        
+        .story-content {
+            margin-bottom: 20px;
+        }
+        
+        .story-text {
+            color: #5c4c3e;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .story-media {
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .story-media img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .story-media video {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .audio-player {
+            width: 100%;
+            padding: 20px;
+            background: rgba(140, 109, 70, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .audio-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #8c6d46;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        .audio-progress {
+            flex-grow: 1;
+            height: 6px;
+            background: #d6ccc2;
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .audio-progress-bar {
+            height: 100%;
+            width: 30%;
+            background: #8c6d46;
+            border-radius: 3px;
+        }
+        
+        .audio-time {
+            color: #8c6d46;
+            font-size: 0.9rem;
+            min-width: 80px;
+            text-align: right;
+        }
+        
+        .story-actions {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #d6ccc2;
+            padding-top: 20px;
+        }
+        
+        .action-group {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #8c6d46;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 20px;
+            background: transparent;
+            border: none;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+        }
+        
+        .action-btn:hover {
+            background: rgba(140, 109, 70, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .action-btn.active {
+            color: #e74c3c;
+        }
+        
+        .action-btn.save.active {
+            color: #f1c40f;
+        }
+        
+        .action-count {
+            font-size: 0.9rem;
+        }
+        
+        /* 加载更多 */
+        .load-more {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .load-more-btn {
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+            background: #8c6d46;
+            color: white;
+        }
+        
+        .load-more-btn:hover {
+            background: #745b3a;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(92, 76, 62, 0.25);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .top-nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+            
+            .story-actions {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .action-group {
+                justify-content: space-around;
+                width: 100%;
+            }
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .story-item {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <div class="top-nav">
+            <div class="logo">
+                <i class="fas fa-mountain"></i>
+                <span>仁爱之心</span>
+            </div>
+            
+            <div class="nav-links">
+                <a href="#" class="nav-link">首页</a>
+                <a href="#" class="nav-link">公益项目</a>
+                <a href="#" class="nav-link">爱心故事</a>
+                <a href="#" class="nav-link">关于我们</a>
+            </div>
+        </div>
+        
+        <!-- 页面标题 -->
+        <header class="page-header">
+            <h1 class="page-title">爱心故事</h1>
+            <p class="page-subtitle">记录公益瞬间，分享温暖时刻，每一份爱心都值得被看见</p>
+        </header>
+        
+        <!-- 故事筛选 -->
+        <div class="stories-filter">
+            <button class="filter-btn active">全部</button>
+            <button class="filter-btn">图片</button>
+            <button class="filter-btn">视频</button>
+            <button class="filter-btn">语音</button>
+            <button class="filter-btn">我的故事</button>
+        </div>
+        
+        <!-- 故事列表 -->
+        <div class="stories-list">
+            <!-- 故事1 - 图片 -->
+            <div class="story-item">
+                <div class="story-header">
+                    <div class="user-avatar">
+                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="用户头像">
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">张明</div>
+                        <div class="story-time">2小时前</div>
+                    </div>
+                </div>
+                
+                <div class="story-content">
+                    <p class="story-text">今天参加了山区支教活动，孩子们纯真的笑容让我感受到了公益的真正意义。希望我们的微薄之力能给他们带来一些帮助和温暖。</p>
+                    
+                    <div class="story-media">
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="支教活动">
+                    </div>
+                </div>
+                
+                <div class="story-actions">
+                    <div class="action-group">
+                        <button class="action-btn like-btn" data-liked="false">
+                            <i class="far fa-heart"></i>
+                            <span class="action-count">42</span>
+                        </button>
+                        <button class="action-btn comment-btn">
+                            <i class="far fa-comment"></i>
+                            <span class="action-count">8</span>
+                        </button>
+                        <button class="action-btn share-btn">
+                            <i class="fas fa-share-alt"></i>
+                            <span class="action-count">5</span>
+                        </button>
+                    </div>
+                    
+                    <div class="action-group">
+                        <button class="action-btn save-btn" data-saved="false">
+                            <i class="far fa-bookmark"></i>
+                            <span>收藏</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 故事2 - 视频 -->
+            <div class="story-item">
+                <div class="story-header">
+                    <div class="user-avatar">
+                        <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="用户头像">
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">李华</div>
+                        <div class="story-time">5小时前</div>
+                    </div>
+                </div>
+                
+                <div class="story-content">
+                    <p class="story-text">河流清理活动的全过程记录，虽然辛苦但看到变得清澈的河道，一切都值得了！希望大家都能爱护环境，保护水资源。</p>
+                    
+                    <div class="story-media">
+                        <video controls poster="https://images.unsplash.com/photo-1577896851231-70ef188d5431?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80">
+                            <source src="#" type="video/mp4">
+                            您的浏览器不支持视频播放
+                        </video>
+                    </div>
+                </div>
+                
+                <div class="story-actions">
+                    <div class="action-group">
+                        <button class="action-btn like-btn" data-liked="false">
+                            <i class="far fa-heart"></i>
+                            <span class="action-count">56</span>
+                        </button>
+                        <button class="action-btn comment-btn">
+                            <i class="far fa-comment"></i>
+                            <span class="action-count">12</span>
+                        </button>
+                        <button class="action-btn share-btn">
+                            <i class="fas fa-share-alt"></i>
+                            <span class="action-count">7</span>
+                        </button>
+                    </div>
+                    
+                    <div class="action-group">
+                        <button class="action-btn save-btn" data-saved="false">
+                            <i class="far fa-bookmark"></i>
+                            <span>收藏</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 故事3 - 语音 -->
+            <div class="story-item">
+                <div class="story-header">
+                    <div class="user-avatar">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="用户头像">
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">王芳</div>
+                        <div class="story-time">1天前</div>
+                    </div>
+                </div>
+                
+                <div class="story-content">
+                    <p class="story-text">今天去敬老院看望老人，听王奶奶讲她年轻时的故事，感触很深。陪伴是最好的礼物，希望有更多人能关注老年人群体。</p>
+                    
+                    <div class="story-media">
+                        <div class="audio-player">
+                            <div class="audio-btn">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div class="audio-progress">
+                                <div class="audio-progress-bar"></div>
+                            </div>
+                            <div class="audio-time">2:15</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="story-actions">
+                    <div class="action-group">
+                        <button class="action-btn like-btn" data-liked="false">
+                            <i class="far fa-heart"></i>
+                            <span class="action-count">38</span>
+                        </button>
+                        <button class="action-btn comment-btn">
+                            <i class="far fa-comment"></i>
+                            <span class="action-count">5</span>
+                        </button>
+                        <button class="action-btn share-btn">
+                            <i class="fas fa-share-alt"></i>
+                            <span class="action-count">3</span>
+                        </button>
+                    </div>
+                    
+                    <div class="action-group">
+                        <button class="action-btn save-btn" data-saved="false">
+                            <i class="far fa-bookmark"></i>
+                            <span>收藏</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 故事4 - 纯文本 -->
+            <div class="story-item">
+                <div class="story-header">
+                    <div class="user-avatar">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="用户头像">
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">陈强</div>
+                        <div class="story-time">2天前</div>
+                    </div>
+                </div>
+                
+                <div class="story-content">
+                    <p class="story-text">今天参加了社区组织的义务植树活动，虽然累但心里特别充实。每一棵树都是对未来的承诺，希望我们的努力能让环境变得更好。感谢所有参与的志愿者，你们是最棒的！</p>
+                </div>
+                
+                <div class="story-actions">
+                    <div class="action-group">
+                        <button class="action-btn like-btn" data-liked="false">
+                            <i class="far fa-heart"></i>
+                            <span class="action-count">29</span>
+                        </button>
+                        <button class="action-btn comment-btn">
+                            <i class="far fa-comment"></i>
+                            <span class="action-count">6</span>
+                        </button>
+                        <button class="action-btn share-btn">
+                            <i class="fas fa-share-alt"></i>
+                            <span class="action-count">4</span>
+                        </button>
+                    </div>
+                    
+                    <div class="action-group">
+                        <button class="action-btn save-btn" data-saved="false">
+                            <i class="far fa-bookmark"></i>
+                            <span>收藏</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 加载更多 -->
+        <div class="load-more">
+            <button class="load-more-btn">加载更多故事</button>
+        </div>
+    </div>
+
+    <script>
+        // 交互功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 点赞功能
+            const likeButtons = document.querySelectorAll('.like-btn');
+            likeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const isLiked = this.getAttribute('data-liked') === 'true';
+                    const icon = this.querySelector('i');
+                    const count = this.querySelector('.action-count');
+                    
+                    if (isLiked) {
+                        this.setAttribute('data-liked', 'false');
+                        icon.classList.remove('fas', 'fa-heart');
+                        icon.classList.add('far', 'fa-heart');
+                        this.classList.remove('active');
+                        count.textContent = parseInt(count.textContent) - 1;
+                    } else {
+                        this.setAttribute('data-liked', 'true');
+                        icon.classList.remove('far', 'fa-heart');
+                        icon.classList.add('fas', 'fa-heart');
+                        this.classList.add('active');
+                        count.textContent = parseInt(count.textContent) + 1;
+                    }
+                });
+            });
+            
+            // 收藏功能
+            const saveButtons = document.querySelectorAll('.save-btn');
+            saveButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const isSaved = this.getAttribute('data-saved') === 'true';
+                    const icon = this.querySelector('i');
+                    
+                    if (isSaved) {
+                        this.setAttribute('data-saved', 'false');
+                        icon.classList.remove('fas', 'fa-bookmark');
+                        icon.classList.add('far', 'fa-bookmark');
+                        this.classList.remove('active');
+                        this.querySelector('span').textContent = '收藏';
+                    } else {
+                        this.setAttribute('data-saved', 'true');
+                        icon.classList.remove('far', 'fa-bookmark');
+                        icon.classList.add('fas', 'fa-bookmark');
+                        this.classList.add('active');
+                        this.querySelector('span').textContent = '已收藏';
+                    }
+                });
+            });
+            
+            // 分享功能
+            const shareButtons = document.querySelectorAll('.share-btn');
+            shareButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const count = this.querySelector('.action-count');
+                    count.textContent = parseInt(count.textContent) + 1;
+                    alert('感谢您的分享，爱心因传播而更有力量！');
+                });
+            });
+            
+            // 评论功能
+            const commentButtons = document.querySelectorAll('.comment-btn');
+            commentButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const count = this.querySelector('.action-count');
+                    const comment = prompt('请输入您的评论：');
+                    if (comment && comment.trim() !== '') {
+                        count.textContent = parseInt(count.textContent) + 1;
+                        alert('评论发表成功！');
+                    }
+                });
+            });
+            
+            // 音频播放功能
+            const audioButtons = document.querySelectorAll('.audio-btn');
+            audioButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const icon = this.querySelector('i');
+                    const progressBar = this.closest('.audio-player').querySelector('.audio-progress-bar');
+                    
+                    if (icon.classList.contains('fa-play')) {
+                        icon.classList.remove('fa-play');
+                        icon.classList.add('fa-pause');
+                        
+                        // 模拟音频播放进度
+                        let width = 0;
+                        const interval = setInterval(() => {
+                            if (width >= 100) {
+                                clearInterval(interval);
+                                icon.classList.remove('fa-pause');
+                                icon.classList.add('fa-play');
+                                progressBar.style.width = '0%';
+                            } else {
+                                width += 0.5;
+                                progressBar.style.width = width + '%';
+                            }
+                        }, 50);
+                    } else {
+                        icon.classList.remove('fa-pause');
+                        icon.classList.add('fa-play');
+                    }
+                });
+            });
+            
+            // 筛选功能
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 这里可以添加实际筛选逻辑
+                    alert(`筛选: ${this.textContent}`);
+                });
+            });
+            
+            // 加载更多
+            const loadMoreBtn = document.querySelector('.load-more-btn');
+            loadMoreBtn.addEventListener('click', function() {
+                this.textContent = '加载中...';
+                setTimeout(() => {
+                    this.textContent = '加载更多故事';
+                    alert('已加载更多故事');
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据统计 - 云间小阁</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image:
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+
+        .stats-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* 页面标题区域 */
+        .page-header {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .page-header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8c6d46, transparent);
+        }
+
+        .page-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 3.5rem;
+            color: #8c3c2c;
+            margin-bottom: 15px;
+            letter-spacing: 5px;
+            text-shadow: 2px 2px 4px rgba(92, 76, 62, 0.2);
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #8c6d46;
+            position: relative;
+            display: inline-block;
+        }
+
+        .page-subtitle::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8c3c2c, transparent);
+        }
+
+        /* 时间筛选 */
+        .time-filter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: rgba(255, 253, 245, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: rgba(255, 253, 245, 0.9);
+            border: 1px solid #d6ccc2;
+            border-radius: 30px;
+            color: #5c4c3e;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #8c6d46;
+            color: #fff;
+        }
+
+        .date-range {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .date-input {
+            padding: 10px 15px;
+            border: 1px solid #d6ccc2;
+            border-radius: 8px;
+            background: rgba(255, 253, 245, 0.9);
+            font-family: 'Noto Serif SC', serif;
+            color: #5c4c3e;
+        }
+
+        .apply-btn {
+            padding: 10px 20px;
+            background: #8c6d46;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .apply-btn:hover {
+            background: #745b3a;
+        }
+
+        /* 数据概览卡片 */
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 253, 245, 0.9);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #d6ccc2;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.15);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            color: #8c6d46;
+            margin-bottom: 15px;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #8c3c2c;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #5c4c3e;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+
+        .trend-up {
+            color: #4c8c4c;
+        }
+
+        .trend-down {
+            color: #8c4c4c;
+        }
+
+        /* 图表区域 */
+        .charts-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2rem;
+            color: #8c3c2c;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9e1d5;
+        }
+
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 25px;
+        }
+
+        .chart-card {
+            background: rgba(255, 253, 245, 0.9);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #d6ccc2;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .chart-title {
+            font-size: 1.3rem;
+            color: #5c4c3e;
+            font-weight: bold;
+        }
+
+        .chart-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chart-action {
+            background: none;
+            border: 1px solid #d6ccc2;
+            border-radius: 5px;
+            padding: 5px 10px;
+            color: #5c4c3e;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chart-action:hover {
+            background: #8c6d46;
+            color: #fff;
+        }
+
+        .chart-placeholder {
+            height: 300px;
+            background: rgba(255, 253, 245, 0.7);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8c6d46;
+            font-size: 1.1rem;
+            border: 1px dashed #d6ccc2;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 数据表格 */
+        .data-table-section {
+            margin-bottom: 40px;
+        }
+
+        .table-container {
+            background: rgba(255, 253, 245, 0.9);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #d6ccc2;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background: #f1e9dd;
+            padding: 15px;
+            text-align: left;
+            color: #8c3c2c;
+            font-weight: bold;
+            border-bottom: 2px solid #e9e1d5;
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e9e1d5;
+        }
+
+        .data-table tr:hover {
+            background: #f9f5eb;
+        }
+
+        .table-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border: 1px solid #d6ccc2;
+            border-radius: 30px;
+            background: rgba(255, 253, 245, 0.9);
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            color: #5c4c3e;
+            box-shadow: 0 2px 8px rgba(92, 76, 62, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8c6d46;
+        }
+
+        .export-btn {
+            padding: 10px 20px;
+            background: #8c6d46;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .export-btn:hover {
+            background: #745b3a;
+        }
+
+        /* 页脚 */
+        .page-footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 50px;
+            color: #8c6d46;
+            font-size: 0.9rem;
+            border-top: 1px solid #d6ccc2;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .time-filter {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-card {
+                padding: 15px;
+            }
+
+            .chart-placeholder {
+                height: 200px;
+            }
+
+            .table-actions {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+        }
+
+        .decoration {
+            position: absolute;
+            opacity: 0.1;
+            z-index: -1;
+            font-family: 'Ma Shan Zheng', cursive;
+            color: #8c3c2c;
+        }
+
+        .decoration-1 {
+            top: 50px;
+            left: 5%;
+            font-size: 6rem;
+            transform: rotate(-10deg);
+        }
+
+        .decoration-2 {
+            bottom: 100px;
+            right: 5%;
+            font-size: 5rem;
+            transform: rotate(15deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="decoration decoration-1">数</div>
+    <div class="decoration decoration-2">据</div>
+
+    <div class="stats-container">
+        <header class="page-header">
+            <h1 class="page-title">数据统计</h1>
+            <p class="page-subtitle">洞察内容表现与用户行为</p>
+        </header>
+
+        <!-- 时间筛选 -->
+        <div class="time-filter">
+            <div class="filter-options">
+                <button class="filter-btn active">
+                    <i class="fas fa-calendar-day"></i> 今日
+                </button>
+                <button class="filter-btn">
+                    <i class="fas fa-calendar-week"></i> 本周
+                </button>
+                <button class="filter-btn">
+                    <i class="fas fa-calendar-alt"></i> 本月
+                </button>
+                <button class="filter-btn">
+                    <i class="fas fa-calendar"></i> 本季度
+                </button>
+                <button class="filter-btn">
+                    <i class="fas fa-chart-line"></i> 自定义
+                </button>
+            </div>
+
+            <div class="date-range">
+                <input type="date" class="date-input" value="2023-10-01">
+                <span>至</span>
+                <input type="date" class="date-input" value="2023-10-20">
+                <button class="apply-btn">应用</button>
+            </div>
+        </div>
+
+        <!-- 数据概览 -->
+        <div class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="stat-value">1,248</div>
+                <div class="stat-label">文章总数</div>
+                <div class="stat-trend trend-up">
+                    <i class="fas fa-arrow-up"></i> 5.2% 较上月
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <div class="stat-value">24,567</div>
+                <div class="stat-label">本月浏览量</div>
+                <div class="stat-trend trend-up">
+                    <i class="fas fa-arrow-up"></i> 12.7% 较上月
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-value">386</div>
+                <div class="stat-label">注册用户</div>
+                <div class="stat-trend trend-up">
+                    <i class="fas fa-arrow-up"></i> 8.3% 较上月
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <div class="stat-value">842</div>
+                <div class="stat-label">评论总数</div>
+                <div class="stat-trend trend-down">
+                    <i class="fas fa-arrow-down"></i> 2.1% 较上月
+                </div>
+            </div>
+        </div>
+
+        <!-- 图表区域 -->
+        <div class="charts-section">
+            <h2 class="section-title">数据可视化</h2>
+
+            <div class="charts-container">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-title">文章分类分布</div>
+                        <div class="chart-actions">
+                            <button class="chart-action">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button class="chart-action">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-placeholder">
+                        <i class="fas fa-chart-pie"></i> 分类分布图表区域
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-title">月度访问趋势</div>
+                        <div class="chart-actions">
+                            <button class="chart-action">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button class="chart-action">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-placeholder">
+                        <i class="fas fa-chart-line"></i> 访问趋势图表区域
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-title">用户活跃时段</div>
+                        <div class="chart-actions">
+                            <button class="chart-action">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button class="chart-action">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-placeholder">
+                        <i class="fas fa-chart-bar"></i> 活跃时段图表区域
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-title">热门文章排行</div>
+                        <div class="chart-actions">
+                            <button class="chart-action">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button class="chart-action">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-placeholder">
+                        <i class="fas fa-chart-area"></i> 热门文章图表区域
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 数据表格 -->
+        <div class="data-table-section">
+            <h2 class="section-title">详细数据</h2>
+
+            <div class="table-actions">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="搜索文章标题或作者...">
+                </div>
+
+                <button class="export-btn">
+                    <i class="fas fa-download"></i> 导出数据
+                </button>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>文章标题</th>
+                            <th>作者</th>
+                            <th>分类</th>
+                            <th>发布时间</th>
+                            <th>浏览量</th>
+                            <th>评论数</th>
+                            <th>点赞数</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>中国茶文化的历史演变</td>
+                            <td>张文化</td>
+                            <td>非物质文化遗产</td>
+                            <td>2023-10-15</td>
+                            <td>1,245</td>
+                            <td>42</td>
+                            <td>89</td>
+                        </tr>
+                        <tr>
+                            <td>明清宫廷建筑艺术</td>
+                            <td>李历史</td>
+                            <td>中国历史</td>
+                            <td>2023-10-16</td>
+                            <td>892</td>
+                            <td>23</td>
+                            <td>67</td>
+                        </tr>
+                        <tr>
+                            <td>传统剪纸技艺的现代传承</td>
+                            <td>王艺匠</td>
+                            <td>非物质文化遗产</td>
+                            <td>2023-10-14</td>
+                            <td>1,567</td>
+                            <td>56</td>
+                            <td>124</td>
+                        </tr>
+                        <tr>
+                            <td>公益组织在文化保护中的作用</td>
+                            <td>赵公益</td>
+                            <td>公益</td>
+                            <td>2023-10-13</td>
+                            <td>743</td>
+                            <td>18</td>
+                            <td>45</td>
+                        </tr>
+                        <tr>
+                            <td>宋代瓷器的发展与特点</td>
+                            <td>钱收藏</td>
+                            <td>中国历史</td>
+                            <td>2023-10-12</td>
+                            <td>1,102</td>
+                            <td>34</td>
+                            <td>78</td>
+                        </tr>
+                        <tr>
+                            <td>川剧变脸技艺探秘</td>
+                            <td>刘传统</td>
+                            <td>非物质文化遗产</td>
+                            <td>2023-10-11</td>
+                            <td>956</td>
+                            <td>29</td>
+                            <td>63</td>
+                        </tr>
+                        <tr>
+                            <td>青少年传统文化教育项目</td>
+                            <td>孙教育</td>
+                            <td>公益</td>
+                            <td>2023-10-10</td>
+                            <td>678</td>
+                            <td>15</td>
+                            <td>37</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer class="page-footer">
+            <p>© 2023 云间小阁 | 数据统计与分析中心</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 时间筛选功能
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 如果是自定义选项，显示日期选择器
+                    if (this.textContent.includes('自定义')) {
+                        document.querySelector('.date-range').style.display = 'flex';
+                    } else {
+                        document.querySelector('.date-range').style.display = 'none';
+                    }
+                    
+                    // 实际应用中这里会根据筛选条件更新数据
+                    console.log('时间筛选: ' + this.textContent.trim());
+                });
+            });
+            
+            // 应用日期范围筛选
+            const applyBtn = document.querySelector('.apply-btn');
+            
+            applyBtn.addEventListener('click', function () {
+                const startDate = document.querySelector('.date-input:first-child').value;
+                const endDate = document.querySelector('.date-input:last-child').value;
+                
+                // 实际应用中这里会根据日期范围更新数据
+                console.log('日期范围: ' + startDate + ' 至 ' + endDate);
+                
+                // 显示成功消息
+                showMessage('数据筛选已更新', 'success');
+            });
+            
+            // 图表操作功能
+            const chartActions = document.querySelectorAll('.chart-action');
+            
+            chartActions.forEach(action => {
+                action.addEventListener('click', function () {
+                    const chartTitle = this.closest('.chart-header').querySelector('.chart-title').textContent;
+                    
+                    if (this.querySelector('.fa-download')) {
+                        console.log('下载图表: ' + chartTitle);
+                        showMessage('图表数据已开始下载', 'success');
+                    } else if (this.querySelector('.fa-expand')) {
+                        console.log('全屏查看: ' + chartTitle);
+                        // 实际应用中这里会打开全屏图表视图
+                    }
+                });
+            });
+            
+            // 数据搜索功能
+            const searchInput = document.querySelector('.search-box input');
+            
+            searchInput.addEventListener('keyup', function (e) {
+                if (e.key === 'Enter') {
+                    // 实际应用中这里会执行搜索
+                    console.log('搜索关键词: ' + this.value);
+                    showMessage('搜索结果已更新', 'success');
+                }
+            });
+            
+            // 导出数据功能
+            const exportBtn = document.querySelector('.export-btn');
+            
+            exportBtn.addEventListener('click', function () {
+                // 模拟导出过程
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 导出中...';
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-download"></i> 导出数据';
+                    this.disabled = false;
+                    showMessage('数据导出成功', 'success');
+                }, 2000);
+                
+                // 实际应用中这里会触发数据导出
+                console.log('导出数据');
+            });
+            
+            // 显示消息提示
+            function showMessage(message, type) {
+                // 创建消息元素
+                const messageEl = document.createElement('div');
+                messageEl.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 15px 25px;
+                    background: ${type === 'success' ? '#4c8c4c' : '#8c3c2c'};
+                    color: white;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    z-index: 1000;
+                    animation: slideIn 0.3s ease;
+                `;
+                messageEl.textContent = message;
+                
+                // 添加动画样式
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOut {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                document.body.appendChild(messageEl);
+                
+                // 3秒后自动移除
+                setTimeout(() => {
+                    messageEl.style.animation = 'slideOut 0.3s ease';
+                    messageEl.style.transform = 'translateX(100%)';
+                    messageEl.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        document.body.removeChild(messageEl);
+                    }, 300);
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公益社区 - 云间文苑</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image:
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 顶部导航栏 */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 2px solid #d6ccc2;
+        }
+
+        .logo {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.2rem;
+            color: #8c6d46;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            margin-left: 10px;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            padding: 5px 15px;
+            border: 1px solid #d6ccc2;
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            padding: 8px;
+            outline: none;
+            font-family: 'Noto Serif SC', serif;
+            color: #5c4c3e;
+            width: 150px;
+        }
+
+        .search-btn {
+            background: none;
+            border: none;
+            color: #8c6d46;
+            cursor: pointer;
+        }
+
+        /* 主导航 */
+        .main-nav {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #d6ccc2;
+        }
+
+        .nav-item {
+            padding: 10px 25px;
+            font-size: 1.2rem;
+            color: #5c4c3e;
+            text-decoration: none;
+            position: relative;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item::after {
+            content: "";
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: #8c6d46;
+            transition: width 0.3s ease;
+        }
+
+        .nav-item.active {
+            color: #8c6d46;
+            font-weight: bold;
+        }
+
+        .nav-item.active::after {
+            width: 100%;
+        }
+
+        .nav-item:hover::after {
+            width: 100%;
+        }
+
+        /* 页面标题 - 公益专属 */
+        .page-header {
+            text-align: center;
+            padding: 40px 0 30px;
+            position: relative;
+        }
+
+        .page-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.8rem;
+            color: #5c4c3e;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .page-title::before,
+        .page-title::after {
+            content: "❤";
+            position: relative;
+            margin: 0 15px;
+            color: #c4a77d;
+            font-size: 1.8rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #745b3a;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* 内容区域 */
+        .content-section {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+        }
+
+        .content-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        /* 公益类型网格 */
+        .cause-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .cause-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #d6ccc2;
+            cursor: pointer;
+        }
+
+        .cause-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(92, 76, 62, 0.25);
+        }
+
+        .cause-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .cause-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .cause-card:hover .cause-image img {
+            transform: scale(1.1);
+        }
+
+        .cause-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            padding: 20px;
+            color: white;
+        }
+
+        .cause-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .cause-stats {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .cause-content {
+            padding: 20px;
+        }
+
+        .cause-desc {
+            color: #745b3a;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            display: -webkit-box;
+            display: -moz-box;
+            display: box;
+            -webkit-line-clamp: 3;
+            -moz-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            -moz-box-orient: vertical;
+            box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .cause-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .cause-tag {
+            padding: 4px 10px;
+            background: rgba(140, 109, 70, 0.1);
+            border-radius: 15px;
+            font-size: 0.85rem;
+            color: #8c6d46;
+        }
+
+        .cause-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .cause-btn {
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+        }
+
+        .cause-btn.primary {
+            background: #8c6d46;
+            color: white;
+        }
+
+        .cause-btn.outline {
+            background: transparent;
+            color: #8c6d46;
+        }
+
+        .cause-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(92, 76, 62, 0.2);
+        }
+
+        /* 公益数据统计 */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            color: #8c6d46;
+            margin-bottom: 15px;
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #745b3a;
+            font-size: 1.1rem;
+        }
+
+        /* 近期活动 */
+        .events-section {
+            background: linear-gradient(rgba(140, 109, 70, 0.05), rgba(140, 109, 70, 0.05));
+            border-radius: 12px;
+            padding: 30px;
+            margin: 40px 0;
+            border: 1px solid #d6ccc2;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .event-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            transition: all 0.3s ease;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .event-date {
+            font-size: 0.9rem;
+            color: #8c6d46;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .event-title {
+            font-size: 1.2rem;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .event-desc {
+            color: #745b3a;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .event-link {
+            color: #8c6d46;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .event-link:hover {
+            gap: 8px;
+            color: #5c4c3e;
+        }
+
+        /* 公益名言 */
+        .quotes-section {
+            background: linear-gradient(rgba(140, 109, 70, 0.1), rgba(140, 109, 70, 0.1)), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center;
+            background-size: cover;
+            border-radius: 12px;
+            padding: 50px 30px;
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+            color: #5c4c3e;
+            border: 1px solid #d6ccc2;
+        }
+
+        .quotes-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            border-radius: 12px;
+            z-index: -1;
+        }
+
+        .quote {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .quote {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .quote-author {
+            font-size: 1.2rem;
+            color: #8c6d46;
+            font-style: italic;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .cause-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .main-nav {
+                flex-wrap: wrap;
+            }
+
+            .nav-item {
+                margin: 5px;
+                padding: 8px 15px;
+            }
+
+            .page-title {
+                font-size: 2.2rem;
+            }
+
+            .cause-grid,
+            .stats-container,
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quote {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <div class="top-nav">
+            <div class="logo">
+                <i class="fas fa-mountain"></i>
+                <span>云间文苑</span>
+            </div>
+
+            <div class="user-actions">
+                <div class="search-box">
+                    <input type="text" placeholder="搜索公益...">
+                    <button class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主导航 -->
+        <nav class="main-nav">
+            <a href="#" class="nav-item">历史</a>
+            <a href="#" class="nav-item">非遗</a>
+            <a href="#" class="nav-item active">公益</a>
+            <a href="#" class="nav-item">我的</a>
+        </nav>
+
+        <!-- 页面标题 -->
+        <header class="page-header">
+            <h1 class="page-title">公益社区</h1>
+            <p class="page-subtitle">汇聚爱心力量，传递温暖希望，让每一份善意都能照亮世界</p>
+        </header>
+
+        <!-- 公益类型 -->
+        <section class="content-section">
+            <h2 class="section-title">公益类型</h2>
+            <div class="cause-grid">
+                <!-- 自然保护 -->
+                <div class="cause-card">
+                    <div class="cause-image">
+                        <img src="https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                            alt="自然保护">
+                        <div class="cause-overlay">
+                            <h3 class="cause-name">自然保护</h3>
+                            <div class="cause-stats">
+                                <span><i class="fas fa-users"></i> 5,280+志愿者</span>
+                                <span><i class="fas fa-project-diagram"></i> 127个项目</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cause-content">
+                        <p class="cause-desc">致力于保护自然环境、野生动物和生态系统，推动可持续发展，守护我们共同的地球家园。</p>
+                        <div class="cause-tags">
+                            <span class="cause-tag">环境保护</span>
+                            <span class="cause-tag">动物保护</span>
+                            <span class="cause-tag">生态平衡</span>
+                        </div>
+                        <div class="cause-actions">
+                            <button class="cause-btn outline">了解更多</button>
+                            <button class="cause-btn primary">参与公益</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 自然灾害 -->
+                <div class="cause-card">
+                    <div class="cause-image">
+                        <img src="https://images.unsplash.com/photo-1593113630400-ea4288922497?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                            alt="自然灾害救助">
+                        <div class="cause-overlay">
+                            <h3 class="cause-name">自然灾害救助</h3>
+                            <div class="cause-stats">
+                                <span><i class="fas fa-users"></i> 3,450+志愿者</span>
+                                <span><i class="fas fa-project-diagram"></i> 86个项目</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cause-content">
+                        <p class="cause-desc">为受灾地区提供紧急救援和灾后重建支持，帮助受灾群众度过难关，重建家园。</p>
+                        <div class="cause-tags">
+                            <span class="cause-tag">紧急救援</span>
+                            <span class="cause-tag">灾后重建</span>
+                            <span class="cause-tag">物资援助</span>
+                        </div>
+                        <div class="cause-actions">
+                            <button class="cause-btn outline">了解更多</button>
+                            <button class="cause-btn primary">参与公益</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 老人关怀 -->
+                <div class="cause-card">
+                    <div class="cause-image">
+                        <img src="https://images.unsplash.com/photo-1577896851787-33d18a56dffd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                            alt="老人关怀">
+                        <div class="cause-overlay">
+                            <h3 class="cause-name">老人关怀</h3>
+                            <div class="cause-stats">
+                                <span><i class="fas fa-users"></i> 4,120+志愿者</span>
+                                <span><i class="fas fa-project-diagram"></i> 73个项目</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cause-content">
+                        <p class="cause-desc">关注老年人生活质量和精神需求，提供生活照料、健康关怀和精神慰藉，让老人安享晚年。</p>
+                        <div class="cause-tags">
+                            <span class="cause-tag">老年服务</span>
+                            <span class="cause-tag">陪伴关怀</span>
+                            <span class="cause-tag">健康支持</span>
+                        </div>
+                        <div class="cause-actions">
+                            <button class="cause-btn outline">了解更多</button>
+                            <button class="cause-btn primary">参与公益</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 儿童教育 -->
+                <div class="cause-card">
+                    <div class="cause-image">
+                        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                            alt="儿童教育">
+                        <div class="cause-overlay">
+                            <h3 class="cause-name">儿童教育</h3>
+                            <div class="cause-stats">
+                                <span><i class="fas fa-users"></i> 6,350+志愿者</span>
+                                <span><i class="fas fa-project-diagram"></i> 142个项目</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cause-content">
+                        <p class="cause-desc">为偏远地区和贫困儿童提供教育支持，改善学习环境，让每个孩子都有接受良好教育的机会。</p>
+                        <div class="cause-tags">
+                            <span class="cause-tag">教育支持</span>
+                            <span class="cause-tag">助学计划</span>
+                            <span class="cause-tag">儿童发展</span>
+                        </div>
+                        <div class="cause-actions">
+                            <button class="cause-btn outline">了解更多</button>
+                            <button class="cause-btn primary">参与公益</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 医疗卫生 -->
+                <div class="cause-card">
+                    <div class="cause-image">
+                        <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                            alt="医疗卫生">
+                        <div class="cause-overlay">
+                            <h3 class="cause-name">医疗卫生</h3>
+                            <div class="cause-stats">
+                                <span><i class="fas fa-users"></i> 2,870+志愿者</span>
+                                <span><i class="fas fa-project-diagram"></i> 68个项目</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cause-content">
+                        <p class="cause-desc">提供医疗援助、健康教育和疾病预防服务，改善医疗条件，促进公共卫生事业发展。</p>
+                        <div class="cause-tags">
+                            <span class="cause-tag">医疗援助</span>
+                            <span class="cause-tag">健康教育</span>
+                            <span class="cause-tag">疾病预防</span>
+                        </div>
+                        <div class="cause-actions">
+                            <button class="cause-btn outline">了解更多</button>
+                            <button class="cause-btn primary">参与公益</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 社区发展 -->
+                <div class="cause-card">
+                    <div class="cause-image">
+                        <img src="https://images.unsplash.com/photo-1577896851787-33d18a56dffd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                            alt="社区发展">
+                        <div class="cause-overlay">
+                            <h3 class="cause-name">社区发展</h3>
+                            <div class="cause-stats">
+                                <span><i class="fas fa-users"></i> 3,980+志愿者</span>
+                                <span><i class="fas fa-project-diagram"></i> 94个项目</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cause-content">
+                        <p class="cause-desc">支持社区建设和可持续发展，改善基础设施，提升社区凝聚力，促进社区和谐发展。</p>
+                        <div class="cause-tags">
+                            <span class="cause-tag">社区建设</span>
+                            <span class="cause-tag">基础设施</span>
+                            <span class="cause-tag">可持续发展</span>
+                        </div>
+                        <div class="cause-actions">
+                            <button class="cause-btn outline">了解更多</button>
+                            <button class="cause-btn primary">参与公益</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 公益数据 -->
+        <section class="content-section">
+            <h2 class="section-title">公益影响力</h2>
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                    <div class="stat-number">25,680+</div>
+                    <div class="stat-label">志愿者加入</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <div class="stat-number">590</div>
+                    <div class="stat-label">公益项目</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number">120,000+</div>
+                    <div class="stat-label">受益人群</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-donate"></i>
+                    </div>
+                    <div class="stat-number">￥8.5M</div>
+                    <div class="stat-label">捐赠金额</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 近期活动 -->
+        <section class="events-section">
+            <h2 class="section-title">近期公益活动</h2>
+            <div class="events-grid">
+                <div class="event-card">
+                    <div class="event-date">
+                        <i class="far fa-calendar-alt"></i> 2023年10月28日
+                    </div>
+                    <h3 class="event-title">河流清洁日志愿者招募</h3>
+                    <p class="event-desc">加入我们，一起清理城市河道，保护水资源，还河流以清澈。提供工具和培训，无需经验。</p>
+                    <a href="#" class="event-link">
+                        查看详情 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-date">
+                        <i class="far fa-calendar-alt"></i> 2023年11月5日
+                    </div>
+                    <h3 class="event-title">山区支教志愿者培训</h3>
+                    <p class="event-desc">为即将前往山区支教的志愿者提供教学方法和心理准备培训，帮助您更好地服务山区儿童。</p>
+                    <a href="#" class="event-link">
+                        查看详情 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-date">
+                        <i class="far fa-calendar-alt"></i> 2023年11月12日
+                    </div>
+                    <h3 class="event-title">冬季温暖包募集活动</h3>
+                    <p class="event-desc">为偏远地区儿童募集冬季衣物和学习用品，帮助孩子们度过温暖冬天。接受物资和现金捐赠。</p>
+                    <a href="#" class="event-link">
+                        查看详情 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 公益名言 -->
+        <div class="quotes-section">
+            <p class="quote">公益不是一个人做了很多，而是很多人都做了一点点。每一份微小的善意，都能汇聚成改变世界的力量。</p>
+            <p class="quote-author">—— 公益理念</p>
+        </div>
+    </div>
+
+    <script>
+        // 简单的交互效果
+        document.addEventListener('DOMContentLoaded', function () {
+            // 导航项点击效果
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    navItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // 卡片悬停效果
+            const cards = document.querySelectorAll('.cause-card, .stat-card, .event-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function () {
+                    this.style.transform = 'translateY(-5px)';
+                });
+
+                card.addEventListener('mouseleave', function () {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+
+            // 公益类型卡片点击效果
+            const causeCards = document.querySelectorAll('.cause-card');
+            causeCards.forEach(card => {
+                card.addEventListener('click', function () {
+                    const causeName = this.querySelector('.cause-name').textContent;
+                    alert(`您选择了: ${causeName} 公益类型`);
+                });
+            });
+
+            // 按钮点击效果
+            const buttons = document.querySelectorAll('.cause-btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.stopPropagation(); // 防止触发卡片点击事件
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 200);
+
+                    if (this.classList.contains('primary')) {
+                        const causeCard = this.closest('.cause-card');
+                        const causeName = causeCard.querySelector('.cause-name').textContent;
+                        alert(`感谢您愿意参与${causeName}公益活动！`);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,3280 @@
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image:
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+
+        /* 确保 <a> 标签及其父元素没有设置下划线 */
+        a,
+        a * {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 顶部导航栏 */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 2px solid #d6ccc2;
+        }
+
+        .logo {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.2rem;
+            color: #8c6d46;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            margin-left: 10px;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            padding: 5px 15px;
+            border: 1px solid #d6ccc2;
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            padding: 8px;
+            outline: none;
+            font-family: 'Noto Serif SC', serif;
+            color: #5c4c3e;
+            width: 150px;
+        }
+
+        .search-btn {
+            background: none;
+            border: none;
+            color: #8c6d46;
+            cursor: pointer;
+        }
+
+        /* 主导航 */
+        .main-nav {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #d6ccc2;
+        }
+
+        .nav-item {
+            padding: 10px 25px;
+            font-size: 1.2rem;
+            color: #5c4c3e;
+            text-decoration: none;
+            position: relative;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item::after {
+            content: "";
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: #8c6d46;
+            transition: width 0.3s ease;
+        }
+
+        .nav-item.active {
+            color: #8c6d46;
+            font-weight: bold;
+        }
+
+        .nav-item.active::after {
+            width: 100%;
+        }
+
+        .nav-item:hover::after {
+            width: 100%;
+        }
+
+        /* 页面标题 - 历史专属 */
+        .container .zong .yi .page-header {
+            text-align: center;
+            padding: 40px 0 30px;
+            position: relative;
+        }
+
+        .container .zong .yi .page-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.8rem;
+            color: #5c4c3e;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .container .zong .yi .page-title::before,
+        .container .zong .yi .page-title::after {
+            content: "※";
+            position: relative;
+            margin: 0 15px;
+            color: #c4a77d;
+            font-size: 1.8rem;
+        }
+
+        .container .zong .yi .page-subtitle {
+            font-size: 1.2rem;
+            color: #745b3a;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* 内容区域 */
+        .container .zong .yi .content-section {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+        }
+
+        .container .zong .yi .content-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .container .zong .yi .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        /* 历史时间线 */
+        .container .zong .yi .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+
+        .container .zong .yi .timeline::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            background-color: #c4a77d;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1.5px;
+        }
+
+        .container .zong .yi .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .container .zong .yi .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+
+        .container .zong .yi .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+
+        .container .zong .yi .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #8c6d46;
+            border: 3px solid #c4a77d;
+            border-radius: 50%;
+            top: 20px;
+            z-index: 1;
+        }
+
+        .container .zong .yi .timeline-item:nth-child(odd)::after {
+            right: -10px;
+        }
+
+        .container .zong .yi .timeline-item:nth-child(even)::after {
+            left: -10px;
+        }
+
+        .container .zong .yi .timeline-content {
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+        }
+
+        .container .zong .yi .timeline-year {
+            font-weight: bold;
+            color: #8c6d46;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .container .zong .yi .timeline-title {
+            font-size: 1.3rem;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+        }
+
+        .container .zong .yi .timeline-desc {
+            color: #745b3a;
+            line-height: 1.6;
+        }
+
+        /* 历史文章网格 */
+        .container .zong .yi .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .container .zong .yi .article-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #d6ccc2;
+        }
+
+        .container .zong .yi .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .container .zong .yi .article-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .container .zong .yi .article-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .container .zong .yi .article-card:hover .article-image img {
+            transform: scale(1.05);
+        }
+
+        .container .zong .yi .article-content {
+            padding: 20px;
+        }
+
+        .container .zong .yi .article-title {
+            font-size: 1.3rem;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .container .zong .yi .article-desc {
+            color: #745b3a;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            display: -webkit-box;
+            display: -moz-box;
+            display: box;
+            -webkit-line-clamp: 3;
+            -moz-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            -moz-box-orient: vertical;
+            box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .container .zong .yi .article-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #8c6d46;
+            font-size: 0.9rem;
+        }
+
+        /* 历史人物 */
+        .container .zong .yi .figures-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .container .zong .yi .figure-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            transition: all 0.3s ease;
+        }
+
+        .container .zong .yi .figure-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .container .zong .yi .figure-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            overflow: hidden;
+            border: 3px solid #c4a77d;
+        }
+
+        .container .zong .yi .figure-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .container .zong .yi .figure-name {
+            font-size: 1.3rem;
+            color: #5c4c3e;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .container .zong .yi .figure-dynasty {
+            color: #8c6d46;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .container .zong .yi .figure-desc {
+            color: #745b3a;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* 历史名言 */
+        .container .zong .yi .quotes-section {
+            background: linear-gradient(rgba(140, 109, 70, 0.1), rgba(140, 109, 70, 0.1)), url('https://images.unsplash.com/photo-1547981609-4b6bfc67c272?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center;
+            background-size: cover;
+            border-radius: 12px;
+            padding: 50px 30px;
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+            color: #5c4c3e;
+            border: 1px solid #d6ccc2;
+        }
+
+        .container .zong .yi .quotes-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            border-radius: 12px;
+            z-index: -1;
+        }
+
+        .container .zong .yi .quote {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .container .zong .yi .quote-author {
+            font-size: 1.2rem;
+            color: #8c6d46;
+            font-style: italic;
+        }
+
+        /* 页面标题 - 非遗专属 */
+        .container .zong .er .page-header {
+            text-align: center;
+            padding: 40px 0 30px;
+            position: relative;
+        }
+
+        .container .zong .er .page-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.8rem;
+            color: #5c4c3e;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .container .zong .er .page-title::before,
+        .container .zong .er .page-title::after {
+            content: "✽";
+            position: relative;
+            margin: 0 15px;
+            color: #c4a77d;
+            font-size: 1.8rem;
+        }
+
+        .container .zong .er .page-subtitle {
+            font-size: 1.2rem;
+            color: #745b3a;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* 内容区域 */
+        .container .zong .er .content-section {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+        }
+
+        .container .zong .er .content-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .container .zong .er .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        /* 非遗分类展示 */
+        .container .zong .er .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .container .zong .er .category-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .container .zong .er .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .container .zong .er .category-icon {
+            font-size: 2.5rem;
+            color: #8c6d46;
+            margin-bottom: 15px;
+        }
+
+        .container .zong .er .category-name {
+            font-size: 1.3rem;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .container .zong .er .category-desc {
+            color: #745b3a;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* 非遗项目展示 */
+        .container .zong .er .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .container .zong .er .project-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #d6ccc2;
+        }
+
+        .container .zong .er .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .container .zong .er .project-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .container .zong .er .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .container .zong .er .project-card:hover .project-image img {
+            transform: scale(1.05);
+        }
+
+        .container .zong .er .project-content {
+            padding: 20px;
+        }
+
+        .container .zong .er .project-title {
+            font-size: 1.3rem;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .container .zong .er .project-desc {
+            color: #745b3a;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            display: -webkit-box;
+            display: -moz-box;
+            display: box;
+            -webkit-line-clamp: 3;
+            -moz-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            -moz-box-orient: vertical;
+            box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .container .zong .er .project-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #8c6d46;
+            font-size: 0.9rem;
+        }
+
+        /* 非遗传承人 */
+        .container .zong .er .masters-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+            grid-auto-rows: 1fr;
+        }
+
+        .container .zong .er .masters-container>a {
+            display: block;
+            height: 100%;
+        }
+
+        .container .zong .er .master-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 350px;
+            width: 100%;
+            margin: 0;
+        }
+
+        .container .zong .er .master-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .container .zong .er .master-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            overflow: hidden;
+            border: 3px solid #c4a77d;
+        }
+
+        .container .zong .er .master-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .container .zong .er .master-name {
+            font-size: 1.3rem;
+            color: #5c4c3e;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .container .zong .er .master-skill {
+            color: #8c6d46;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .container .zong .er .master-desc {
+            color: #745b3a;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            flex-grow: 1;
+            margin-bottom: 0;
+        }
+
+        /* 非遗活动 */
+        .container .zong .er .events-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .container .zong .er .event-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            transition: all 0.3s ease;
+        }
+
+        .container .zong .er .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .container .zong .er .event-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .container .zong .er .event-date {
+            width: 60px;
+            height: 60px;
+            background: #8c6d46;
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .container .zong .er .event-day {
+            font-size: 1.5rem;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .container .zong .er .event-month {
+            font-size: 0.9rem;
+        }
+
+        .container .zong .er .event-title {
+            font-size: 1.3rem;
+            color: #5c4c3e;
+            margin-bottom: 5px;
+        }
+
+        .container .zong .er .event-location {
+            color: #8c6d46;
+            font-size: 0.9rem;
+        }
+
+        .container .zong .er .event-content {
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #745b3a;
+        }
+
+        .container .zong .er .event-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .container .zong .er .event-btn {
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+        }
+
+        .container .zong .er .event-btn.primary {
+            background: #8c6d46;
+            color: white;
+        }
+
+        .container .zong .er .event-btn.outline {
+            background: transparent;
+            color: #8c6d46;
+        }
+
+        .container .zong .er .event-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(92, 76, 62, 0.2);
+        }
+
+        /* 非遗名言 */
+        .container .zong .er .quotes-section {
+            background: linear-gradient(rgba(140, 109, 70, 0.1), rgba(140, 109, 70, 0.1)), url('https://images.unsplash.com/photo-1547981609-4b6bfc67c272?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center;
+            background-size: cover;
+            border-radius: 12px;
+            padding: 50px 30px;
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+            color: #5c4c3e;
+            border: 1px solid #d6ccc2;
+        }
+
+        .container .zong .er .quotes-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            border-radius: 12px;
+            z-index: -1;
+        }
+
+        .container .zong .er .quote {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .container .zong .er .quote::before,
+        .container .zong .er .quote::after {
+            content: "";
+            font-size: 3rem;
+            color: #8c6d46;
+            position: absolute;
+        }
+
+        .container .zong .er .quote::before {
+            top: -15px;
+            left: -25px;
+        }
+
+        .container .zong .er .quote::after {
+            bottom: -35px;
+            right: -25px;
+            transform: rotate(180deg);
+        }
+
+        .container .zong .er .quote-author {
+            font-size: 1.2rem;
+            color: #8c6d46;
+            font-style: italic;
+        }
+
+        /* 页面标题 - 公益专属 */
+        .container .zong .san .page-header {
+            text-align: center;
+            padding: 40px 0 30px;
+            position: relative;
+        }
+
+        .container .zong .san .page-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.8rem;
+            color: #5c4c3e;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .container .zong .san .page-title::before,
+        .container .zong .san .page-title::after {
+            content: "❤";
+            position: relative;
+            margin: 0 15px;
+            color: #c4a77d;
+            font-size: 1.8rem;
+        }
+
+        .container .zong .san .page-subtitle {
+            font-size: 1.2rem;
+            color: #745b3a;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* 内容区域 */
+        .container .zong .san .content-section {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+        }
+
+        .container .zong .san .content-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .container .zong .san .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        /* 公益类型网格 */
+        .container .zong .san .cause-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .container .zong .san .cause-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #d6ccc2;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .container .zong .san .cause-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(92, 76, 62, 0.25);
+        }
+
+        .container .zong .san .cause-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .container .zong .san .cause-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .container .zong .san .cause-card:hover .cause-image img {
+            transform: scale(1.1);
+        }
+
+        .container .zong .san .cause-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            padding: 20px;
+            color: white;
+        }
+
+        .container .zong .san .cause-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .container .zong .san .cause-stats {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .container .zong .san .cause-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .container .zong .san .cause-desc {
+            color: #745b3a;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            display: -webkit-box;
+            display: -moz-box;
+            display: box;
+            -webkit-line-clamp: 3;
+            -moz-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            -moz-box-orient: vertical;
+            box-orient: vertical;
+            overflow: hidden;
+            flex-grow: 1;
+        }
+
+        .container .zong .san .cause-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+            margin-top: auto;
+        }
+
+        .container .zong .san .cause-tag {
+            padding: 4px 10px;
+            background: rgba(140, 109, 70, 0.1);
+            border-radius: 15px;
+            font-size: 0.85rem;
+            color: #8c6d46;
+        }
+
+        .container .zong .san .cause-actions {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .container .zong .san .cause-btn {
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+        }
+
+        .container .zong .san .cause-btn.primary {
+            background: #8c6d46;
+            color: white;
+        }
+
+        .container .zong .san .cause-btn.outline {
+            background: transparent;
+            color: #8c6d46;
+        }
+
+        .container .zong .san .cause-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(92, 76, 62, 0.2);
+        }
+
+        /* 公益数据统计 */
+        .container .zong .san .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .container .zong .san .stat-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            transition: all 0.3s ease;
+        }
+
+        .container .zong .san .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .container .zong .san .stat-icon {
+            font-size: 2.5rem;
+            color: #8c6d46;
+            margin-bottom: 15px;
+        }
+
+        .container .zong .san .stat-number {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+        }
+
+        .container .zong .san .stat-label {
+            color: #745b3a;
+            font-size: 1.1rem;
+        }
+
+        /* 近期活动 */
+        .container .zong .san .events-section {
+            background: linear-gradient(rgba(140, 109, 70, 0.05), rgba(140, 109, 70, 0.05));
+            border-radius: 12px;
+            padding: 30px;
+            margin: 40px 0;
+            border: 1px solid #d6ccc2;
+        }
+
+        .container .zong .san .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .container .zong .san .event-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            transition: all 0.3s ease;
+        }
+
+        .container .zong .san .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .container .zong .san .event-date {
+            font-size: 0.9rem;
+            color: #8c6d46;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .container .zong .san .event-title {
+            font-size: 1.2rem;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .container .zong .san .event-desc {
+            color: #745b3a;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .container .zong .san .event-link {
+            color: #8c6d46;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .container .zong .san .event-link:hover {
+            gap: 8px;
+            color: #5c4c3e;
+        }
+
+        /* 公益名言 */
+        .container .zong .san .quotes-section {
+            background: linear-gradient(rgba(140, 109, 70, 0.1), rgba(140, 109, 70, 0.1)), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center;
+            background-size: cover;
+            border-radius: 12px;
+            padding: 50px 30px;
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+            color: #5c4c3e;
+            border: 1px solid #d6ccc2;
+        }
+
+        .container .zong .san .quotes-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            border-radius: 12px;
+            z-index: -1;
+        }
+
+        .container .zong .san .quote {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .container .zong .san .quote {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .container .zong .san .quote-author {
+            font-size: 1.2rem;
+            color: #8c6d46;
+            font-style: italic;
+        }
+
+        /* 页面标题 - 个人主页 */
+        .container .zong .si .profile-container {
+            display: flex;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        /* 侧边栏 */
+        .container .zong .si .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+        }
+
+        .container .zong .si .profile-card {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .container .zong .si .profile-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .container .zong .si .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            overflow: hidden;
+            border: 3px solid #c4a77d;
+        }
+
+        .container .zong .si .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .container .zong .si .user-name {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: #5c4c3e;
+            margin-bottom: 5px;
+        }
+
+        .container .zong .si .user-title {
+            color: #8c6d46;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .container .zong .si .user-bio {
+            color: #745b3a;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        .container .zong .si .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .container .zong .si .stat-item {
+            text-align: center;
+        }
+
+        .container .zong .si .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #8c6d46;
+        }
+
+        .container .zong .si .stat-label {
+            font-size: 0.9rem;
+            color: #745b3a;
+        }
+
+        .container .zong .si .profile-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .container .zong .si .profile-btn {
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .container .zong .si .profile-btn.primary {
+            background: #8c6d46;
+            color: white;
+        }
+
+        .container .zong .si .profile-btn.outline {
+            background: transparent;
+            color: #8c6d46;
+        }
+
+        .container .zong .si .profile-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(92, 76, 62, 0.2);
+        }
+
+        .container .zong .si .quick-links {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+        }
+
+        .container .zong .si .links-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.5rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        .container .zong .si .link-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            color: #5c4c3e;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .container .zong .si .link-item:hover {
+            background: rgba(140, 109, 70, 0.1);
+            transform: translateX(5px);
+        }
+
+        .container .zong .si .link-item i {
+            margin-right: 12px;
+            width: 20px;
+            color: #8c6d46;
+        }
+
+        /* 我的-快捷入口 */
+        .main-content-two,
+        .main-content-three,
+        .main-content-four,
+        .main-content-five,
+        .main-content-six,
+        .main-content-seven {
+            display: none;
+        }
+
+        /* 主内容区域 */
+        .container .zong .si .main-content-one {
+            flex: 1;
+        }
+
+        .container .zong .si .main-content-one .content-section {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+        }
+
+        .container .zong .si .main-content-one .content-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .container .zong .si .main-content-one .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        /* 我的文章 */
+        .container .zong .si .main-content-one .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .container .zong .si .main-content-one .article-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #d6ccc2;
+        }
+
+        .container .zong .si .main-content-one .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .container .zong .si .main-content-one .article-image {
+            width: 100%;
+            height: 160px;
+            overflow: hidden;
+        }
+
+        .container .zong .si .main-content-one .article-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .container .zong .si .main-content-one .article-card:hover .article-image img {
+            transform: scale(1.05);
+        }
+
+        .container .zong .si .main-content-one .article-content {
+            padding: 20px;
+        }
+
+        .container .zong .si .main-content-one .article-title {
+            font-size: 1.2rem;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+            font-weight: bold;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .container .zong .si .main-content-one .article-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #8c6d46;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+
+        .container .zong .si .main-content-one .article-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .container .zong .si .main-content-one .article-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+            background: transparent;
+            color: #8c6d46;
+        }
+
+        .container .zong .si .main-content-one .article-btn:hover {
+            background: #8c6d46;
+            color: white;
+        }
+
+        /* 创作中心 */
+        .container .zong .si .main-content-one .create-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .container .zong .si .main-content-one .create-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .container .zong .si .main-content-one .create-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .container .zong .si .main-content-one .create-icon {
+            font-size: 2.5rem;
+            color: #8c6d46;
+            margin-bottom: 15px;
+        }
+
+        .container .zong .si .main-content-one .create-title {
+            font-size: 1.2rem;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .container .zong .si .main-content-one .create-desc {
+            color: #745b3a;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* 我的收藏 */
+        .container .zong .si .main-content-one .favorites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .container .zong .si .main-content-one .favorite-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            transition: all 0.3s ease;
+        }
+
+        .container .zong .si .main-content-one .favorite-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .container .zong .si .main-content-one .favorite-type {
+            font-size: 0.9rem;
+            color: #8c6d46;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .container .zong .si .main-content-one .favorite-title {
+            font-size: 1.1rem;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .container .zong .si .main-content-one .favorite-desc {
+            color: #745b3a;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* 主内容区域-创作中心 */
+        .container .zong .si .main-content-two {
+            flex: 1;
+            width: 100%;
+        }
+
+        .container .zong .si .main-content-two .content-section {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+        }
+
+        .container .zong .si .main-content-two .content-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .container .zong .si .main-content-two .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        /* 创作中心样式 */
+        .container .zong .si .main-content-two .creation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .container .zong .si .main-content-two .creation-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #d6ccc2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container .zong .si .main-content-two .creation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .container .zong .si .main-content-two .creation-image {
+            width: 100%;
+            height: 160px;
+            overflow: hidden;
+        }
+
+        .container .zong .si .main-content-two .creation-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .container .zong .si .main-content-two .creation-card:hover .creation-image img {
+            transform: scale(1.05);
+        }
+
+        .container .zong .si .main-content-two .creation-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container .zong .si .main-content-two .creation-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.5rem;
+            color: #8c6d46;
+            margin-bottom: 15px;
+            line-height: 1.3;
+            text-align: center;
+        }
+
+        .container .zong .si .main-content-two .creation-desc {
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .container .zong .si .main-content-two .creation-stats {
+            display: flex;
+            justify-content: space-around;
+            background: #f1e9dd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .container .zong .si .main-content-two .creation-stat {
+            text-align: center;
+        }
+
+        .container .zong .si .main-content-two .creation-number {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #8c6d46;
+            display: block;
+        }
+
+        .container .zong .si .main-content-two .creation-label {
+            font-size: 0.85rem;
+            color: #8c6d46;
+        }
+
+        .container .zong .si .main-content-two .creation-actions {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .container .zong .si .main-content-two .creation-btn {
+            padding: 10px 20px;
+            background: #8c6d46;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .container .zong .si .main-content-two .creation-btn:hover {
+            background: #745b3a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.25);
+        }
+
+        /* 主内容区域-我的收藏 */
+        .container .zong .si .main-content-three {
+            flex: 1;
+            width: 100%;
+        }
+
+        .container .zong .si .main-content-three .content-section {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+        }
+
+        .container .zong .si .main-content-three .content-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .container .zong .si .main-content-three .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        /* 我的收藏样式 */
+        .container .zong .si .main-content-three .favorites-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .container .zong .si .main-content-three .favorites-search {
+            position: relative;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .container .zong .si .main-content-three .favorites-search input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border: 1px solid #d6ccc2;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.8);
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            color: #5c4c3e;
+        }
+
+        .container .zong .si .main-content-three .favorites-search i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8c6d46;
+        }
+
+        .container .zong .si .main-content-three .favorites-filter {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .container .zong .si .main-content-three .filter-btn {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #d6ccc2;
+            border-radius: 20px;
+            color: #5c4c3e;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .container .zong .si .main-content-three .filter-btn:hover,
+        .container .zong .si .main-content-three .filter-btn.active {
+            background: #8c6d46;
+            color: #fff;
+        }
+
+        .container .zong .si .main-content-three .favorites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .container .zong .si .main-content-three .favorite-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #d6ccc2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container .zong .si .main-content-three .favorite-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .container .zong .si .main-content-three .favorite-image {
+            width: 100%;
+            height: 160px;
+            overflow: hidden;
+        }
+
+        .container .zong .si .main-content-three .favorite-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .container .zong .si .main-content-three .favorite-card:hover .favorite-image img {
+            transform: scale(1.05);
+        }
+
+        .container .zong .si .main-content-three .favorite-type {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(140, 109, 70, 0.85);
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .container .zong .si .main-content-three .favorite-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container .zong .si .main-content-three .favorite-title {
+            font-size: 1.2rem;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+            font-weight: bold;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .container .zong .si .main-content-three .favorite-desc {
+            color: #745b3a;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            flex-grow: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .container .zong .si .main-content-three .favorite-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid #e9e1d5;
+        }
+
+        .container .zong .si .main-content-three .favorite-date {
+            font-size: 0.85rem;
+            color: #8c6d46;
+        }
+
+        .container .zong .si .main-content-three .favorite-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .container .zong .si .main-content-three .favorite-action-btn {
+            background: none;
+            border: none;
+            color: #8c6d46;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .container .zong .si .main-content-three .favorite-action-btn:hover {
+            color: #745b3a;
+        }
+
+        .container .zong .si .main-content-three .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            grid-column: 1 / -1;
+        }
+
+        .container .zong .si .main-content-three .empty-state i {
+            font-size: 3rem;
+            color: #d6ccc2;
+            margin-bottom: 20px;
+        }
+
+        .container .zong .si .main-content-three .empty-state h3 {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.5rem;
+            color: #8c6d46;
+            margin-bottom: 15px;
+        }
+
+        .container .zong .si .main-content-three .empty-state p {
+            color: #5c4c3e;
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+
+        .container .zong .si .main-content-three .browse-btn {
+            padding: 10px 25px;
+            background: #8c6d46;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .container .zong .si .main-content-three .browse-btn:hover {
+            background: #745b3a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.25);
+        }
+
+        /* 主内容区域-文章管理 */
+        .container .zong .main-content-four {
+            flex: 1;
+            width: 100%;
+        }
+
+        .container .zong .main-content-four .content-section {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+        }
+
+        .container .zong .main-content-four .content-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .container .zong .main-content-four .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        /* 文章管理样式 */
+        .container .zong .main-content-four .article-management-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .container .zong .main-content-four .article-search {
+            position: relative;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .container .zong .main-content-four .article-search input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border: 1px solid #d6ccc2;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.8);
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            color: #5c4c3e;
+        }
+
+        .container .zong .main-content-four .article-search i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8c6d46;
+        }
+
+        .container .zong .main-content-four .article-filter {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .container .zong .main-content-four .filter-btn {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #d6ccc2;
+            border-radius: 20px;
+            color: #5c4c3e;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .container .zong .main-content-four .filter-btn:hover,
+        .container .zong .main-content-four .filter-btn.active {
+            background: #8c6d46;
+            color: #fff;
+        }
+
+        .container .zong .main-content-four .article-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .container .zong .main-content-four .article-item {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container .zong .main-content-four .article-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .container .zong .main-content-four .article-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .container .zong .main-content-four .article-title {
+            font-size: 1.3rem;
+            color: #5c4c3e;
+            font-weight: bold;
+            margin-right: 15px;
+            flex: 1;
+        }
+
+        .container .zong .main-content-four .article-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .container .zong .main-content-four .status-published {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2e7d32;
+        }
+
+        .container .zong .main-content-four .status-draft {
+            background: rgba(158, 158, 158, 0.2);
+            color: #616161;
+        }
+
+        .container .zong .main-content-four .status-pending {
+            background: rgba(255, 152, 0, 0.2);
+            color: #ef6c00;
+        }
+
+        .container .zong .main-content-four .article-content {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .container .zong .main-content-four .article-thumb {
+            width: 120px;
+            height: 90px;
+            border-radius: 8px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .container .zong .main-content-four .article-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .container .zong .main-content-four .article-desc {
+            color: #745b3a;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            flex: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .container .zong .main-content-four .article-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #e9e1d5;
+        }
+
+        .container .zong .main-content-four .article-info {
+            display: flex;
+            gap: 15px;
+            font-size: 0.85rem;
+            color: #8c6d46;
+        }
+
+        .container .zong .main-content-four .article-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .container .zong .main-content-four .article-action-btn {
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+            background: transparent;
+            color: #8c6d46;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .container .zong .main-content-four .article-action-btn:hover {
+            background: #8c6d46;
+            color: white;
+        }
+
+        .container .zong .main-content-four .btn-delete {
+            color: #e74c3c;
+            border-color: #e74c3c;
+        }
+
+        .container .zong .main-content-four .btn-delete:hover {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .container .zong .main-content-four .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            grid-column: 1 / -1;
+        }
+
+        .container .zong .main-content-four .empty-state i {
+            font-size: 3rem;
+            color: #d6ccc2;
+            margin-bottom: 20px;
+        }
+
+        .container .zong .main-content-four .empty-state h3 {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.5rem;
+            color: #8c6d46;
+            margin-bottom: 15px;
+        }
+
+        .container .zong .main-content-four .empty-state p {
+            color: #5c4c3e;
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+
+        .container .zong .main-content-four .create-btn {
+            padding: 10px 25px;
+            background: #8c6d46;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .container .zong .main-content-four .create-btn:hover {
+            background: #745b3a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.25);
+        }
+
+        /* 主内容区域-消息通知 */
+        .container .zong .main-content-five {
+            flex: 1;
+            width: 100%;
+        }
+
+        .container .zong .main-content-five .content-section {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+        }
+
+        .container .zong .main-content-five .content-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .container .zong .main-content-five .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        /* 消息通知样式 */
+        .container .zong .main-content-five .notifications-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .container .zong .main-content-five .notifications-filter {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .container .zong .main-content-five .filter-btn {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #d6ccc2;
+            border-radius: 20px;
+            color: #5c4c3e;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .container .zong .main-content-five .filter-btn:hover,
+        .container .zong .main-content-five .filter-btn.active {
+            background: #8c6d46;
+            color: #fff;
+        }
+
+        .container .zong .main-content-five .notifications-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .container .zong .main-content-five .action-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+            background: transparent;
+            color: #8c6d46;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .container .zong .main-content-five .action-btn:hover {
+            background: #8c6d46;
+            color: white;
+        }
+
+        .container .zong .main-content-five .notifications-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .container .zong .main-content-five .notification-item {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            position: relative;
+        }
+
+        .container .zong .main-content-five .notification-item.unread {
+            background: rgba(140, 109, 70, 0.05);
+            border-left: 4px solid #8c6d46;
+        }
+
+        .container .zong .main-content-five .notification-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.15);
+        }
+
+        .container .zong .main-content-five .notification-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(140, 109, 70, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            font-size: 1.2rem;
+            color: #8c6d46;
+        }
+
+        .container .zong .main-content-five .notification-content {
+            flex: 1;
+        }
+
+        .container .zong .main-content-five .notification-title {
+            font-size: 1.1rem;
+            color: #5c4c3e;
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .container .zong .main-content-five .notification-badge {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .container .zong .main-content-five .badge-comment {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2e7d32;
+        }
+
+        .container .zong .main-content-five .badge-like {
+            background: rgba(244, 67, 54, 0.2);
+            color: #c62828;
+        }
+
+        .container .zong .main-content-five .badge-system {
+            background: rgba(33, 150, 243, 0.2);
+            color: #1565c0;
+        }
+
+        .container .zong .main-content-five .badge-follow {
+            background: rgba(156, 39, 176, 0.2);
+            color: #7b1fa2;
+        }
+
+        .container .zong .main-content-five .notification-text {
+            color: #745b3a;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .container .zong .main-content-five .notification-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #8c6d46;
+        }
+
+        .container .zong .main-content-five .notification-time {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .container .zong .main-content-five .notification-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .container .zong .main-content-five .notification-btn {
+            background: none;
+            border: none;
+            color: #8c6d46;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .container .zong .main-content-five .notification-btn:hover {
+            color: #745b3a;
+        }
+
+        .container .zong .main-content-five .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            grid-column: 1 / -1;
+        }
+
+        .container .zong .main-content-five .empty-state i {
+            font-size: 3rem;
+            color: #d6ccc2;
+            margin-bottom: 20px;
+        }
+
+        .container .zong .main-content-five .empty-state h3 {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.5rem;
+            color: #8c6d46;
+            margin-bottom: 15px;
+        }
+
+        .container .zong .main-content-five .empty-state p {
+            color: #5c4c3e;
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+
+        .container .zong .main-content-five .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .container .zong .main-content-five .page-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #d6ccc2;
+            color: #5c4c3e;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .container .zong .main-content-five.page-btn:hover,
+        .container .zong .main-content-five .page-btn.active {
+            background: #8c6d46;
+            color: #fff;
+        }
+
+        /* 主内容区域-账号设置 */
+        .container .zong .main-content-six {
+            flex: 1;
+            width: 100%;
+        }
+
+        .container .zong .main-content-six .content-section {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+        }
+
+        .container .zong .main-content-six .content-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .container .zong .main-content-six .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        /* 账号设置样式 */
+        .container .zong .main-content-six .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .container .zong .main-content-six .setting-group {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            border: 1px solid #d6ccc2;
+        }
+
+        .container .zong .main-content-six .setting-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .container .zong .main-content-six .setting-icon {
+            width: 40px;
+            height: 40px;
+            background: #8c6d46;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .container .zong .main-content-six .setting-title {
+            font-size: 1.4rem;
+            color: #5c4c3e;
+            font-weight: bold;
+        }
+
+        .container .zong .main-content-six .setting-content {
+            margin-left: 55px;
+        }
+
+        .container .zong .main-content-six .form-group {
+            margin-bottom: 20px;
+        }
+
+        .container .zong .main-content-six .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #5c4c3e;
+        }
+
+        .container .zong .main-content-six .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #d6ccc2;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            font-family: 'Noto Serif SC', serif;
+            color: #5c4c3e;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .container .zong .main-content-six .form-input:focus {
+            outline: none;
+            border-color: #8c6d46;
+            box-shadow: 0 0 0 2px rgba(140, 109, 70, 0.2);
+        }
+
+        .container .zong .main-content-six .form-hint {
+            font-size: 0.85rem;
+            color: #8c6d46;
+            margin-top: 5px;
+        }
+
+        .container .zong .main-content-six .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+        }
+
+        .container .zong .main-content-six .btn.primary {
+            background: #8c6d46;
+            color: white;
+        }
+
+        .container .zong .main-content-six .btn.outline {
+            background: transparent;
+            color: #8c6d46;
+        }
+
+        .container .zong .main-content-six .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(92, 76, 62, 0.2);
+        }
+
+        .container .zong .main-content-six .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .container .zong .main-content-six .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .container .zong .main-content-six .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #d6ccc2;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .container .zong .main-content-six .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        .container .zong .main-content-six input:checked+.slider {
+            background-color: #8c6d46;
+        }
+
+        .container .zong .main-content-six input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+
+        .container .zong .main-content-six .toggle-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .container .zong .main-content-six .toggle-text {
+            flex: 1;
+        }
+
+        .container .zong .main-content-six .toggle-desc {
+            font-size: 0.9rem;
+            color: #745b3a;
+            margin-top: 5px;
+        }
+
+        /* 主内容区域-隐私设置 */
+        .container .zong .main-content-seven {
+            flex: 1;
+        }
+
+        .container .zong .main-content-seven .content-section {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+        }
+
+        .container .zong .main-content-seven .content-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .container .zong .main-content-seven .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        /* 隐私设置样式 */
+        .container .zong .main-content-seven .privacy-settings {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .container .zong .main-content-seven .privacy-group {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            border: 1px solid #d6ccc2;
+        }
+
+        .container .zong .main-content-seven .privacy-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .container .zong .main-content-seven .privacy-icon {
+            width: 40px;
+            height: 40px;
+            background: #8c6d46;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .container .zong .main-content-seven .privacy-title {
+            font-size: 1.4rem;
+            color: #5c4c3e;
+            font-weight: bold;
+        }
+
+        .container .zong .main-content-seven .privacy-content {
+            margin-left: 55px;
+        }
+
+        .container .zong .main-content-seven .privacy-item {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e9e1d5;
+        }
+
+        .container .zong .main-content-seven .privacy-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .container .zong .main-content-seven .privacy-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .container .zong .main-content-seven .privacy-name {
+            font-weight: bold;
+            color: #5c4c3e;
+        }
+
+        .container .zong .main-content-seven .privacy-desc {
+            font-size: 0.9rem;
+            color: #745b3a;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .container .zong .main-content-seven .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .container .zong .main-content-seven .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .container .zong .main-content-seven .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #d6ccc2;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .container .zong .main-content-seven .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        .container .zong .main-content-seven input:checked+.slider {
+            background-color: #8c6d46;
+        }
+
+        .container .zong .main-content-seven input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+
+        .container .zong .main-content-seven .select-control {
+            padding: 10px 15px;
+            border: 1px solid #d6ccc2;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            font-family: 'Noto Serif SC', serif;
+            color: #5c4c3e;
+            font-size: 1rem;
+            width: 100%;
+            max-width: 250px;
+        }
+
+        .container .zong .main-content-seven .privacy-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #d6ccc2;
+        }
+
+        .container .zong .main-content-seven .privacy-btn {
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+        }
+
+        .container .zong .main-content-seven .privacy-btn.primary {
+            background: #8c6d46;
+            color: white;
+        }
+
+        .container .zong .main-content-seven .privacy-btn.outline {
+            background: transparent;
+            color: #8c6d46;
+        }
+
+        .container .zong .main-content-seven .privacy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(92, 76, 62, 0.2);
+        }
+
+        /* 页面标题 - 编辑页面 */
+        .container .zong .wu .edit-profile-container {
+            display: flex;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        /* 侧边栏 */
+        .container .zong .wu .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+        }
+
+        .container .zong .wu .profile-card {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .container .zong .wu .profile-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .container .zong .wu .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            overflow: hidden;
+            border: 3px solid #c4a77d;
+            position: relative;
+        }
+
+        .container .zong .wu .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .container .zong .wu .avatar-edit {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #8c6d46;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .container .zong .wu .user-name {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: #5c4c3e;
+            margin-bottom: 5px;
+        }
+
+        .container .zong .wu .user-title {
+            color: #8c6d46;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .container .zong .wu .user-bio {
+            color: #745b3a;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        .container .zong .wu .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .container .zong .wu .stat-item {
+            text-align: center;
+        }
+
+        .container .zong .wu .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #8c6d46;
+        }
+
+        .container .zong .wu .stat-label {
+            font-size: 0.9rem;
+            color: #745b3a;
+        }
+
+        .container .zong .wu .profile-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .container .zong .wu .profile-btn {
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .container .zong .wu .profile-btn.primary {
+            background: #8c6d46;
+            color: white;
+        }
+
+        .container .zong .wu .profile-btn.outline {
+            background: transparent;
+            color: #8c6d46;
+        }
+
+        .container .zong .wu .profile-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(92, 76, 62, 0.2);
+        }
+
+        /* 主内容区域 */
+        .container .zong .wu .main-content {
+            flex: 1;
+        }
+
+        .container .zong .wu .content-section {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+        }
+
+        .container .zong .wu .content-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .container .zong .wu .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        /* 表单样式 */
+        .container .zong .wu .form-group {
+            margin-bottom: 25px;
+        }
+
+        .container .zong .wu .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #5c4c3e;
+        }
+
+        .container .zong .wu .form-input,
+        .container .zong .wu .form-textarea,
+        .container .zong .wu .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #d6ccc2;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            font-family: 'Noto Serif SC', serif;
+            color: #5c4c3e;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .container .zong .wu .form-input:focus,
+        .container .zong .wu .form-textarea:focus,
+        .container .zong .wu .form-select:focus {
+            outline: none;
+            border-color: #8c6d46;
+            box-shadow: 0 0 0 2px rgba(140, 109, 70, 0.2);
+        }
+
+        .container .zong .wu .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .container .zong .wu .form-hint {
+            font-size: 0.85rem;
+            color: #8c6d46;
+            margin-top: 5px;
+        }
+
+        .container .zong .wu .form-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+
+        .container .zong .wu .form-btn {
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+        }
+
+        .container .zong .wu .form-btn.primary {
+            background: #8c6d46;
+            color: white;
+        }
+
+        .container .zong .wu .form-btn.outline {
+            background: transparent;
+            color: #8c6d46;
+        }
+
+        .container .zong .wu .form-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(92, 76, 62, 0.2);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .timeline::after {
+                left: 31px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+
+            .timeline-item::after {
+                left: 21px;
+            }
+
+            .timeline-item:nth-child(odd)::after {
+                right: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .main-nav {
+                flex-wrap: wrap;
+            }
+
+            .nav-item {
+                margin: 5px;
+                padding: 8px 15px;
+            }
+
+            .page-title {
+                font-size: 2.2rem;
+            }
+
+            .articles-grid,
+            .figures-container {
+                grid-template-columns: 1fr;
+            }
+
+            .quote {
+                font-size: 1.5rem;
+            }
+        }

@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云间小阁 - 文章管理</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+        }
+        
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 头部样式 */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #d6ccc2;
+        }
+        
+        .logo {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.5rem;
+            color: #8c6d46;
+            letter-spacing: 3px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #c4a77d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* 内容布局 */
+        .content-wrapper {
+            display: flex;
+            gap: 30px;
+        }
+        
+        /* 侧边栏 */
+        .sidebar {
+            width: 250px;
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 25px 20px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            height: fit-content;
+        }
+        
+        .sidebar-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+        
+        .menu-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .menu-item:hover, .menu-item.active {
+            background: rgba(140, 109, 70, 0.1);
+        }
+        
+        .menu-item i {
+            font-size: 1.2rem;
+            color: #8c6d46;
+            width: 25px;
+        }
+        
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .page-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.2rem;
+            color: #5c4c3e;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            background: #8c6d46;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            background: #745b3a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.25);
+        }
+        
+        /* 文章列表 */
+        .article-list {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+        }
+        
+        .article-item {
+            display: flex;
+            padding: 20px;
+            border-bottom: 1px solid #d6ccc2;
+            transition: all 0.3s ease;
+        }
+        
+        .article-item:last-child {
+            border-bottom: none;
+        }
+        
+        .article-item:hover {
+            background: rgba(140, 109, 70, 0.05);
+        }
+        
+        .article-thumb {
+            width: 120px;
+            height: 90px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .article-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .article-info {
+            flex: 1;
+        }
+        
+        .article-title {
+            font-size: 1.3rem;
+            color: #5c4c3e;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .article-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: #8c6d46;
+            margin-bottom: 10px;
+        }
+        
+        .article-desc {
+            color: #5c4c3e;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .article-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-left: 20px;
+        }
+        
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(140, 109, 70, 0.1);
+            color: #8c6d46;
+            font-size: 1.1rem;
+        }
+        
+        .action-btn:hover {
+            background: #8c6d46;
+            color: white;
+        }
+        
+        /* 模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: rgba(255, 253, 245, 0.98);
+            width: 90%;
+            max-width: 700px;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+            border: 1px solid #d6ccc2;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+        
+        .modal-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: #5c4c3e;
+        }
+        
+        .close-modal {
+            font-size: 1.5rem;
+            color: #8c6d46;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            color: #745b3a;
+            transform: rotate(90deg);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #5c4c3e;
+            font-weight: bold;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #d6ccc2;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            color: #5c4c3e;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #8c6d46;
+            box-shadow: 0 0 0 2px rgba(140, 109, 70, 0.2);
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .btn-secondary {
+            background: #d6ccc2;
+            color: #5c4c3e;
+        }
+        
+        .btn-secondary:hover {
+            background: #c4b5a9;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 900px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .article-item {
+                flex-direction: column;
+            }
+            
+            .article-thumb {
+                width: 100%;
+                height: 180px;
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .article-actions {
+                margin-left: 0;
+                margin-top: 15px;
+                justify-content: flex-end;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <div class="header">
+            <div class="logo">云间小阁</div>
+            <div class="user-info">
+                <div class="user-avatar">文</div>
+                <div>
+                    <div>文心</div>
+                    <div style="font-size: 0.9rem; color: #8c6d46;">管理员</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 内容区域 -->
+        <div class="content-wrapper">
+            <!-- 侧边栏 -->
+            <div class="sidebar">
+                <h2 class="sidebar-title">管理菜单</h2>
+                <div class="menu-item active">
+                    <i class="fas fa-file-alt"></i>
+                    <span>文章管理</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-layer-group"></i>
+                    <span>分类管理</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-users"></i>
+                    <span>用户管理</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>数据统计</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-cog"></i>
+                    <span>系统设置</span>
+                </div>
+            </div>
+            
+            <!-- 主内容区 -->
+            <div class="main-content">
+                <div class="content-header">
+                    <h1 class="page-title">文章管理</h1>
+                    <button class="btn" id="addArticleBtn">
+                        <i class="fas fa-plus"></i>
+                        <span>新建文章</span>
+                    </button>
+                </div>
+                
+                <div class="article-list">
+                    <!-- 文章项 -->
+                    <div class="article-item">
+                        <div class="article-thumb">
+                            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="文章缩略图">
+                        </div>
+                        <div class="article-info">
+                            <h3 class="article-title">仁爱之心：传统美德与现代公益的完美融合</h3>
+                            <div class="article-meta">
+                                <span><i class="fas fa-calendar-alt"></i> 2023-10-15</span>
+                                <span><i class="fas fa-eye"></i> 1286</span>
+                                <span><i class="fas fa-heart"></i> 326</span>
+                            </div>
+                            <p class="article-desc">中华民族自古以来就有"仁者爱人"的传统美德，公益慈善思想源远流长。从孔子的"仁爱"思想到墨子的"兼爱"主张，从范仲淹的"先天下之忧而忧"到现代公益理念...</p>
+                        </div>
+                        <div class="article-actions">
+                            <div class="action-btn" onclick="editArticle(1)">
+                                <i class="fas fa-edit"></i>
+                            </div>
+                            <div class="action-btn" onclick="deleteArticle(1)">
+                                <i class="fas fa-trash-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="article-item">
+                        <div class="article-thumb">
+                            <img src="https://images.unsplash.com/photo-1577896851231-70ef188d5431?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="文章缩略图">
+                        </div>
+                        <div class="article-info">
+                            <h3 class="article-title">传统手工艺的保护与传承</h3>
+                            <div class="article-meta">
+                                <span><i class="fas fa-calendar-alt"></i> 2023-10-10</span>
+                                <span><i class="fas fa-eye"></i> 985</span>
+                                <span><i class="fas fa-heart"></i> 245</span>
+                            </div>
+                            <p class="article-desc">中国传统手工艺是中华文明的重要组成部分，但随着现代化进程的加快，许多传统手工艺面临失传的危机。本文探讨了如何保护和传承这些宝贵的文化遗产...</p>
+                        </div>
+                        <div class="article-actions">
+                            <div class="action-btn" onclick="editArticle(2)">
+                                <i class="fas fa-edit"></i>
+                            </div>
+                            <div class="action-btn" onclick="deleteArticle(2)">
+                                <i class="fas fa-trash-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="article-item">
+                        <div class="article-thumb">
+                            <img src="https://images.unsplash.com/photo-1547981609-4b6bfc67c272?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="文章缩略图">
+                        </div>
+                        <div class="article-info">
+                            <h3 class="article-title">茶文化中的哲学思想</h3>
+                            <div class="article-meta">
+                                <span><i class="fas fa-calendar-alt"></i> 2023-10-05</span>
+                                <span><i class="fas fa-eye"></i> 1562</span>
+                                <span><i class="fas fa-heart"></i> 412</span>
+                            </div>
+                            <p class="article-desc">中国茶文化源远流长，不仅是一种饮品文化，更蕴含着深厚的哲学思想。本文从茶道精神入手，探讨其中蕴含的和敬清寂、天人合一等哲学理念...</p>
+                        </div>
+                        <div class="article-actions">
+                            <div class="action-btn" onclick="editArticle(3)">
+                                <i class="fas fa-edit"></i>
+                            </div>
+                            <div class="action-btn" onclick="deleteArticle(3)">
+                                <i class="fas fa-trash-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 编辑文章模态框 -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">编辑文章</h2>
+                <span class="close-modal" onclick="closeModal('editModal')">&times;</span>
+            </div>
+            <form id="editForm">
+                <input type="hidden" id="articleId">
+                <div class="form-group">
+                    <label for="articleTitle" class="form-label">文章标题</label>
+                    <input type="text" id="articleTitle" class="form-control" placeholder="请输入文章标题">
+                </div>
+                <div class="form-group">
+                    <label for="articleDesc" class="form-label">文章简介</label>
+                    <textarea id="articleDesc" class="form-control" placeholder="请输入文章简介"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="articleContent" class="form-label">文章内容</label>
+                    <textarea id="articleContent" class="form-control" placeholder="请输入文章内容" rows="8"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="articleImage" class="form-label">文章图片</label>
+                    <input type="file" id="articleImage" class="form-control">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('editModal')">取消</button>
+                    <button type="button" class="btn" onclick="saveArticle()">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- 删除确认模态框 -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">确认删除</h2>
+                <span class="close-modal" onclick="closeModal('deleteModal')">&times;</span>
+            </div>
+            <div style="padding: 20px 0;">
+                <p>您确定要删除这篇文章吗？此操作不可逆。</p>
+                <p style="font-weight: bold; margin-top: 10px;" id="deleteArticleTitle"></p>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('deleteModal')">取消</button>
+                <button type="button" class="btn" onclick="confirmDelete()">确认删除</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 文章数据（模拟）
+        const articles = {
+            1: {
+                title: "仁爱之心：传统美德与现代公益的完美融合",
+                desc: "中华民族自古以来就有'仁者爱人'的传统美德，公益慈善思想源远流长。从孔子的'仁爱'思想到墨子的'兼爱'主张，从范仲淹的'先天下之忧而忧'到现代公益理念...",
+                content: "完整的文章内容在这里...",
+                image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+            },
+            2: {
+                title: "传统手工艺的保护与传承",
+                desc: "中国传统手工艺是中华文明的重要组成部分，但随着现代化进程的加快，许多传统手工艺面临失传的危机。本文探讨了如何保护和传承这些宝贵的文化遗产...",
+                content: "完整的文章内容在这里...",
+                image: "https://images.unsplash.com/photo-1577896851231-70ef188d5431?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+            },
+            3: {
+                title: "茶文化中的哲学思想",
+                desc: "中国茶文化源远流长，不仅是一种饮品文化，更蕴含着深厚的哲学思想。本文从茶道精神入手，探讨其中蕴含的和敬清寂、天人合一等哲学理念...",
+                content: "完整的文章内容在这里...",
+                image: "https://images.unsplash.com/photo-1547981609-4b6bfc67c272?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+            }
+        };
+        
+        let currentArticleId = null;
+        
+        // 打开模态框
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "flex";
+        }
+        
+        // 关闭模态框
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+        
+        // 编辑文章
+        function editArticle(id) {
+            currentArticleId = id;
+            const article = articles[id];
+            
+            document.getElementById('articleId').value = id;
+            document.getElementById('articleTitle').value = article.title;
+            document.getElementById('articleDesc').value = article.desc;
+            document.getElementById('articleContent').value = article.content;
+            
+            openModal('editModal');
+        }
+        
+        // 保存文章
+        function saveArticle() {
+            const id = document.getElementById('articleId').value;
+            const title = document.getElementById('articleTitle').value;
+            const desc = document.getElementById('articleDesc').value;
+            const content = document.getElementById('articleContent').value;
+            
+            if (!title || !desc || !content) {
+                alert('请填写所有必填字段');
+                return;
+            }
+            
+            // 更新文章数据
+            articles[id] = {
+                title,
+                desc,
+                content,
+                image: articles[id].image // 保持原有图片
+            };
+            
+            // 更新页面上的文章信息
+            const articleItem = document.querySelector(`.article-item:nth-child(${id})`);
+            articleItem.querySelector('.article-title').textContent = title;
+            articleItem.querySelector('.article-desc').textContent = desc;
+            
+            alert('文章保存成功！');
+            closeModal('editModal');
+        }
+        
+        // 删除文章
+        function deleteArticle(id) {
+            currentArticleId = id;
+            const article = articles[id];
+            
+            document.getElementById('deleteArticleTitle').textContent = article.title;
+            openModal('deleteModal');
+        }
+        
+        // 确认删除
+        function confirmDelete() {
+            if (currentArticleId) {
+                // 从DOM中移除文章项
+                const articleItem = document.querySelector(`.article-item:nth-child(${currentArticleId})`);
+                if (articleItem) {
+                    articleItem.remove();
+                }
+                
+                // 从数据中删除文章
+                delete articles[currentArticleId];
+                
+                alert('文章已删除');
+                closeModal('deleteModal');
+                currentArticleId = null;
+            }
+        }
+        
+        // 添加新建文章按钮事件
+        document.getElementById('addArticleBtn').addEventListener('click', function() {
+            // 清空表单
+            document.getElementById('articleId').value = '';
+            document.getElementById('articleTitle').value = '';
+            document.getElementById('articleDesc').value = '';
+            document.getElementById('articleContent').value = '';
+            
+            openModal('editModal');
+        });
+        
+        // 点击模态框外部关闭
+        window.addEventListener('click', function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心 - 云间文苑</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image:
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 顶部导航栏 */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 2px solid #d6ccc2;
+        }
+
+        .logo {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.2rem;
+            color: #8c6d46;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            margin-left: 10px;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            padding: 5px 15px;
+            border: 1px solid #d6ccc2;
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            padding: 8px;
+            outline: none;
+            font-family: 'Noto Serif SC', serif;
+            color: #5c4c3e;
+            width: 150px;
+        }
+
+        .search-btn {
+            background: none;
+            border: none;
+            color: #8c6d46;
+            cursor: pointer;
+        }
+
+        /* 主导航 */
+        .main-nav {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #d6ccc2;
+        }
+
+        .nav-item {
+            padding: 10px 25px;
+            font-size: 1.2rem;
+            color: #5c4c3e;
+            text-decoration: none;
+            position: relative;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item::after {
+            content: "";
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: #8c6d46;
+            transition: width 0.3s ease;
+        }
+
+        .nav-item.active {
+            color: #8c6d46;
+            font-weight: bold;
+        }
+
+        .nav-item.active::after {
+            width: 100%;
+        }
+
+        .nav-item:hover::after {
+            width: 100%;
+        }
+
+        /* 个人主页内容 */
+        .profile-container {
+            display: flex;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        /* 侧边栏 */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+        }
+
+        .profile-card {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .profile-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            overflow: hidden;
+            border: 3px solid #c4a77d;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-name {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: #5c4c3e;
+            margin-bottom: 5px;
+        }
+
+        .user-title {
+            color: #8c6d46;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .user-bio {
+            color: #745b3a;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #8c6d46;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #745b3a;
+        }
+
+        .profile-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .profile-btn {
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .profile-btn.primary {
+            background: #8c6d46;
+            color: white;
+        }
+
+        .profile-btn.outline {
+            background: transparent;
+            color: #8c6d46;
+        }
+
+        .profile-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(92, 76, 62, 0.2);
+        }
+
+        .quick-links {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+        }
+
+        .links-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.5rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            color: #5c4c3e;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .link-item:hover {
+            background: rgba(140, 109, 70, 0.1);
+            transform: translateX(5px);
+        }
+
+        .link-item i {
+            margin-right: 12px;
+            width: 20px;
+            color: #8c6d46;
+        }
+
+        /* 主内容区域 */
+        .main-content {
+            flex: 1;
+        }
+
+        .content-section {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+        }
+
+        .content-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        /* 隐私设置样式 */
+        .privacy-settings {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .privacy-group {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            border: 1px solid #d6ccc2;
+        }
+
+        .privacy-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .privacy-icon {
+            width: 40px;
+            height: 40px;
+            background: #8c6d46;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .privacy-title {
+            font-size: 1.4rem;
+            color: #5c4c3e;
+            font-weight: bold;
+        }
+
+        .privacy-content {
+            margin-left: 55px;
+        }
+
+        .privacy-item {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e9e1d5;
+        }
+
+        .privacy-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .privacy-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .privacy-name {
+            font-weight: bold;
+            color: #5c4c3e;
+        }
+
+        .privacy-desc {
+            font-size: 0.9rem;
+            color: #745b3a;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #d6ccc2;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #8c6d46;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .select-control {
+            padding: 10px 15px;
+            border: 1px solid #d6ccc2;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            font-family: 'Noto Serif SC', serif;
+            color: #5c4c3e;
+            font-size: 1rem;
+            width: 100%;
+            max-width: 250px;
+        }
+
+        .privacy-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #d6ccc2;
+        }
+
+        .privacy-btn {
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+        }
+
+        .privacy-btn.primary {
+            background: #8c6d46;
+            color: white;
+        }
+
+        .privacy-btn.outline {
+            background: transparent;
+            color: #8c6d46;
+        }
+
+        .privacy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(92, 76, 62, 0.2);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .profile-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .main-nav {
+                flex-wrap: wrap;
+            }
+
+            .nav-item {
+                margin: 5px;
+                padding: 8px 15px;
+            }
+
+            .privacy-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .privacy-icon {
+                margin-bottom: 10px;
+            }
+
+            .privacy-content {
+                margin-left: 0;
+            }
+
+            .privacy-label {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .privacy-actions {
+                flex-direction: column;
+            }
+
+            .privacy-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <div class="top-nav">
+            <div class="logo">
+                <i class="fas fa-mountain"></i>
+                <span>云间文苑</span>
+            </div>
+
+            <div class="user-actions">
+                <div class="search-box">
+                    <input type="text" placeholder="搜索...">
+                    <button class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主导航 -->
+        <nav class="main-nav">
+            <a href="#" class="nav-item">历史</a>
+            <a href="#" class="nav-item">非遗</a>
+            <a href="#" class="nav-item">公益</a>
+            <a href="#" class="nav-item active">我的</a>
+        </nav>
+
+        <!-- 个人主页内容 -->
+        <div class="profile-container">
+            <!-- 侧边栏 -->
+            <div class="sidebar">
+                <div class="profile-card">
+                    <div class="avatar">
+                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                            alt="用户头像">
+                    </div>
+                    <h2 class="user-name">文心居士</h2>
+                    <p class="user-title">传统文化传承者</p>
+                    <p class="user-bio">以文会友，以友辅仁。传承中华文化，分享生活智慧。</p>
+
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-number">42</div>
+                            <div class="stat-label">文章</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">128</div>
+                            <div class="stat-label">粉丝</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">86</div>
+                            <div class="stat-label">收藏</div>
+                        </div>
+                    </div>
+
+                    <div class="profile-actions">
+                        <button class="profile-btn primary" id="editProfileBtn">编辑资料</button>
+                        <button class="profile-btn outline" id="logoutBtn">退出登录</button>
+                    </div>
+                </div>
+
+                <div class="quick-links">
+                    <h3 class="links-title">快捷入口</h3>
+                    <a href="#" class="link-item">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>创作中心</span>
+                    </a>
+                    <a href="#" class="link-item">
+                        <i class="fas fa-heart"></i>
+                        <span>我的收藏</span>
+                    </a>
+                    <a href="#" class="link-item">
+                        <i class="fas fa-file-alt"></i>
+                        <span>文章管理</span>
+                    </a>
+                    <a href="#" class="link-item">
+                        <i class="fas fa-comments"></i>
+                        <span>消息通知</span>
+                    </a>
+                    <a href="#" class="link-item">
+                        <i class="fas fa-cog"></i>
+                        <span>账号设置</span>
+                    </a>
+                    <a href="#" class="link-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>隐私设置</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 主内容区域 - 隐私设置 -->
+            <div class="main-content">
+                <section class="content-section">
+                    <h2 class="section-title">隐私设置</h2>
+                    
+                    <div class="privacy-settings">
+                        <!-- 内容可见性设置 -->
+                        <div class="privacy-group">
+                            <div class="privacy-header">
+                                <div class="privacy-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                                <h3 class="privacy-title">内容可见性</h3>
+                            </div>
+                            <div class="privacy-content">
+                                <div class="privacy-item">
+                                    <div class="privacy-label">
+                                        <span class="privacy-name">个人资料可见性</span>
+                                        <select class="select-control">
+                                            <option>所有人</option>
+                                            <option>仅关注我的人</option>
+                                            <option>仅自己</option>
+                                        </select>
+                                    </div>
+                                    <p class="privacy-desc">控制谁可以查看您的个人资料信息，包括头像、简介和统计数据</p>
+                                </div>
+                                
+                                <div class="privacy-item">
+                                    <div class="privacy-label">
+                                        <span class="privacy-name">文章可见性</span>
+                                        <select class="select-control">
+                                            <option>所有人</option>
+                                            <option>仅关注我的人</option>
+                                            <option>仅自己</option>
+                                        </select>
+                                    </div>
+                                    <p class="privacy-desc">设置新发布文章的默认可见范围，您仍可以在发布每篇文章时单独调整</p>
+                                </div>
+                                
+                                <div class="privacy-item">
+                                    <div class="privacy-label">
+                                        <span class="privacy-name">收藏可见性</span>
+                                        <select class="select-control">
+                                            <option>所有人</option>
+                                            <option>仅关注我的人</option>
+                                            <option>仅自己</option>
+                                        </select>
+                                    </div>
+                                    <p class="privacy-desc">控制谁可以查看您收藏的文章和内容</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 互动隐私设置 -->
+                        <div class="privacy-group">
+                            <div class="privacy-header">
+                                <div class="privacy-icon">
+                                    <i class="fas fa-comments"></i>
+                                </div>
+                                <h3 class="privacy-title">互动隐私</h3>
+                            </div>
+                            <div class="privacy-content">
+                                <div class="privacy-item">
+                                    <div class="privacy-label">
+                                        <span class="privacy-name">允许评论</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <p class="privacy-desc">允许其他用户在您的文章下发表评论</p>
+                                </div>
+                                
+                                <div class="privacy-item">
+                                    <div class="privacy-label">
+                                        <span class="privacy-name">允许私信</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <p class="privacy-desc">允许其他用户向您发送私信</p>
+                                </div>
+                                
+                                <div class="privacy-item">
+                                    <div class="privacy-label">
+                                        <span class="privacy-name">允许关注</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <p class="privacy-desc">允许其他用户关注您，接收您的最新动态</p>
+                                </div>
+                                
+                                <div class="privacy-item">
+                                    <div class="privacy-label">
+                                        <span class="privacy-name">允许@提及</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <p class="privacy-desc">允许其他用户在内容和评论中@提及您</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 数据隐私设置 -->
+                        <div class="privacy-group">
+                            <div class="privacy-header">
+                                <div class="privacy-icon">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <h3 class="privacy-title">数据隐私</h3>
+                            </div>
+                            <div class="privacy-content">
+                                <div class="privacy-item">
+                                    <div class="privacy-label">
+                                        <span class="privacy-name">个性化推荐</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <p class="privacy-desc">允许我们根据您的活动推荐相关内容和用户，提升使用体验</p>
+                                </div>
+                                
+                                <div class="privacy-item">
+                                    <div class="privacy-label">
+                                        <span class="privacy-name">搜索可见性</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <p class="privacy-desc">允许您的个人资料和内容出现在搜索引擎结果中</p>
+                                </div>
+                                
+                                <div class="privacy-item">
+                                    <div class="privacy-label">
+                                        <span class="privacy-name">活动状态显示</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <p class="privacy-desc">向其他用户显示您最近的活动状态（在线/离线）</p>
+                                </div>
+                                
+                                <div class="privacy-item">
+                                    <div class="privacy-label">
+                                        <span class="privacy-name">数据收集同意</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <p class="privacy-desc">允许我们收集匿名使用数据以改进产品和服务</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 高级隐私设置 -->
+                        <div class="privacy-group">
+                            <div class="privacy-header">
+                                <div class="privacy-icon">
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                                <h3 class="privacy-title">高级隐私</h3>
+                            </div>
+                            <div class="privacy-content">
+                                <div class="privacy-item">
+                                    <div class="privacy-label">
+                                        <span class="privacy-name">隐藏关注列表</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <p class="privacy-desc">隐藏您关注的用户列表，其他人将无法查看您关注了谁</p>
+                                </div>
+                                
+                                <div class="privacy-item">
+                                    <div class="privacy-label">
+                                        <span class="privacy-name">隐藏粉丝列表</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <p class="privacy-desc">隐藏您的粉丝列表，其他人将无法查看谁关注了您</p>
+                                </div>
+                                
+                                <div class="privacy-item">
+                                    <div class="privacy-label">
+                                        <span class="privacy-name">隐藏点赞历史</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <p class="privacy-desc">隐藏您点赞过的内容，其他人将无法查看您的点赞历史</p>
+                                </div>
+                                
+                                <div class="privacy-item">
+                                    <div class="privacy-label">
+                                        <span class="privacy-name">隐藏阅读历史</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <p class="privacy-desc">隐藏您的文章阅读历史，保护您的浏览隐私</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="privacy-actions">
+                        <button class="privacy-btn outline">恢复默认</button>
+                        <button class="privacy-btn primary">保存设置</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 导航项点击效果
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    navItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // 编辑资料按钮
+            const editProfileBtn = document.getElementById('editProfileBtn');
+            editProfileBtn.addEventListener('click', function () {
+                alert('进入编辑资料页面');
+            });
+
+            // 退出登录按钮
+            const logoutBtn = document.getElementById('logoutBtn');
+            logoutBtn.addEventListener('click', function () {
+                if (confirm('确定要退出登录吗？')) {
+                    alert('已退出登录，即将跳转到登录页面');
+                }
+            });
+
+            // 切换开关效果
+            const toggleSwitches = document.querySelectorAll('.toggle-switch input');
+            toggleSwitches.forEach(toggle => {
+                toggle.addEventListener('change', function () {
+                    const label = this.parentElement;
+                    if (this.checked) {
+                        label.classList.add('active');
+                    } else {
+                        label.classList.remove('active');
+                    }
+                });
+            });
+
+            // 保存设置按钮
+            const saveBtn = document.querySelector('.privacy-btn.primary');
+            saveBtn.addEventListener('click', function () {
+                alert('隐私设置已保存');
+            });
+
+            // 恢复默认按钮
+            const resetBtn = document.querySelector('.privacy-btn.outline');
+            resetBtn.addEventListener('click', function () {
+                if (confirm('确定要恢复默认隐私设置吗？')) {
+                    // 重置所有开关到默认状态
+                    toggleSwitches.forEach(toggle => {
+                        toggle.checked = toggle.closest('.privacy-item').querySelector('.privacy-name').textContent !== '隐藏关注列表';
+                    });
+                    
+                    // 重置所有选择框到默认状态
+                    const selectControls = document.querySelectorAll('.select-control');
+                    selectControls.forEach(select => {
+                        select.selectedIndex = 0;
+                    });
+                    
+                    alert('已恢复默认隐私设置');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>爱心故事发布 - 仁爱之心公益社区</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+        }
+        
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 顶部导航栏 */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 2px solid #d6ccc2;
+        }
+        
+        .logo {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.2rem;
+            color: #8c6d46;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            margin-left: 10px;
+        }
+        
+        .back-btn {
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+            background: transparent;
+            color: #8c6d46;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-btn:hover {
+            background: #8c6d46;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(92, 76, 62, 0.2);
+        }
+        
+        /* 页面标题 */
+        .page-header {
+            text-align: center;
+            padding: 40px 0 30px;
+            position: relative;
+        }
+        
+        .page-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.8rem;
+            color: #5c4c3e;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .page-title::before, .page-title::after {
+            content: "❤";
+            position: relative;
+            margin: 0 15px;
+            color: #c4a77d;
+            font-size: 1.8rem;
+        }
+        
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #745b3a;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* 发布表单 */
+        .publish-form {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+        }
+        
+        .publish-form::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #5c4c3e;
+            font-size: 1.1rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #d6ccc2;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            color: #5c4c3e;
+            transition: all 0.3s ease;
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #8c6d46;
+            box-shadow: 0 0 0 2px rgba(140, 109, 70, 0.2);
+        }
+        
+        /* 媒体上传区域 */
+        .media-upload {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .upload-option {
+            border: 2px dashed #c4a77d;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        .upload-option:hover {
+            border-color: #8c6d46;
+            background: rgba(140, 109, 70, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .upload-icon {
+            font-size: 2.5rem;
+            color: #8c6d46;
+            margin-bottom: 10px;
+        }
+        
+        .upload-text {
+            color: #745b3a;
+            font-size: 1rem;
+        }
+        
+        .upload-preview {
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .preview-image, .preview-video {
+            max-width: 100%;
+            max-height: 150px;
+            border-radius: 6px;
+            position: relative;
+        }
+        
+        .remove-file {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 20px;
+            height: 20px;
+            background: rgba(140, 60, 44, 0.8);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+            z-index: 10;
+        }
+        
+        .audio-recorder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .record-btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+            background: #8c6d46;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .record-btn:hover {
+            background: #745b3a;
+            transform: translateY(-2px);
+        }
+        
+        .record-btn.recording {
+            background: #e74c3c;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .audio-visualizer {
+            width: 100%;
+            height: 30px;
+            background: rgba(140, 109, 70, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .audio-bar {
+            position: absolute;
+            bottom: 0;
+            width: 4px;
+            background: #8c6d46;
+            border-radius: 2px;
+            margin: 0 1px;
+        }
+        
+        /* 发布按钮 */
+        .publish-btn {
+            width: 100%;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            background: #8c6d46;
+            color: white;
+            letter-spacing: 2px;
+        }
+        
+        .publish-btn:hover {
+            background: #745b3a;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(92, 76, 62, 0.25);
+        }
+        
+        .publish-btn:disabled {
+            background: #c4a77d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* 故事展示区 */
+        .stories-section {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+        }
+        
+        .stories-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+        
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .story-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #d6ccc2;
+        }
+        
+        .story-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+        
+        .story-media {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .story-media img,
+        .story-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .story-card:hover .story-media img,
+        .story-card:hover .story-media video {
+            transform: scale(1.05);
+        }
+        
+        .story-audio {
+            width: 100%;
+            padding: 20px;
+            background: rgba(140, 109, 70, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .audio-player {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .audio-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #8c6d46;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .audio-progress {
+            flex-grow: 1;
+            height: 4px;
+            background: #d6ccc2;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .audio-progress-bar {
+            height: 100%;
+            width: 30%;
+            background: #8c6d46;
+            border-radius: 2px;
+        }
+        
+        .story-content {
+            padding: 20px;
+        }
+        
+        .story-text {
+            color: #745b3a;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .story-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #8c6d46;
+            font-size: 0.9rem;
+        }
+        
+        .story-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #d6ccc2;
+        }
+        
+        .story-action {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #8c6d46;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .story-action:hover {
+            color: #5c4c3e;
+        }
+        
+        /* 动画效果 */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .media-upload {
+                grid-template-columns: 1fr;
+            }
+            
+            .stories-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <div class="top-nav">
+            <div class="logo">
+                <i class="fas fa-mountain"></i>
+                <span>仁爱之心</span>
+            </div>
+            
+            <a href="#" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                返回公益主页
+            </a>
+        </div>
+        
+        <!-- 页面标题 -->
+        <header class="page-header">
+            <h1 class="page-title">爱心故事发布</h1>
+            <p class="page-subtitle">记录公益瞬间，分享爱心故事，用文字和媒体传递温暖与力量</p>
+        </header>
+        
+        <!-- 发布表单 -->
+        <section class="publish-form">
+            <div class="form-group">
+                <label for="storyText" class="form-label">分享您的爱心故事</label>
+                <textarea 
+                    id="storyText" 
+                    class="form-control" 
+                    placeholder="今天参加了山区支教活动，孩子们纯真的笑容让我感受到了公益的真正意义。希望我们的微薄之力能给他们带来一些帮助和温暖。"
+                ></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">添加媒体内容（可选）</label>
+                <div class="media-upload">
+                    <!-- 图片上传 -->
+                    <div class="upload-option" id="imageUpload">
+                        <div class="upload-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <div class="upload-text">添加图片</div>
+                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                        <div class="upload-preview" id="imagePreview"></div>
+                    </div>
+                    
+                    <!-- 视频上传 -->
+                    <div class="upload-option" id="videoUpload">
+                        <div class="upload-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <div class="upload-text">添加视频</div>
+                        <input type="file" id="videoInput" accept="video/*" style="display: none;">
+                        <div class="upload-preview" id="videoPreview"></div>
+                    </div>
+                    
+                    <!-- 录音功能 -->
+                    <div class="upload-option">
+                        <div class="upload-icon">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <div class="upload-text">录制语音</div>
+                        <div class="audio-recorder">
+                            <button class="record-btn" id="recordBtn">
+                                <i class="fas fa-microphone"></i>
+                                <span>开始录音</span>
+                            </button>
+                            <div class="audio-visualizer" id="audioVisualizer">
+                                <!-- 音频可视化条将通过JS生成 -->
+                            </div>
+                            <div class="upload-preview" id="audioPreview"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="publishBtn" class="publish-btn" disabled>发布爱心故事</button>
+        </section>
+        
+        <!-- 故事展示区 -->
+        <section class="stories-section">
+            <h2 class="section-title">最新爱心故事</h2>
+            <div class="stories-grid">
+                <!-- 示例故事 -->
+                <div class="story-card">
+                    <div class="story-media">
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="公益活动">
+                    </div>
+                    <div class="story-content">
+                        <p class="story-text">今天参加了山区支教活动，孩子们纯真的笑容让我感受到了公益的真正意义。希望我们的微薄之力能给他们带来一些帮助和温暖。</p>
+                        <div class="story-meta">
+                            <span>张明</span>
+                            <span>2小时前</span>
+                        </div>
+                        <div class="story-actions">
+                            <div class="story-action">
+                                <i class="fas fa-heart" style="color: #e74c3c;"></i>
+                                <span>42</span>
+                            </div>
+                            <div class="story-action">
+                                <i class="far fa-comment"></i>
+                                <span>8</span>
+                            </div>
+                            <div class="story-action">
+                                <i class="fas fa-share-alt"></i>
+                                <span>分享</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="story-card">
+                    <div class="story-audio">
+                        <div class="audio-player">
+                            <div class="audio-btn">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div class="audio-progress">
+                                <div class="audio-progress-bar"></div>
+                            </div>
+                            <span>2:15</span>
+                        </div>
+                    </div>
+                    <div class="story-content">
+                        <p class="story-text">今天去敬老院看望老人，听王奶奶讲她年轻时的故事，感触很深。陪伴是最好的礼物，希望有更多人能关注老年人群体。</p>
+                        <div class="story-meta">
+                            <span>王芳</span>
+                            <span>3天前</span>
+                        </div>
+                        <div class="story-actions">
+                            <div class="story-action">
+                                <i class="fas fa-heart" style="color: #e74c3c;"></i>
+                                <span>38</span>
+                            </div>
+                            <div class="story-action">
+                                <i class="far fa-comment"></i>
+                                <span>5</span>
+                            </div>
+                            <div class="story-action">
+                                <i class="fas fa-share-alt"></i>
+                                <span>分享</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // DOM元素
+        const storyText = document.getElementById('storyText');
+        const imageUpload = document.getElementById('imageUpload');
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const videoUpload = document.getElementById('videoUpload');
+        const videoInput = document.getElementById('videoInput');
+        const videoPreview = document.getElementById('videoPreview');
+        const recordBtn = document.getElementById('recordBtn');
+        const audioVisualizer = document.getElementById('audioVisualizer');
+        const audioPreview = document.getElementById('audioPreview');
+        const publishBtn = document.getElementById('publishBtn');
+        
+        // 初始化音频可视化条
+        function initAudioVisualizer() {
+            audioVisualizer.innerHTML = '';
+            for (let i = 0; i < 20; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'audio-bar';
+                bar.style.left = `${i * 5}%`;
+                bar.style.height = `${Math.random() * 20 + 5}px`;
+                audioVisualizer.appendChild(bar);
+            }
+        }
+        
+        // 图片上传处理
+        imageUpload.addEventListener('click', () => {
+            imageInput.click();
+        });
+        
+        imageInput.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    imagePreview.innerHTML = `
+                        <div style="position: relative;">
+                            <img src="${e.target.result}" class="preview-image">
+                            <div class="remove-file"><i class="fas fa-times"></i></div>
+                        </div>
+                    `;
+                    imagePreview.style.display = 'block';
+                    
+                    // 添加删除功能
+                    imagePreview.querySelector('.remove-file').addEventListener('click', function(e) {
+                        e.stopPropagation(); // 阻止事件冒泡，防止触发上传区域的点击事件
+                        imagePreview.innerHTML = '';
+                        imagePreview.style.display = 'none';
+                        checkPublishStatus();
+                    });
+                    
+                    checkPublishStatus();
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+        
+        // 视频上传处理
+        videoUpload.addEventListener('click', () => {
+            videoInput.click();
+        });
+        
+        videoInput.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    videoPreview.innerHTML = `
+                        <div style="position: relative;">
+                            <video controls src="${e.target.result}" class="preview-video"></video>
+                            <div class="remove-file"><i class="fas fa-times"></i></div>
+                        </div>
+                    `;
+                    videoPreview.style.display = 'block';
+                    
+                    // 添加删除功能
+                    videoPreview.querySelector('.remove-file').addEventListener('click', function(e) {
+                        e.stopPropagation(); // 阻止事件冒泡，防止触发上传区域的点击事件
+                        videoPreview.innerHTML = '';
+                        videoPreview.style.display = 'none';
+                        checkPublishStatus();
+                    });
+                    
+                    checkPublishStatus();
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+        
+        // 录音功能
+        let isRecording = false;
+        let audioBars = [];
+        
+        recordBtn.addEventListener('click', () => {
+            if (!isRecording) {
+                // 开始录音
+                isRecording = true;
+                recordBtn.classList.add('recording');
+                recordBtn.innerHTML = '<i class="fas fa-stop"></i><span>停止录音</span>';
+                audioPreview.innerHTML = '<div>录音中...</div>';
+                audioPreview.style.display = 'block';
+                
+                // 启动音频可视化动画
+                animateAudioBars();
+            } else {
+                // 停止录音
+                isRecording = false;
+                recordBtn.classList.remove('recording');
+                recordBtn.innerHTML = '<i class="fas fa-microphone"></i><span>开始录音</span>';
+                audioPreview.innerHTML = '<div>录音完成! <button class="record-btn" style="padding:5px 10px;font-size:0.8rem;">重新录制</button></div>';
+                checkPublishStatus();
+                
+                // 停止音频可视化动画
+                stopAudioAnimation();
+            }
+        });
+        
+        // 音频可视化动画
+        function animateAudioBars() {
+            if (!isRecording) return;
+            
+            audioBars = audioVisualizer.querySelectorAll('.audio-bar');
+            audioBars.forEach(bar => {
+                bar.style.height = `${Math.random() * 25 + 5}px`;
+            });
+            
+            setTimeout(animateAudioBars, 100);
+        }
+        
+        function stopAudioAnimation() {
+            audioBars.forEach(bar => {
+                bar.style.height = '5px';
+            });
+        }
+        
+        // 检查发布状态
+        function checkPublishStatus() {
+            if (storyText.value.trim() !== '') {
+                publishBtn.disabled = false;
+            } else {
+                publishBtn.disabled = true;
+            }
+        }
+        
+        // 文本输入监听
+        storyText.addEventListener('input', checkPublishStatus);
+        
+        // 发布功能
+        publishBtn.addEventListener('click', () => {
+            const storyContent = storyText.value.trim();
+            
+            if (!storyContent) {
+                alert('请填写爱心故事内容');
+                return;
+            }
+            
+            // 模拟发布成功
+            alert('爱心故事发布成功！感谢您的分享。');
+            
+            // 清空表单
+            storyText.value = '';
+            imageInput.value = '';
+            videoInput.value = '';
+            imagePreview.innerHTML = '';
+            imagePreview.style.display = 'none';
+            videoPreview.innerHTML = '';
+            videoPreview.style.display = 'none';
+            audioPreview.innerHTML = '';
+            audioPreview.style.display = 'none';
+            isRecording = false;
+            recordBtn.classList.remove('recording');
+            recordBtn.innerHTML = '<i class="fas fa-microphone"></i><span>开始录音</span>';
+            stopAudioAnimation();
+            publishBtn.disabled = true;
+            
+            // 这里可以添加将内容添加到故事列表的逻辑
+        });
+        
+        // 初始化
+        initAudioVisualizer();
+    </script>
+</body>
+</html>

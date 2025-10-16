@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>历史时间线 - 云间小阁</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image:
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+
+        .timeline-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* 页面标题区域 */
+        .page-header {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .page-header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8c6d46, transparent);
+        }
+
+        .page-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 3.5rem;
+            color: #8c3c2c;
+            margin-bottom: 15px;
+            letter-spacing: 5px;
+            text-shadow: 2px 2px 4px rgba(92, 76, 62, 0.2);
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #8c6d46;
+            position: relative;
+            display: inline-block;
+        }
+
+        .page-subtitle::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8c3c2c, transparent);
+        }
+
+        /* 时间线导航 */
+        .timeline-nav {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            margin-bottom: 40px;
+            padding: 15px 0;
+            scrollbar-width: thin;
+            scrollbar-color: #8c6d46 #f1e9dd;
+        }
+
+        .timeline-nav::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .timeline-nav::-webkit-scrollbar-track {
+            background: #f1e9dd;
+            border-radius: 10px;
+        }
+
+        .timeline-nav::-webkit-scrollbar-thumb {
+            background: #8c6d46;
+            border-radius: 10px;
+        }
+
+        .dynasty-card {
+            min-width: 180px;
+            background: rgba(255, 253, 245, 0.9);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #d6ccc2;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dynasty-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.15);
+        }
+
+        .dynasty-card.active {
+            border-color: #8c3c2c;
+            background: rgba(140, 61, 44, 0.05);
+        }
+
+        .dynasty-card.active::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #8c3c2c;
+        }
+
+        .dynasty-icon {
+            font-size: 2.5rem;
+            color: #8c6d46;
+            margin-bottom: 10px;
+        }
+
+        .dynasty-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #5c4c3e;
+            margin-bottom: 5px;
+        }
+
+        .dynasty-period {
+            font-size: 0.9rem;
+            color: #8c6d46;
+        }
+
+        /* 朝代详情区域 */
+        .dynasty-detail {
+            background: rgba(255, 253, 245, 0.9);
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid #d6ccc2;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+            margin-bottom: 40px;
+            min-height: 500px;
+        }
+
+        .dynasty-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9e1d5;
+        }
+
+        .dynasty-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.5rem;
+            color: #8c3c2c;
+        }
+
+        .dynasty-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .dynasty-years {
+            font-size: 1.2rem;
+            color: #8c6d46;
+            font-weight: bold;
+        }
+
+        .dynasty-capital {
+            font-size: 1rem;
+            color: #5c4c3e;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .dynasty-description {
+            font-size: 1.1rem;
+            color: #5c4c3e;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f9f5eb;
+            border-radius: 8px;
+            border-left: 4px solid #8c6d46;
+        }
+
+        /* 事件时间线 */
+        .events-timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .events-timeline::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 15px;
+            width: 2px;
+            background: #d6ccc2;
+        }
+
+        .timeline-event {
+            position: relative;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f9f5eb;
+            border-radius: 8px;
+            border: 1px solid #e9e1d5;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-event:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+        }
+
+        .timeline-event::before {
+            content: "";
+            position: absolute;
+            left: -36px;
+            top: 25px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #8c6d46;
+            border: 3px solid #f8f4e9;
+        }
+
+        .event-year {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #8c3c2c;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .event-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+        }
+
+        .event-description {
+            color: #5c4c3e;
+            line-height: 1.6;
+        }
+
+        /* 页脚 */
+        .page-footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 50px;
+            color: #8c6d46;
+            font-size: 0.9rem;
+            border-top: 1px solid #d6ccc2;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .dynasty-card {
+                min-width: 140px;
+                padding: 15px;
+            }
+
+            .dynasty-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .dynasty-info {
+                align-items: flex-start;
+            }
+
+            .dynasty-title {
+                font-size: 2rem;
+            }
+
+            .events-timeline {
+                padding-left: 20px;
+            }
+
+            .timeline-event::before {
+                left: -26px;
+            }
+        }
+
+        .decoration {
+            position: absolute;
+            opacity: 0.1;
+            z-index: -1;
+            font-family: 'Ma Shan Zheng', cursive;
+            color: #8c3c2c;
+        }
+
+        .decoration-1 {
+            top: 50px;
+            left: 5%;
+            font-size: 6rem;
+            transform: rotate(-10deg);
+        }
+
+        .decoration-2 {
+            bottom: 100px;
+            right: 5%;
+            font-size: 5rem;
+            transform: rotate(15deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="decoration decoration-1">史</div>
+    <div class="decoration decoration-2">历</div>
+
+    <div class="timeline-container">
+        <header class="page-header">
+            <h1 class="page-title">历史时间线</h1>
+            <p class="page-subtitle">探寻中华文明的千年脉络</p>
+        </header>
+
+        <!-- 时间线导航 -->
+        <div class="timeline-nav">
+            <div class="dynasty-card active" data-dynasty="qin">
+                <div class="dynasty-icon">
+                    <i class="fas fa-chess-rook"></i>
+                </div>
+                <div class="dynasty-name">秦朝</div>
+                <div class="dynasty-period">公元前221-207年</div>
+            </div>
+
+            <div class="dynasty-card" data-dynasty="han">
+                <div class="dynasty-icon">
+                    <i class="fas fa-dragon"></i>
+                </div>
+                <div class="dynasty-name">汉朝</div>
+                <div class="dynasty-period">公元前202-公元220年</div>
+            </div>
+
+            <div class="dynasty-card" data-dynasty="sui">
+                <div class="dynasty-icon">
+                    <i class="fas fa-archway"></i>
+                </div>
+                <div class="dynasty-name">隋朝</div>
+                <div class="dynasty-period">公元581-618年</div>
+            </div>
+
+            <div class="dynasty-card" data-dynasty="tang">
+                <div class="dynasty-icon">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div class="dynasty-name">唐朝</div>
+                <div class="dynasty-period">公元618-907年</div>
+            </div>
+
+            <div class="dynasty-card" data-dynasty="song">
+                <div class="dynasty-icon">
+                    <i class="fas fa-pagoda"></i>
+                </div>
+                <div class="dynasty-name">宋朝</div>
+                <div class="dynasty-period">公元960-1279年</div>
+            </div>
+
+            <div class="dynasty-card" data-dynasty="yuan">
+                <div class="dynasty-icon">
+                    <i class="fas fa-horse"></i>
+                </div>
+                <div class="dynasty-name">元朝</div>
+                <div class="dynasty-period">公元1271-1368年</div>
+            </div>
+
+            <div class="dynasty-card" data-dynasty="ming">
+                <div class="dynasty-icon">
+                    <i class="fas fa-landmark"></i>
+                </div>
+                <div class="dynasty-name">明朝</div>
+                <div class="dynasty-period">公元1368-1644年</div>
+            </div>
+
+            <div class="dynasty-card" data-dynasty="qing">
+                <div class="dynasty-icon">
+                    <i class="fas fa-gem"></i>
+                </div>
+                <div class="dynasty-name">清朝</div>
+                <div class="dynasty-period">公元1636-1912年</div>
+            </div>
+        </div>
+
+        <!-- 朝代详情区域 -->
+        <div class="dynasty-detail">
+            <!-- 秦朝详情 -->
+            <div class="dynasty-content active" id="qin-content">
+                <div class="dynasty-header">
+                    <h2 class="dynasty-title">秦朝</h2>
+                    <div class="dynasty-info">
+                        <div class="dynasty-years">公元前221年 - 公元前207年</div>
+                        <div class="dynasty-capital">
+                            <i class="fas fa-map-marker-alt"></i>
+                            咸阳
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dynasty-description">
+                    秦朝是中国历史上第一个大一统王朝，由秦始皇嬴政建立。秦朝虽然短暂，但对中国历史产生了深远影响，统一了文字、货币、度量衡，修建了万里长城和灵渠，奠定了中国封建社会的基础。
+                </div>
+
+                <div class="events-timeline">
+                    <div class="timeline-event">
+                        <div class="event-year">
+                            <i class="fas fa-calendar-alt"></i>
+                            公元前221年
+                        </div>
+                        <h3 class="event-title">秦统一六国</h3>
+                        <p class="event-description">
+                            秦王嬴政完成对六国的统一，建立中国历史上第一个中央集权的封建王朝，自封为"始皇帝"。
+                        </p>
+                    </div>
+
+                    <div class="timeline-event">
+                        <div class="event-year">
+                            <i class="fas fa-calendar-alt"></i>
+                            公元前221-210年
+                        </div>
+                        <h3 class="event-title">统一度量衡与文字</h3>
+                        <p class="event-description">
+                            秦始皇推行"书同文，车同轨"，统一文字为小篆，统一度量衡标准，促进了全国经济文化交流。
+                        </p>
+                    </div>
+
+                    <div class="timeline-event">
+                        <div class="event-year">
+                            <i class="fas fa-calendar-alt"></i>
+                            公元前214年
+                        </div>
+                        <h3 class="event-title">修建万里长城</h3>
+                        <p class="event-description">
+                            秦始皇下令连接和修缮战国长城，形成西起临洮、东至辽东的万里长城，以防御北方游牧民族。
+                        </p>
+                    </div>
+
+                    <div class="timeline-event">
+                        <div class="event-year">
+                            <i class="fas fa-calendar-alt"></i>
+                            公元前213年
+                        </div>
+                        <h3 class="event-title">焚书坑儒</h3>
+                        <p class="event-description">
+                            秦始皇采纳李斯建议，焚烧百家书籍，坑杀方士儒生，以统一思想，加强中央集权。
+                        </p>
+                    </div>
+
+                    <div class="timeline-event">
+                        <div class="event-year">
+                            <i class="fas fa-calendar-alt"></i>
+                            公元前210年
+                        </div>
+                        <h3 class="event-title">秦始皇驾崩</h3>
+                        <p class="event-description">
+                            秦始皇在巡游途中病逝于沙丘，赵高、李斯篡改遗诏，立胡亥为帝，是为秦二世。
+                        </p>
+                    </div>
+
+                    <div class="timeline-event">
+                        <div class="event-year">
+                            <i class="fas fa-calendar-alt"></i>
+                            公元前209年
+                        </div>
+                        <h3 class="event-title">陈胜吴广起义</h3>
+                        <p class="event-description">
+                            陈胜、吴广在大泽乡发动起义，揭开了秦末农民战争的序幕，各地纷纷响应。
+                        </p>
+                    </div>
+
+                    <div class="timeline-event">
+                        <div class="event-year">
+                            <i class="fas fa-calendar-alt"></i>
+                            公元前207年
+                        </div>
+                        <h3 class="event-title">秦朝灭亡</h3>
+                        <p class="event-description">
+                            刘邦率军攻入咸阳，秦王子婴投降，秦朝正式灭亡，仅存15年。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 其他朝代内容区域（初始隐藏） -->
+            <div class="dynasty-content" id="han-content">
+                <!-- 汉朝内容 -->
+            </div>
+
+            <div class="dynasty-content" id="sui-content">
+                <!-- 隋朝内容 -->
+            </div>
+
+            <div class="dynasty-content" id="tang-content">
+                <!-- 唐朝内容 -->
+            </div>
+
+            <div class="dynasty-content" id="song-content">
+                <!-- 宋朝内容 -->
+            </div>
+
+            <div class="dynasty-content" id="yuan-content">
+                <!-- 元朝内容 -->
+            </div>
+
+            <div class="dynasty-content" id="ming-content">
+                <!-- 明朝内容 -->
+            </div>
+
+            <div class="dynasty-content" id="qing-content">
+                <!-- 清朝内容 -->
+            </div>
+        </div>
+
+        <footer class="page-footer">
+            <p>© 2023 云间小阁 | 历史时间线探索</p>
+        </footer>
+    </div>
+
+    <script>
+        // 朝代数据
+        const dynastyData = {
+            qin: {
+                name: "秦朝",
+                years: "公元前221年 - 公元前207年",
+                capital: "咸阳",
+                description: "秦朝是中国历史上第一个大一统王朝，由秦始皇嬴政建立。秦朝虽然短暂，但对中国历史产生了深远影响，统一了文字、货币、度量衡，修建了万里长城和灵渠，奠定了中国封建社会的基础。",
+                events: [
+                    { year: "公元前221年", title: "秦统一六国", description: "秦王嬴政完成对六国的统一，建立中国历史上第一个中央集权的封建王朝，自封为'始皇帝'。" },
+                    { year: "公元前221-210年", title: "统一度量衡与文字", description: "秦始皇推行'书同文，车同轨'，统一文字为小篆，统一度量衡标准，促进了全国经济文化交流。" },
+                    { year: "公元前214年", title: "修建万里长城", description: "秦始皇下令连接和修缮战国长城，形成西起临洮、东至辽东的万里长城，以防御北方游牧民族。" },
+                    { year: "公元前213年", title: "焚书坑儒", description: "秦始皇采纳李斯建议，焚烧百家书籍，坑杀方士儒生，以统一思想，加强中央集权。" },
+                    { year: "公元前210年", title: "秦始皇驾崩", description: "秦始皇在巡游途中病逝于沙丘，赵高、李斯篡改遗诏，立胡亥为帝，是为秦二世。" },
+                    { year: "公元前209年", title: "陈胜吴广起义", description: "陈胜、吴广在大泽乡发动起义，揭开了秦末农民战争的序幕，各地纷纷响应。" },
+                    { year: "公元前207年", title: "秦朝灭亡", description: "刘邦率军攻入咸阳，秦王子婴投降，秦朝正式灭亡，仅存15年。" }
+                ]
+            },
+            han: {
+                name: "汉朝",
+                years: "公元前202年 - 公元220年",
+                capital: "长安",
+                description: "汉朝是中国历史上继秦朝之后的大一统王朝，分为西汉和东汉两个时期。汉朝国力强盛，文化繁荣，开通丝绸之路，儒家思想成为正统思想，对中华文明影响深远。",
+                events: [
+                    { year: "公元前202年", title: "刘邦建立汉朝", description: "刘邦在垓下之战击败项羽，建立汉朝，定都长安，史称西汉。" },
+                    { year: "公元前141年", title: "汉武帝即位", description: "刘彻即位为汉武帝，开始长达54年的统治，期间汉朝国力达到鼎盛。" },
+                    { year: "公元前138年", title: "张骞出使西域", description: "汉武帝派张骞出使西域，开辟了丝绸之路，促进了东西方文化交流。" },
+                    { year: "公元9年", title: "王莽篡汉", description: "王莽废汉孺子，自立为帝，改国号为'新'，西汉灭亡。" },
+                    { year: "公元25年", title: "刘秀建立东汉", description: "刘秀重建汉朝，定都洛阳，史称东汉。" },
+                    { year: "公元184年", title: "黄巾起义", description: "张角发动黄巾起义，动摇了东汉王朝的统治基础。" },
+                    { year: "公元220年", title: "汉朝灭亡", description: "曹丕逼迫汉献帝禅让，东汉正式灭亡，进入三国时期。" }
+                ]
+            },
+            // 其他朝代数据可以类似添加
+            tang: {
+                name: "唐朝",
+                years: "公元618年 - 公元907年",
+                capital: "长安",
+                description: "唐朝是中国历史上最强盛的朝代之一，国力强盛，文化繁荣，开创了贞观之治和开元盛世，诗歌、绘画、音乐等艺术形式达到高峰，对外交流广泛，长安成为国际性大都市。",
+                events: [
+                    { year: "公元618年", title: "李渊建立唐朝", description: "李渊在长安称帝，建立唐朝，是为唐高祖。" },
+                    { year: "公元626年", title: "玄武门之变", description: "李世民发动玄武门之变，杀死兄弟李建成和李元吉，随后即位为唐太宗。" },
+                    { year: "公元627-649年", title: "贞观之治", description: "唐太宗在位期间，政治清明，经济繁荣，国力强盛，史称'贞观之治'。" },
+                    { year: "公元690年", title: "武则天称帝", description: "武则天废唐睿宗，自立为帝，改国号为周，成为中国历史上唯一的女皇帝。" },
+                    { year: "公元712-756年", title: "开元盛世", description: "唐玄宗在位前期，政治清明，经济繁荣，文化昌盛，唐朝达到鼎盛时期。" },
+                    { year: "公元755年", title: "安史之乱", description: "安禄山、史思明发动叛乱，持续八年，唐朝由盛转衰。" },
+                    { year: "公元907年", title: "唐朝灭亡", description: "朱温逼迫唐哀帝禅让，建立后梁，唐朝正式灭亡。" }
+                ]
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // 朝代卡片点击事件
+            const dynastyCards = document.querySelectorAll('.dynasty-card');
+            const dynastyContents = document.querySelectorAll('.dynasty-content');
+            
+            dynastyCards.forEach(card => {
+                card.addEventListener('click', function () {
+                    const dynastyId = this.getAttribute('data-dynasty');
+                    
+                    // 更新卡片状态
+                    dynastyCards.forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 显示对应朝代内容
+                    dynastyContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === `${dynastyId}-content`) {
+                            content.classList.add('active');
+                            
+                            // 如果内容为空，则加载数据
+                            if (content.innerHTML.trim() === '') {
+                                loadDynastyContent(dynastyId, content);
+                            }
+                        }
+                    });
+                });
+            });
+            
+            // 加载朝代内容
+            function loadDynastyContent(dynastyId, contentElement) {
+                const data = dynastyData[dynastyId];
+                
+                if (!data) {
+                    contentElement.innerHTML = '<p>朝代数据加载中...</p>';
+                    return;
+                }
+                
+                // 构建朝代内容HTML
+                let eventsHTML = '';
+                data.events.forEach(event => {
+                    eventsHTML += `
+                        <div class="timeline-event">
+                            <div class="event-year">
+                                <i class="fas fa-calendar-alt"></i>
+                                ${event.year}
+                            </div>
+                            <h3 class="event-title">${event.title}</h3>
+                            <p class="event-description">${event.description}</p>
+                        </div>
+                    `;
+                });
+                
+                contentElement.innerHTML = `
+                    <div class="dynasty-header">
+                        <h2 class="dynasty-title">${data.name}</h2>
+                        <div class="dynasty-info">
+                            <div class="dynasty-years">${data.years}</div>
+                            <div class="dynasty-capital">
+                                <i class="fas fa-map-marker-alt"></i>
+                                ${data.capital}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dynasty-description">${data.description}</div>
+                    <div class="events-timeline">${eventsHTML}</div>
+                `;
+            }
+            
+            // 初始化加载秦朝内容
+            loadDynastyContent('qin', document.getElementById('qin-content'));
+        });
+    </script>
+</body>
+</html>

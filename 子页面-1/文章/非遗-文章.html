@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>古韵历史长廊</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image:
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8c6d46, transparent);
+        }
+
+        h1 {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 3.5rem;
+            color: #5c4c3e;
+            margin-bottom: 15px;
+            letter-spacing: 6px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #8c6d46;
+            font-style: italic;
+        }
+
+        section {
+            margin-bottom: 40px;
+            background: rgba(255, 253, 245, 0.9);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            position: relative;
+        }
+
+        section h2 {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.2rem;
+            color: #5c4c3e;
+            margin-bottom: 25px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        section h2::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8c6d46, transparent);
+        }
+
+        /* 历史长河部分 */
+        .history-text {
+            height: 300px;
+            overflow-y: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            padding: 15px;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            text-align: justify;
+            border: 1px solid #e8e1d5;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .history-text::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* 历史影像部分 */
+        .history-images {
+            height: 400px;
+            overflow-y: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 15px;
+            border: 1px solid #e8e1d5;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .history-images::-webkit-scrollbar {
+            display: none;
+        }
+
+        .image-item {
+            height: 180px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(92, 76, 62, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .image-item:hover {
+            transform: scale(1.03);
+        }
+
+        .image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* 历史纪录片部分 */
+        .documentary-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 比例 */
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .documentary-player {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .video-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .documentary-container:hover .video-controls {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .progress-bar {
+            flex-grow: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            margin: 0 15px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: #8c6d46;
+            border-radius: 3px;
+            width: 30%;
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0 10px;
+        }
+
+        .time-display {
+            color: white;
+            font-size: 0.9rem;
+            margin: 0 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            color: #8c6d46;
+            font-size: 0.9rem;
+            border-top: 1px solid #d6ccc2;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            section {
+                padding: 20px;
+            }
+
+            .history-images {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+
+            .interaction-section {
+                flex-wrap: wrap;
+            }
+
+            .interaction-btn {
+                min-width: 80px;
+                padding: 10px 15px;
+            }
+        }
+
+        .interaction-section {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .interaction-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 253, 245, 0.9);
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 100px;
+        }
+
+        .interaction-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(92, 76, 62, 0.15);
+        }
+
+        .interaction-btn i {
+            font-size: 1.8rem;
+            color: #8c3c2c;
+            margin-bottom: 8px;
+        }
+
+        .interaction-btn span {
+            font-size: 0.9rem;
+            color: #5c4c3e;
+        }
+
+        .interaction-btn.active i {
+            color: #c53d2d;
+        }
+
+        .comments-section {
+            background: rgba(255, 253, 245, 0.9);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            margin-top: 40px;
+        }
+
+        .comments-section h2 {
+            color: #8c3c2c;
+            margin-bottom: 20px;
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .comments-section h2::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: #8c6d46;
+        }
+
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #d6ccc2;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .comment-form button {
+            align-self: flex-end;
+            padding: 10px 25px;
+            background: #8c6d46;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .comment-form button:hover {
+            background: #745b3a;
+        }
+
+        .comment {
+            padding: 20px;
+            border-bottom: 1px solid #e9e1d5;
+            margin-bottom: 15px;
+        }
+
+        .comment:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #d6ccc2;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #8c6d46;
+        }
+
+        .comment-author {
+            font-weight: bold;
+            color: #5c4c3e;
+        }
+
+        .comment-date {
+            font-size: 0.9rem;
+            color: #8c6d46;
+            margin-left: auto;
+        }
+
+        .comment-content {
+            color: #5c4c3e;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>古韵历史长廊</h1>
+            <p class="subtitle">穿越时空，感受千年文化沉淀</p>
+        </header>
+
+        <section class="history-section">
+            <h2>历史长河</h2>
+            <div class="history-text">
+                <p>中华文明源远流长，五千年的历史长卷缓缓展开。从夏商周的青铜文明，到秦汉的大一统帝国；从唐宋的繁华盛世，到明清的封建晚期，每一段历史都留下了深刻的印记。</p>
+
+                <p>早在公元前2070年，夏朝的建立标志着中国历史上第一个世袭制王朝的产生。商朝时期，甲骨文的出现为后世留下了最早的文字记录。周朝分封制的实施，奠定了中国封建社会的基础。</p>
+
+                <p>秦汉时期，中国实现了真正的大一统。秦始皇统一六国，书同文，车同轨，奠定了中国两千多年的政治格局。汉武帝开拓疆土，开辟丝绸之路，促进了东西方文化交流。</p>
+
+                <p>唐宋时期是中国古代文明的巅峰。唐诗宋词成为中华文化的瑰宝，科举制度的完善为社会流动提供了通道，四大发明对世界文明进程产生了深远影响。</p>
+
+                <p>明清时期，封建制度逐渐僵化，但文化艺术仍取得了辉煌成就。《永乐大典》、《四库全书》等大型典籍的编纂，京剧的形成与发展，都是这一时期的文化亮点。</p>
+
+                <p>近代以来，中国经历了屈辱与抗争并存的百年。从鸦片战争到辛亥革命，从抗日战争到新中国成立，中华民族在苦难中觉醒，在奋斗中崛起。</p>
+
+                <p>如今，站在新的历史起点上，我们回望过去，汲取智慧与力量；我们展望未来，充满信心与希望。历史的长河奔流不息，中华文明将继续书写辉煌篇章。</p>
+            </div>
+        </section>
+
+        <section class="images-section">
+            <h2>历史影像</h2>
+            <div class="history-images">
+                <div class="image-item">
+                    <img src="https://images.unsplash.com/photo-1547981609-4b6bfc67c272?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                        alt="古代建筑">
+                </div>
+                <div class="image-item">
+                    <img src="https://images.unsplash.com/photo-1530651788726-9a6edd8ab432?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                        alt="历史文物">
+                </div>
+                <div class="image-item">
+                    <img src="https://images.unsplash.com/photo-1533924275610-4ff8475e8f15?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                        alt="古代书画">
+                </div>
+                <div class="image-item">
+                    <img src="https://images.unsplash.com/photo-1460661412647-3207a9c4d14c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                        alt="传统工艺">
+                </div>
+                <div class="image-item">
+                    <img src="https://images.unsplash.com/photo-1547036967-23c11ffe16c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                        alt="古代服饰">
+                </div>
+                <div class="image-item">
+                    <img src="https://images.unsplash.com/photo-1571944672-a5d5d7e17b2c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                        alt="历史遗址">
+                </div>
+            </div>
+        </section>
+
+        <section class="documentary-section">
+            <h2>历史纪录片</h2>
+            <div class="documentary-container">
+                <div class="documentary-player">
+                    <p>点击播放按钮观看历史纪录片</p>
+                </div>
+                <div class="video-controls">
+                    <button class="control-btn">▶</button>
+                    <span class="time-display">0:00</span>
+                    <div class="progress-bar">
+                        <div class="progress"></div>
+                    </div>
+                    <span class="time-display">10:24</span>
+                    <button class="control-btn">⏏</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="interaction-section">
+            <div class="interaction-btn" id="like-btn">
+                <i class="fas fa-heart"></i>
+                <span>喜欢</span>
+                <span class="count">326</span>
+            </div>
+
+            <div class="interaction-btn" id="bookmark-btn">
+                <i class="fas fa-bookmark"></i>
+                <span>收藏</span>
+                <span class="count">158</span>
+            </div>
+
+            <div class="interaction-btn" id="share-btn">
+                <i class="fas fa-share-alt"></i>
+                <span>分享</span>
+            </div>
+        </div>
+
+        <div class="comments-section">
+            <h2>读者评论</h2>
+
+            <div class="comment-form">
+                <textarea placeholder="留下您的宝贵评论..."></textarea>
+                <button type="submit">发表评论</button>
+            </div>
+
+            <div class="comment">
+                <div class="comment-header">
+                    <div class="comment-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="comment-author">文史爱好者</div>
+                    <div class="comment-date">2023-10-15</div>
+                </div>
+                <div class="comment-content">
+                    中华文明源远流长，每一次深入了解都让我感到震撼。希望能有更多这样优质的内容！
+                </div>
+            </div>
+
+            <div class="comment">
+                <div class="comment-header">
+                    <div class="comment-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="comment-author">传统文</div>
+                    <div class="comment-date">2023-10-14</div>
+                </div>
+                <div class="comment-content">
+                    内容很丰富，图片和视频资料也很精彩。建议可以增加更多关于各朝代日常生活的内容。
+                </div>
+            </div>
+
+            <div class="comment">
+                <div class="comment-header">
+                    <div class="comment-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="comment-author">学历史的小张</div>
+                    <div class="comment-date">2023-10-12</div>
+                </div>
+                <div class="comment-content">
+                    作为一名历史专业的学生，我觉得这个简介虽然简洁但抓住了重点，适合初学者了解中华文明概貌。
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2023 艺缘文化传承网 | 弘扬中华文化，传承历史智慧</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 互动按钮功能
+            const likeBtn = document.getElementById('like-btn');
+            const bookmarkBtn = document.getElementById('bookmark-btn');
+            const shareBtn = document.getElementById('share-btn');
+
+            likeBtn.addEventListener('click', function () {
+                this.classList.toggle('active');
+                const countEl = this.querySelector('.count');
+                if (this.classList.contains('active')) {
+                    countEl.textContent = parseInt(countEl.textContent) + 1;
+                } else {
+                    countEl.textContent = parseInt(countEl.textContent) - 1;
+                }
+            });
+
+            bookmarkBtn.addEventListener('click', function () {
+                this.classList.toggle('active');
+                const countEl = this.querySelector('.count');
+                if (this.classList.contains('active')) {
+                    countEl.textContent = parseInt(countEl.textContent) + 1;
+                } else {
+                    countEl.textContent = parseInt(countEl.textContent) - 1;
+                }
+            });
+
+            shareBtn.addEventListener('click', function () {
+                alert('感谢您的分享！分享功能将打开分享菜单。');
+                // 实际应用中这里会实现具体的分享功能
+            });
+
+            // 评论提交功能
+            const commentForm = document.querySelector('.comment-form');
+            const commentTextarea = commentForm.querySelector('textarea');
+
+            commentForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                if (commentTextarea.value.trim() === '') {
+                    alert('请输入评论内容');
+                    return;
+                }
+
+                // 创建新评论
+                const commentsSection = document.querySelector('.comments-section');
+                const newComment = document.createElement('div');
+                newComment.className = 'comment';
+
+                const now = new Date();
+                const dateString = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`;
+
+                newComment.innerHTML = `
+                    <div class="comment-header">
+                        <div class="comment-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="comment-author">新用户</div>
+                        <div class="comment-date">${dateString}</div>
+                    </div>
+                    <div class="comment-content">
+                        ${commentTextarea.value}
+                    </div>
+                `;
+
+                // 将新评论插入到评论列表的最前面
+                commentsSection.insertBefore(newComment, commentsSection.querySelector('.comment'));
+
+                // 清空文本框
+                commentTextarea.value = '';
+
+                alert('评论发表成功！');
+            });
+
+            // 视频控制交互
+            const container = document.querySelector('.documentary-container');
+            const player = document.querySelector('.documentary-player');
+            const playBtn = document.querySelector('.control-btn');
+            const progressBar = document.querySelector('.progress');
+
+            // 点击播放区域
+            player.addEventListener('click', function () {
+                player.innerHTML = '<p>纪录片播放中...</p>';
+                player.style.backgroundColor = '#000';
+
+                // 模拟播放进度
+                let progress = 0;
+                const interval = setInterval(function () {
+                    progress += 0.5;
+                    progressBar.style.width = progress + '%';
+
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        player.innerHTML = '<p>播放完成</p>';
+                    }
+                }, 100);
+            });
+
+            // 控制条显示/隐藏逻辑
+            let controlsTimeout;
+            container.addEventListener('mousemove', function () {
+                const controls = document.querySelector('.video-controls');
+                controls.style.opacity = '1';
+                controls.style.pointerEvents = 'all';
+
+                clearTimeout(controlsTimeout);
+                controlsTimeout = setTimeout(function () {
+                    controls.style.opacity = '0';
+                    controls.style.pointerEvents = 'none';
+                }, 3000);
+            });
+        });
+    </script>
+</body>
+
+</html>

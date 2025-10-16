@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编辑资料 - 云间文苑</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image:
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 顶部导航栏 */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 2px solid #d6ccc2;
+        }
+
+        .logo {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.2rem;
+            color: #8c6d46;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            margin-left: 10px;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            padding: 5px 15px;
+            border: 1px solid #d6ccc2;
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            padding: 8px;
+            outline: none;
+            font-family: 'Noto Serif SC', serif;
+            color: #5c4c3e;
+            width: 150px;
+        }
+
+        .search-btn {
+            background: none;
+            border: none;
+            color: #8c6d46;
+            cursor: pointer;
+        }
+
+        /* 主导航 */
+        .main-nav {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #d6ccc2;
+        }
+
+        .nav-item {
+            padding: 10px 25px;
+            font-size: 1.2rem;
+            color: #5c4c3e;
+            text-decoration: none;
+            position: relative;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item::after {
+            content: "";
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: #8c6d46;
+            transition: width 0.3s ease;
+        }
+
+        .nav-item.active {
+            color: #8c6d46;
+            font-weight: bold;
+        }
+
+        .nav-item.active::after {
+            width: 100%;
+        }
+
+        .nav-item:hover::after {
+            width: 100%;
+        }
+
+        /* 编辑资料内容 */
+        .edit-profile-container {
+            display: flex;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        /* 侧边栏 */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+        }
+
+        .profile-card {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .profile-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            overflow: hidden;
+            border: 3px solid #c4a77d;
+            position: relative;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-edit {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #8c6d46;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .user-name {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: #5c4c3e;
+            margin-bottom: 5px;
+        }
+
+        .user-title {
+            color: #8c6d46;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .user-bio {
+            color: #745b3a;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #8c6d46;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #745b3a;
+        }
+
+        .profile-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .profile-btn {
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .profile-btn.primary {
+            background: #8c6d46;
+            color: white;
+        }
+
+        .profile-btn.outline {
+            background: transparent;
+            color: #8c6d46;
+        }
+
+        .profile-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(92, 76, 62, 0.2);
+        }
+
+        /* .quick-links { */
+        /* background: rgba(255, 253, 245, 0.95); */
+        /* border-radius: 12px; */
+        /* padding: 25px; */
+        /* box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15); */
+        /* border: 1px solid #d6ccc2; */
+        /* } */
+
+        /* .links-title { */
+        /* font-family: 'Ma Shan Zheng', cursive; */
+        /* font-size: 1.5rem; */
+        /* color: #5c4c3e; */
+        /* margin-bottom: 20px; */
+        /* text-align: center; */
+        /* padding-bottom: 10px; */
+        /* border-bottom: 1px solid #d6ccc2; */
+        /* } */
+
+        /* .link-item { */
+        /* display: flex; */
+        /* align-items: center; */
+        /* padding: 12px 15px; */
+        /* margin-bottom: 10px; */
+        /* border-radius: 8px; */
+        /* color: #5c4c3e; */
+        /* text-decoration: none; */
+        /* transition: all 0.3s ease; */
+        /* } */
+
+        /* .link-item:hover { */
+        /* background: rgba(140, 109, 70, 0.1); */
+        /* transform: translateX(5px); */
+        /* } */
+
+        /* .link-item i { */
+        /* margin-right: 12px; */
+        /* width: 20px; */
+        /* color: #8c6d46; */
+        /* } */
+
+        /* 主内容区域 */
+        .main-content {
+            flex: 1;
+        }
+
+        .content-section {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+        }
+
+        .content-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #5c4c3e;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #d6ccc2;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            font-family: 'Noto Serif SC', serif;
+            color: #5c4c3e;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #8c6d46;
+            box-shadow: 0 0 0 2px rgba(140, 109, 70, 0.2);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-hint {
+            font-size: 0.85rem;
+            color: #8c6d46;
+            margin-top: 5px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .edit-profile-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .main-nav {
+                flex-wrap: wrap;
+            }
+
+            .nav-item {
+                margin: 5px;
+                padding: 8px 15px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .form-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <div class="top-nav">
+            <div class="logo">
+                <i class="fas fa-mountain"></i>
+                <span>云间文苑</span>
+            </div>
+
+            <div class="user-actions">
+                <div class="search-box">
+                    <input type="text" placeholder="搜索...">
+                    <button class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主导航 -->
+        <nav class="main-nav">
+            <a href="#" class="nav-item">历史</a>
+            <a href="#" class="nav-item">非遗</a>
+            <a href="#" class="nav-item">公益</a>
+            <a href="#" class="nav-item">我的</a>
+            <a href="#" class="nav-item active">详细资料</a>
+        </nav>
+
+        <!-- 编辑资料内容 -->
+        <div class="edit-profile-container">
+            <!-- 侧边栏 -->
+            <div class="sidebar">
+                <div class="profile-card">
+                    <div class="avatar">
+                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                            alt="用户头像">
+                        <div class="avatar-edit">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                    </div>
+                    <h2 class="user-name">文心居士</h2>
+                    <p class="user-title">传统文化传承者</p>
+                    <p class="user-bio">以文会友，以友辅仁。传承中华文化，分享生活智慧。</p>
+
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-number">42</div>
+                            <div class="stat-label">文章</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">128</div>
+                            <div class="stat-label">粉丝</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">86</div>
+                            <div class="stat-label">收藏</div>
+                        </div>
+                    </div>
+
+                    <div class="profile-actions">
+                        <button class="profile-btn primary" id="saveProfileBtn">关注</button>
+                        <button class="profile-btn outline" id="cancelBtn">查看主页</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 主内容区域 -->
+            <div class="main-content">
+                <!-- 基本信息 -->
+                <section class="content-section">
+                    <h2 class="section-title">基本信息</h2>
+                    <div class="form-group">
+                        <label class="form-label" for="username">用户名</label>
+                        <input type="text" id="username" class="form-input" value="文心居士">
+                        <p class="form-hint">用户名将在社区中公开显示，请使用文明规范的名称</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="title">头衔</label>
+                        <input type="text" id="title" class="form-input" value="传统文化传承者">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="bio">个人简介</label>
+                        <textarea id="bio" class="form-textarea">以文会友，以友辅仁。传承中华文化，分享生活智慧。</textarea>
+                        <p class="form-hint">用一段话介绍自己，让更多人了解你</p>
+                    </div>
+                </section>
+
+                <!-- 详细信息 -->
+                <section class="content-section">
+                    <h2 class="section-title">详细信息</h2>
+                    <div class="form-group">
+                        <label class="form-label" for="email">邮箱地址</label>
+                        <input type="email" id="email" class="form-input" value="wenxin@example.com">
+                        <p class="form-hint">邮箱用于接收重要通知，请确保填写正确</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="location">所在地</label>
+                        <select id="location" class="form-select">
+                            <option>北京</option>
+                            <option>上海</option>
+                            <option>江苏</option>
+                            <option selected>浙江</option>
+                            <option>广东</option>
+                            <option>其他</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">性别</label>
+                        <div style="display: flex; gap: 15px;">
+                            <label style="display: flex; align-items: center; gap: 5px;">
+                                <input type="radio" name="gender" value="male">
+                                <span>男</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 5px;">
+                                <input type="radio" name="gender" value="female" checked>
+                                <span>女</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 5px;">
+                                <input type="radio" name="gender" value="other">
+                                <span>其他</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="birthday">生日</label>
+                        <input type="date" id="birthday" class="form-input" value="1990-05-15">
+                    </div>
+                </section>
+
+                <!-- 社交链接 -->
+                <section class="content-section">
+                    <h2 class="section-title">社交链接</h2>
+                    <div class="form-group">
+                        <label class="form-label" for="weibo">微博</label>
+                        <input type="url" id="weibo" class="form-input" placeholder="https://weibo.com/yourname">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="wechat">微信公众号</label>
+                        <input type="text" id="wechat" class="form-input" placeholder="请输入微信公众号名称">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="website">个人网站</label>
+                        <input type="url" id="website" class="form-input" placeholder="https://yourwebsite.com">
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 导航项点击效果
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    navItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // 保存按钮
+            const saveProfileBtn = document.getElementById('saveProfileBtn');
+            saveProfileBtn.addEventListener('click', function () {
+                document.getElementById('submitBtn').click();
+            });
+
+            // 取消按钮
+            const cancelBtn = document.getElementById('cancelBtn');
+            cancelBtn.addEventListener('click', function () {
+                if (confirm('确定要取消编辑吗？所有未保存的更改将会丢失。')) {
+                    // 实际应用中这里会跳转回个人中心页面
+                    alert('已取消编辑，即将返回个人中心');
+                }
+            });
+
+            // 放弃更改按钮
+            const discardBtn = document.getElementById('discardBtn');
+            discardBtn.addEventListener('click', function () {
+                if (confirm('确定要放弃所有更改吗？')) {
+                    // 重置表单
+                    document.getElementById('username').value = '文心居士';
+                    document.getElementById('title').value = '传统文化传承者';
+                    document.getElementById('bio').value = '以文会友，以友辅仁。传承中华文化，分享生活智慧。';
+                    alert('已恢复原始数据');
+                }
+            });
+
+            // 提交表单
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.addEventListener('click', function () {
+                // 这里可以添加表单验证逻辑
+                alert('资料已成功保存！');
+                // 实际应用中这里会提交表单数据并跳转
+            });
+
+            // 头像编辑
+            const avatarEdit = document.querySelector('.avatar-edit');
+            avatarEdit.addEventListener('click', function () {
+                alert('打开头像上传界面');
+                // 实际应用中这里会触发文件上传
+            });
+        });
+    </script>
+</body>
+
+</html>

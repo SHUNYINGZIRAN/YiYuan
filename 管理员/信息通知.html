@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>消息中心 - 云间小阁</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image:
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+
+        .notification-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* 页面标题区域 */
+        .page-header {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .page-header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8c6d46, transparent);
+        }
+
+        .page-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 3.5rem;
+            color: #8c3c2c;
+            margin-bottom: 15px;
+            letter-spacing: 5px;
+            text-shadow: 2px 2px 4px rgba(92, 76, 62, 0.2);
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #8c6d46;
+            position: relative;
+            display: inline-block;
+        }
+
+        .page-subtitle::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8c3c2c, transparent);
+        }
+
+        /* 通知控制栏 */
+        .notification-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+            background: rgba(255, 253, 245, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+        }
+
+        .notification-stats {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            color: #5c4c3e;
+        }
+
+        .stat-count {
+            font-weight: bold;
+            color: #8c3c2c;
+            background: rgba(140, 61, 44, 0.1);
+            padding: 4px 10px;
+            border-radius: 15px;
+        }
+
+        .notification-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 10px 20px;
+            background: #8c6d46;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            background: #745b3a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.2);
+        }
+
+        .action-btn.secondary {
+            background: rgba(255, 253, 245, 0.9);
+            border: 1px solid #d6ccc2;
+            color: #5c4c3e;
+        }
+
+        .action-btn.secondary:hover {
+            background: rgba(140, 109, 70, 0.1);
+            border-color: #8c6d46;
+        }
+
+        /* 通知筛选 */
+        .notification-filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: rgba(255, 253, 245, 0.9);
+            border: 1px solid #d6ccc2;
+            border-radius: 30px;
+            color: #5c4c3e;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #8c6d46;
+            color: #fff;
+        }
+
+        /* 通知列表 */
+        .notification-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .notification-item {
+            background: rgba(255, 253, 245, 0.9);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #d6ccc2;
+            transition: all 0.3s ease;
+            display: flex;
+            gap: 20px;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(92, 76, 62, 0.1);
+        }
+
+        .notification-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(92, 76, 62, 0.15);
+        }
+
+        .notification-item.unread {
+            border-left: 5px solid #8c3c2c;
+            background: rgba(255, 253, 245, 0.95);
+        }
+
+        .notification-item.important {
+            border-left: 5px solid #d4af37;
+            background: rgba(255, 253, 245, 0.98);
+        }
+
+        .notification-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .notification-icon.system {
+            background: rgba(140, 109, 70, 0.15);
+            color: #8c6d46;
+        }
+
+        .notification-icon.article {
+            background: rgba(76, 140, 76, 0.15);
+            color: #4c8c4c;
+        }
+
+        .notification-icon.user {
+            background: rgba(140, 76, 76, 0.15);
+            color: #8c4c4c;
+        }
+
+        .notification-icon.security {
+            background: rgba(140, 61, 44, 0.15);
+            color: #8c3c2c;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .notification-title {
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: #5c4c3e;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification-badge {
+            background: #8c3c2c;
+            color: white;
+            border-radius: 15px;
+            padding: 4px 10px;
+            font-size: 0.8rem;
+            font-weight: normal;
+        }
+
+        .notification-time {
+            font-size: 0.9rem;
+            color: #8c6d46;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .notification-message {
+            color: #5c4c3e;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .notification-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #8c6d46;
+        }
+
+        .notification-sender {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .notification-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .notification-action {
+            background: none;
+            border: none;
+            color: #8c6d46;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .notification-action:hover {
+            background: rgba(140, 109, 70, 0.1);
+            color: #8c3c2c;
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            background: rgba(255, 253, 245, 0.9);
+            border-radius: 12px;
+            border: 1px solid #d6ccc2;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+        }
+
+        .empty-state i {
+            font-size: 5rem;
+            color: #d6ccc2;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2rem;
+            color: #8c6d46;
+            margin-bottom: 15px;
+        }
+
+        .empty-state p {
+            color: #5c4c3e;
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+
+        /* 页脚 */
+        .page-footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 50px;
+            color: #8c6d46;
+            font-size: 0.9rem;
+            border-top: 1px solid #d6ccc2;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .notification-controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .notification-stats {
+                flex-wrap: wrap;
+            }
+
+            .notification-item {
+                flex-direction: column;
+            }
+
+            .notification-icon {
+                align-self: flex-start;
+            }
+
+            .notification-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .notification-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .notification-actions {
+                align-self: flex-end;
+            }
+        }
+
+        .decoration {
+            position: absolute;
+            opacity: 0.1;
+            z-index: -1;
+            font-family: 'Ma Shan Zheng', cursive;
+            color: #8c3c2c;
+        }
+
+        .decoration-1 {
+            top: 50px;
+            left: 5%;
+            font-size: 6rem;
+            transform: rotate(-10deg);
+        }
+
+        .decoration-2 {
+            bottom: 100px;
+            right: 5%;
+            font-size: 5rem;
+            transform: rotate(15deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="decoration decoration-1">消</div>
+    <div class="decoration decoration-2">息</div>
+
+    <div class="notification-container">
+        <header class="page-header">
+            <h1 class="page-title">消息中心</h1>
+            <p class="page-subtitle">管理层信息通知</p>
+        </header>
+
+        <div class="notification-controls">
+            <div class="notification-stats">
+                <div class="stat-item">
+                    <i class="fas fa-bell"></i>
+                    <span>总消息:</span>
+                    <span class="stat-count" id="totalCount">12</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>未读:</span>
+                    <span class="stat-count" id="unreadCount">5</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>重要:</span>
+                    <span class="stat-count" id="importantCount">3</span>
+                </div>
+            </div>
+
+            <div class="notification-actions">
+                <button class="action-btn secondary" id="markAllRead">
+                    <i class="fas fa-check-double"></i> 全部标记为已读
+                </button>
+                <button class="action-btn" id="refreshNotifications">
+                    <i class="fas fa-sync-alt"></i> 刷新消息
+                </button>
+            </div>
+        </div>
+
+        <div class="notification-filters">
+            <button class="filter-btn active">
+                <i class="fas fa-layer-group"></i> 全部消息
+            </button>
+            <button class="filter-btn">
+                <i class="fas fa-envelope"></i> 未读消息
+            </button>
+            <button class="filter-btn">
+                <i class="fas fa-exclamation-circle"></i> 重要消息
+            </button>
+            <button class="filter-btn">
+                <i class="fas fa-cog"></i> 系统通知
+            </button>
+            <button class="filter-btn">
+                <i class="fas fa-file-alt"></i> 文章相关
+            </button>
+            <button class="filter-btn">
+                <i class="fas fa-users"></i> 用户管理
+            </button>
+            <button class="filter-btn">
+                <i class="fas fa-shield-alt"></i> 安全提醒
+            </button>
+        </div>
+
+        <div class="notification-list">
+            <!-- 重要通知 -->
+            <div class="notification-item important unread">
+                <div class="notification-icon security">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <div class="notification-title">
+                            <span>系统安全更新提醒</span>
+                            <span class="notification-badge">重要</span>
+                        </div>
+                        <div class="notification-time">
+                            <i class="far fa-clock"></i> 2023-10-20 09:30
+                        </div>
+                    </div>
+                    <div class="notification-message">
+                        检测到系统存在安全漏洞，请立即安排技术人员进行修复。漏洞详情：用户权限验证模块存在潜在风险，可能导致未授权访问。
+                    </div>
+                    <div class="notification-meta">
+                        <div class="notification-sender">
+                            <i class="fas fa-user-shield"></i> 系统安全团队
+                        </div>
+                        <div class="notification-actions">
+                            <button class="notification-action mark-read">
+                                <i class="fas fa-check"></i> 标记已读
+                            </button>
+                            <button class="notification-action">
+                                <i class="fas fa-flag"></i> 标记重要
+                            </button>
+                            <button class="notification-action delete">
+                                <i class="fas fa-trash"></i> 删除
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 未读通知 -->
+            <div class="notification-item unread">
+                <div class="notification-icon article">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <div class="notification-title">
+                            <span>新文章提交待审核</span>
+                            <span class="notification-badge">未读</span>
+                        </div>
+                        <div class="notification-time">
+                            <i class="far fa-clock"></i> 2023-10-19 16:45
+                        </div>
+                    </div>
+                    <div class="notification-message">
+                        作者"张文化"提交了新文章《传统剪纸技艺的现代传承》，请及时审核并决定是否发布。
+                    </div>
+                    <div class="notification-meta">
+                        <div class="notification-sender">
+                            <i class="fas fa-user-edit"></i> 内容审核系统
+                        </div>
+                        <div class="notification-actions">
+                            <button class="notification-action mark-read">
+                                <i class="fas fa-check"></i> 标记已读
+                            </button>
+                            <button class="notification-action">
+                                <i class="fas fa-external-link-alt"></i> 查看详情
+                            </button>
+                            <button class="notification-action delete">
+                                <i class="fas fa-trash"></i> 删除
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 系统通知 -->
+            <div class="notification-item">
+                <div class="notification-icon system">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <div class="notification-title">
+                            <span>系统维护计划通知</span>
+                        </div>
+                        <div class="notification-time">
+                            <i class="far fa-clock"></i> 2023-10-19 14:20
+                        </div>
+                    </div>
+                    <div class="notification-message">
+                        云间小阁将于本周六（10月22日）凌晨2:00-4:00进行系统维护，期间网站将无法访问，请您提前安排好相关工作。
+                    </div>
+                    <div class="notification-meta">
+                        <div class="notification-sender">
+                            <i class="fas fa-server"></i> 系统运维团队
+                        </div>
+                        <div class="notification-actions">
+                            <button class="notification-action mark-read">
+                                <i class="fas fa-check"></i> 标记已读
+                            </button>
+                            <button class="notification-action delete">
+                                <i class="fas fa-trash"></i> 删除
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 用户管理通知 -->
+            <div class="notification-item">
+                <div class="notification-icon user">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <div class="notification-title">
+                            <span>新用户注册审核</span>
+                        </div>
+                        <div class="notification-time">
+                            <i class="far fa-clock"></i> 2023-10-19 11:05
+                        </div>
+                    </div>
+                    <div class="notification-message">
+                        用户"李历史"已提交注册申请，请审核其资料并决定是否批准。该用户申请成为内容编辑。
+                    </div>
+                    <div class="notification-meta">
+                        <div class="notification-sender">
+                            <i class="fas fa-user-plus"></i> 用户管理系统
+                        </div>
+                        <div class="notification-actions">
+                            <button class="notification-action mark-read">
+                                <i class="fas fa-check"></i> 标记已读
+                            </button>
+                            <button class="notification-action">
+                                <i class="fas fa-external-link-alt"></i> 审核用户
+                            </button>
+                            <button class="notification-action delete">
+                                <i class="fas fa-trash"></i> 删除
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 重要通知 -->
+            <div class="notification-item important">
+                <div class="notification-icon security">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-header">
+                        <div class="notification-title">
+                            <span>数据备份提醒</span>
+                            <span class="notification-badge">重要</span>
+                        </div>
+                        <div class="notification-time">
+                            <i class="far fa-clock"></i> 2023-10-18 17:30
+                        </div>
+                    </div>
+                    <div class="notification-message">
+                        系统检测到已超过7天未进行完整数据备份，建议立即安排备份操作以确保数据安全。
+                    </div>
+                    <div class="notification-meta">
+                        <div class="notification-sender">
+                            <i class="fas fa-database"></i> 数据管理团队
+                        </div>
+                        <div class="notification-actions">
+                            <button class="notification-action mark-read">
+                                <i class="fas fa-check"></i> 标记已读
+                            </button>
+                            <button class="notification-action">
+                                <i class="fas fa-cog"></i> 立即备份
+                            </button>
+                            <button class="notification-action delete">
+                                <i class="fas fa-trash"></i> 删除
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="page-footer">
+            <p>© 2023 云间小阁 | 管理层信息通知中心</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 筛选按钮功能
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 实际应用中这里会根据筛选条件显示不同的通知
+                    console.log('筛选: ' + this.textContent.trim());
+                });
+            });
+            
+            // 标记为已读功能
+            const markReadBtns = document.querySelectorAll('.mark-read');
+            
+            markReadBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const notificationItem = this.closest('.notification-item');
+                    const badge = notificationItem.querySelector('.notification-badge');
+                    
+                    // 移除未读状态
+                    notificationItem.classList.remove('unread');
+                    
+                    if (badge && badge.textContent === '未读') {
+                        badge.remove();
+                    }
+                    
+                    // 更新统计信息
+                    updateNotificationStats();
+                    
+                    // 实际应用中这里会向服务器发送标记为已读的请求
+                    console.log('标记为已读');
+                });
+            });
+            
+            // 删除通知功能
+            const deleteBtns = document.querySelectorAll('.notification-action.delete');
+            
+            deleteBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const notificationItem = this.closest('.notification-item');
+                    const title = notificationItem.querySelector('.notification-title span').textContent;
+                    
+                    if (confirm(`确定要删除"${title}"通知吗？`)) {
+                        notificationItem.style.opacity = '0';
+                        notificationItem.style.transition = 'opacity 0.3s ease';
+                        
+                        setTimeout(() => {
+                            notificationItem.remove();
+                            checkEmptyState();
+                            updateNotificationStats();
+                        }, 300);
+                    }
+                });
+            });
+            
+            // 全部标记为已读功能
+            const markAllReadBtn = document.getElementById('markAllRead');
+            
+            markAllReadBtn.addEventListener('click', function () {
+                const unreadNotifications = document.querySelectorAll('.notification-item.unread');
+                
+                unreadNotifications.forEach(notification => {
+                    notification.classList.remove('unread');
+                    const badge = notification.querySelector('.notification-badge');
+                    
+                    if (badge && badge.textContent === '未读') {
+                        badge.remove();
+                    }
+                });
+                
+                // 更新统计信息
+                updateNotificationStats();
+                
+                // 显示成功消息
+                showMessage('所有通知已标记为已读', 'success');
+            });
+            
+            // 刷新消息功能
+            const refreshBtn = document.getElementById('refreshNotifications');
+            
+            refreshBtn.addEventListener('click', function () {
+                // 模拟刷新动画
+                this.querySelector('i').classList.add('fa-spin');
+                
+                setTimeout(() => {
+                    this.querySelector('i').classList.remove('fa-spin');
+                    showMessage('消息已刷新', 'success');
+                }, 1000);
+                
+                // 实际应用中这里会从服务器获取最新消息
+                console.log('刷新消息');
+            });
+            
+            // 检查空状态
+            function checkEmptyState() {
+                const notifications = document.querySelectorAll('.notification-item');
+                
+                if (notifications.length === 0) {
+                    const notificationList = document.querySelector('.notification-list');
+                    const emptyState = document.createElement('div');
+                    emptyState.className = 'empty-state';
+                    emptyState.innerHTML = `
+                        <i class="far fa-bell-slash"></i>
+                        <h3>暂无通知</h3>
+                        <p>您还没有收到任何通知，当有新的系统消息或用户互动时，我们会及时通知您。</p>
+                    `;
+                    
+                    notificationList.appendChild(emptyState);
+                }
+            }
+            
+            // 更新统计信息
+            function updateNotificationStats() {
+                const totalCount = document.querySelectorAll('.notification-item').length;
+                const unreadCount = document.querySelectorAll('.notification-item.unread').length;
+                const importantCount = document.querySelectorAll('.notification-item.important').length;
+                
+                document.getElementById('totalCount').textContent = totalCount;
+                document.getElementById('unreadCount').textContent = unreadCount;
+                document.getElementById('importantCount').textContent = importantCount;
+            }
+            
+            // 显示消息提示
+            function showMessage(message, type) {
+                // 创建消息元素
+                const messageEl = document.createElement('div');
+                messageEl.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 15px 25px;
+                    background: ${type === 'success' ? '#4c8c4c' : '#8c3c2c'};
+                    color: white;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    z-index: 1000;
+                    animation: slideIn 0.3s ease;
+                `;
+                messageEl.textContent = message;
+                
+                // 添加动画样式
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                document.body.appendChild(messageEl);
+                
+                // 3秒后自动移除
+                setTimeout(() => {
+                    messageEl.style.animation = 'slideOut 0.3s ease';
+                    messageEl.style.transform = 'translateX(100%)';
+                    messageEl.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        document.body.removeChild(messageEl);
+                    }, 300);
+                }, 3000);
+            }
+            
+            // 初始化统计信息
+            updateNotificationStats();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通知设置 - 云间小阁</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image:
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+
+        .settings-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* 页面标题区域 */
+        .page-header {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .page-header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8c6d46, transparent);
+        }
+
+        .page-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 3.5rem;
+            color: #8c3c2c;
+            margin-bottom: 15px;
+            letter-spacing: 5px;
+            text-shadow: 2px 2px 4px rgba(92, 76, 62, 0.2);
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #8c6d46;
+            position: relative;
+            display: inline-block;
+        }
+
+        .page-subtitle::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8c3c2c, transparent);
+        }
+
+        /* 设置内容区域 */
+        .settings-content {
+            background: rgba(255, 253, 245, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2rem;
+            color: #8c3c2c;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9e1d5;
+        }
+
+        /* 通知类型设置 */
+        .notification-category {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e9e1d5;
+        }
+
+        .notification-category:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .category-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #5c4c3e;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-icon {
+            color: #8c6d46;
+            font-size: 1.5rem;
+        }
+
+        .category-description {
+            color: #8c6d46;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        /* 通知设置项 */
+        .notification-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f1e9dd;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-info {
+            flex: 1;
+        }
+
+        .notification-name {
+            font-weight: bold;
+            color: #5c4c3e;
+            margin-bottom: 5px;
+        }
+
+        .notification-desc {
+            font-size: 0.9rem;
+            color: #8c6d46;
+        }
+
+        .notification-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* 开关样式 */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #d6ccc2;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #8c6d46;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* 通知方式选择 */
+        .delivery-options {
+            display: flex;
+            gap: 15px;
+        }
+
+        .delivery-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .delivery-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #8c6d46;
+        }
+
+        .delivery-option label {
+            font-size: 0.9rem;
+            color: #5c4c3e;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* 全局设置 */
+        .global-settings {
+            background: #f9f5eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+            border: 1px solid #e9e1d5;
+        }
+
+        .global-setting {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .global-setting:last-child {
+            margin-bottom: 0;
+        }
+
+        .global-info {
+            flex: 1;
+        }
+
+        .global-name {
+            font-weight: bold;
+            color: #5c4c3e;
+            margin-bottom: 5px;
+        }
+
+        .global-desc {
+            font-size: 0.9rem;
+            color: #8c6d46;
+        }
+
+        /* 按钮样式 */
+        .btn-group {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #8c6d46;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #745b3a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.25);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 253, 245, 0.9);
+            border: 1px solid #d6ccc2;
+            color: #5c4c3e;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(140, 109, 70, 0.1);
+            border-color: #8c6d46;
+        }
+
+        /* 页脚 */
+        .page-footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 50px;
+            color: #8c6d46;
+            font-size: 0.9rem;
+            border-top: 1px solid #d6ccc2;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .notification-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .notification-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .delivery-options {
+                flex-wrap: wrap;
+            }
+
+            .global-setting {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        .decoration {
+            position: absolute;
+            opacity: 0.1;
+            z-index: -1;
+            font-family: 'Ma Shan Zheng', cursive;
+            color: #8c3c2c;
+        }
+
+        .decoration-1 {
+            top: 50px;
+            left: 5%;
+            font-size: 6rem;
+            transform: rotate(-10deg);
+        }
+
+        .decoration-2 {
+            bottom: 100px;
+            right: 5%;
+            font-size: 5rem;
+            transform: rotate(15deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="decoration decoration-1">通</div>
+    <div class="decoration decoration-2">知</div>
+
+    <div class="settings-container">
+        <header class="page-header">
+            <h1 class="page-title">通知设置</h1>
+            <p class="page-subtitle">自定义您的消息接收偏好</p>
+        </header>
+
+        <div class="settings-content">
+            <h2 class="section-title">通知偏好设置</h2>
+
+            <!-- 系统通知 -->
+            <div class="notification-category">
+                <div class="category-header">
+                    <div class="category-title">
+                        <i class="fas fa-cog category-icon"></i>
+                        <span>系统通知</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="category-description">
+                    接收系统维护、更新和安全相关的通知
+                </div>
+
+                <div class="notification-item">
+                    <div class="notification-info">
+                        <div class="notification-name">系统维护通知</div>
+                        <div class="notification-desc">网站维护、功能更新等系统相关通知</div>
+                    </div>
+                    <div class="notification-controls">
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <div class="delivery-options">
+                            <div class="delivery-option">
+                                <input type="checkbox" id="sys-inapp" checked>
+                                <label for="sys-inapp"><i class="fas fa-bell"></i> 站内</label>
+                            </div>
+                            <div class="delivery-option">
+                                <input type="checkbox" id="sys-email" checked>
+                                <label for="sys-email"><i class="fas fa-envelope"></i> 邮件</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notification-item">
+                    <div class="notification-info">
+                        <div class="notification-name">安全提醒</div>
+                        <div class="notification-desc">账户安全、异常登录等安全相关提醒</div>
+                    </div>
+                    <div class="notification-controls">
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <div class="delivery-options">
+                            <div class="delivery-option">
+                                <input type="checkbox" id="sec-inapp" checked>
+                                <label for="sec-inapp"><i class="fas fa-bell"></i> 站内</label>
+                            </div>
+                            <div class="delivery-option">
+                                <input type="checkbox" id="sec-email" checked>
+                                <label for="sec-email"><i class="fas fa-envelope"></i> 邮件</label>
+                            </div>
+                            <div class="delivery-option">
+                                <input type="checkbox" id="sec-sms">
+                                <label for="sec-sms"><i class="fas fa-sms"></i> 短信</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 内容通知 -->
+            <div class="notification-category">
+                <div class="category-header">
+                    <div class="category-title">
+                        <i class="fas fa-file-alt category-icon"></i>
+                        <span>内容通知</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="category-description">
+                    接收文章发布、审核、评论等相关通知
+                </div>
+
+                <div class="notification-item">
+                    <div class="notification-info">
+                        <div class="notification-name">文章审核结果</div>
+                        <div class="notification-desc">文章审核通过或被拒绝的通知</div>
+                    </div>
+                    <div class="notification-controls">
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <div class="delivery-options">
+                            <div class="delivery-option">
+                                <input type="checkbox" id="art-inapp" checked>
+                                <label for="art-inapp"><i class="fas fa-bell"></i> 站内</label>
+                            </div>
+                            <div class="delivery-option">
+                                <input type="checkbox" id="art-email">
+                                <label for="art-email"><i class="fas fa-envelope"></i> 邮件</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notification-item">
+                    <div class="notification-info">
+                        <div class="notification-name">新评论通知</div>
+                        <div class="notification-desc">当您的文章收到新评论时通知</div>
+                    </div>
+                    <div class="notification-controls">
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <div class="delivery-options">
+                            <div class="delivery-option">
+                                <input type="checkbox" id="com-inapp" checked>
+                                <label for="com-inapp"><i class="fas fa-bell"></i> 站内</label>
+                            </div>
+                            <div class="delivery-option">
+                                <input type="checkbox" id="com-email">
+                                <label for="com-email"><i class="fas fa-envelope"></i> 邮件</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notification-item">
+                    <div class="notification-info">
+                        <div class="notification-name">文章被收藏</div>
+                        <div class="notification-desc">当您的文章被其他用户收藏时通知</div>
+                    </div>
+                    <div class="notification-controls">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                        <div class="delivery-options">
+                            <div class="delivery-option">
+                                <input type="checkbox" id="fav-inapp">
+                                <label for="fav-inapp"><i class="fas fa-bell"></i> 站内</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 社交通知 -->
+            <div class="notification-category">
+                <div class="category-header">
+                    <div class="category-title">
+                        <i class="fas fa-users category-icon"></i>
+                        <span>社交通知</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="category-description">
+                    接收关注、私信、点赞等社交互动通知
+                </div>
+
+                <div class="notification-item">
+                    <div class="notification-info">
+                        <div class="notification-name">新关注者</div>
+                        <div class="notification-desc">当有新用户关注您时通知</div>
+                    </div>
+                    <div class="notification-controls">
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <div class="delivery-options">
+                            <div class="delivery-option">
+                                <input type="checkbox" id="fol-inapp" checked>
+                                <label for="fol-inapp"><i class="fas fa-bell"></i> 站内</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notification-item">
+                    <div class="notification-info">
+                        <div class="notification-name">私信通知</div>
+                        <div class="notification-desc">当您收到新私信时通知</div>
+                    </div>
+                    <div class="notification-controls">
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <div class="delivery-options">
+                            <div class="delivery-option">
+                                <input type="checkbox" id="msg-inapp" checked>
+                                <label for="msg-inapp"><i class="fas fa-bell"></i> 站内</label>
+                            </div>
+                            <div class="delivery-option">
+                                <input type="checkbox" id="msg-email">
+                                <label for="msg-email"><i class="fas fa-envelope"></i> 邮件</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notification-item">
+                    <div class="notification-info">
+                        <div class="notification-name">点赞与收藏</div>
+                        <div class="notification-desc">当您的文章收到点赞或收藏时通知</div>
+                    </div>
+                    <div class="notification-controls">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                        <div class="delivery-options">
+                            <div class="delivery-option">
+                                <input type="checkbox" id="like-inapp">
+                                <label for="like-inapp"><i class="fas fa-bell"></i> 站内</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 全局设置 -->
+            <div class="global-settings">
+                <h3 class="section-title" style="font-size: 1.5rem; margin-bottom: 15px;">全局设置</h3>
+                
+                <div class="global-setting">
+                    <div class="global-info">
+                        <div class="global-name">免打扰时段</div>
+                        <div class="global-desc">设置免打扰时段，在此期间不发送任何通知</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="global-setting">
+                    <div class="global-info">
+                        <div class="global-name">通知声音</div>
+                        <div class="global-desc">启用或禁用通知声音</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="global-setting">
+                    <div class="global-info">
+                        <div class="global-name">推送摘要</div>
+                        <div class="global-desc">每日推送一次通知摘要，而不是实时推送</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 操作按钮 -->
+            <div class="btn-group">
+                <button class="btn btn-secondary" id="resetBtn">
+                    <i class="fas fa-undo"></i> 恢复默认设置
+                </button>
+                <button class="btn btn-primary" id="saveBtn">
+                    <i class="fas fa-save"></i> 保存设置
+                </button>
+            </div>
+        </div>
+
+        <footer class="page-footer">
+            <p>© 2023 云间小阁 | 通知设置中心</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 类别开关联动
+            const categorySwitches = document.querySelectorAll('.category-header .switch input');
+            
+            categorySwitches.forEach(switchEl => {
+                switchEl.addEventListener('change', function() {
+                    const category = this.closest('.notification-category');
+                    const items = category.querySelectorAll('.notification-item .switch input');
+                    
+                    if (this.checked) {
+                        items.forEach(item => {
+                            item.checked = true;
+                        });
+                    } else {
+                        items.forEach(item => {
+                            item.checked = false;
+                        });
+                    }
+                });
+            });
+            
+            // 保存设置功能
+            const saveBtn = document.getElementById('saveBtn');
+            
+            saveBtn.addEventListener('click', function() {
+                // 模拟保存过程
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 保存中...';
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-check"></i> 保存成功';
+                    this.style.background = '#4c8c4c';
+                    
+                    // 显示成功消息
+                    showMessage('通知设置已成功更新', 'success');
+                    
+                    // 恢复按钮状态
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-save"></i> 保存设置';
+                        this.style.background = '';
+                        this.disabled = false;
+                    }, 2000);
+                }, 1500);
+            });
+            
+            // 重置设置功能
+            const resetBtn = document.getElementById('resetBtn');
+            
+            resetBtn.addEventListener('click', function() {
+                if (confirm('确定要恢复默认设置吗？这将重置所有通知偏好。')) {
+                    // 重置所有开关到默认状态
+                    const allSwitches = document.querySelectorAll('.switch input');
+                    allSwitches.forEach(switchEl => {
+                        switchEl.checked = switchEl.id.includes('sys') || 
+                                          switchEl.id.includes('sec') || 
+                                          switchEl.id.includes('art') || 
+                                          switchEl.id.includes('com') || 
+                                          switchEl.id.includes('fol') || 
+                                          switchEl.id.includes('msg');
+                    });
+                    
+                    // 重置通知方式
+                    const allDeliveryOptions = document.querySelectorAll('.delivery-option input');
+                    allDeliveryOptions.forEach(option => {
+                        option.checked = !option.id.includes('sms') && 
+                                       !option.id.includes('fav') && 
+                                       !option.id.includes('like');
+                    });
+                    
+                    // 显示成功消息
+                    showMessage('已恢复默认设置', 'success');
+                }
+            });
+            
+            // 显示消息提示
+            function showMessage(message, type) {
+                // 创建消息元素
+                const messageEl = document.createElement('div');
+                messageEl.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 15px 25px;
+                    background: ${type === 'success' ? '#4c8c4c' : '#8c3c2c'};
+                    color: white;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    z-index: 1000;
+                    animation: slideIn 0.3s ease;
+                `;
+                messageEl.textContent = message;
+                
+                // 添加动画样式
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOut {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                document.body.appendChild(messageEl);
+                
+                // 3秒后自动移除
+                setTimeout(() => {
+                    messageEl.style.animation = 'slideOut 0.3s ease';
+                    messageEl.style.transform = 'translateX(100%)';
+                    messageEl.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        document.body.removeChild(messageEl);
+                    }, 300);
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>

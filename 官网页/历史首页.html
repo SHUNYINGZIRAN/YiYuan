@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>历史长河 - 云间文苑</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image:
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 顶部导航栏 */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 2px solid #d6ccc2;
+        }
+
+        .logo {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.2rem;
+            color: #8c6d46;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            margin-left: 10px;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            padding: 5px 15px;
+            border: 1px solid #d6ccc2;
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            padding: 8px;
+            outline: none;
+            font-family: 'Noto Serif SC', serif;
+            color: #5c4c3e;
+            width: 150px;
+        }
+
+        .search-btn {
+            background: none;
+            border: none;
+            color: #8c6d46;
+            cursor: pointer;
+        }
+
+        /* 主导航 */
+        .main-nav {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #d6ccc2;
+        }
+
+        .nav-item {
+            padding: 10px 25px;
+            font-size: 1.2rem;
+            color: #5c4c3e;
+            text-decoration: none;
+            position: relative;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item::after {
+            content: "";
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: #8c6d46;
+            transition: width 0.3s ease;
+        }
+
+        .nav-item.active {
+            color: #8c6d46;
+            font-weight: bold;
+        }
+
+        .nav-item.active::after {
+            width: 100%;
+        }
+
+        .nav-item:hover::after {
+            width: 100%;
+        }
+
+        /* 页面标题 */
+        .page-header {
+            text-align: center;
+            padding: 40px 0 30px;
+            position: relative;
+        }
+
+        .page-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.8rem;
+            color: #5c4c3e;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .page-title::before,
+        .page-title::after {
+            content: "※";
+            position: relative;
+            margin: 0 15px;
+            color: #c4a77d;
+            font-size: 1.8rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #745b3a;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* 内容区域 */
+        .content-section {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+        }
+
+        .content-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        /* 历史时间线 */
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            background-color: #c4a77d;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1.5px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #8c6d46;
+            border: 3px solid #c4a77d;
+            border-radius: 50%;
+            top: 20px;
+            z-index: 1;
+        }
+
+        .timeline-item:nth-child(odd)::after {
+            right: -10px;
+        }
+
+        .timeline-item:nth-child(even)::after {
+            left: -10px;
+        }
+
+        .timeline-content {
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+        }
+
+        .timeline-year {
+            font-weight: bold;
+            color: #8c6d46;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .timeline-title {
+            font-size: 1.3rem;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+        }
+
+        .timeline-desc {
+            color: #745b3a;
+            line-height: 1.6;
+        }
+
+        /* 历史文章网格 */
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .article-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #d6ccc2;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .article-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .article-card:hover .article-image img {
+            transform: scale(1.05);
+        }
+
+        .article-content {
+            padding: 20px;
+        }
+
+        .article-title {
+            font-size: 1.3rem;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .article-desc {
+            color: #745b3a;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            display: -webkit-box;
+            display: -moz-box;
+            display: box;
+            -webkit-line-clamp: 3;
+            -moz-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            -moz-box-orient: vertical;
+            box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #8c6d46;
+            font-size: 0.9rem;
+        }
+
+        /* 历史人物 */
+        .figures-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .figure-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            transition: all 0.3s ease;
+        }
+
+        .figure-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .figure-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            overflow: hidden;
+            border: 3px solid #c4a77d;
+        }
+
+        .figure-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .figure-name {
+            font-size: 1.3rem;
+            color: #5c4c3e;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .figure-dynasty {
+            color: #8c6d46;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .figure-desc {
+            color: #745b3a;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* 历史名言 */
+        .quotes-section {
+            background: linear-gradient(rgba(140, 109, 70, 0.1), rgba(140, 109, 70, 0.1)), url('https://images.unsplash.com/photo-1547981609-4b6bfc67c272?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center;
+            background-size: cover;
+            border-radius: 12px;
+            padding: 50px 30px;
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+            color: #5c4c3e;
+            border: 1px solid #d6ccc2;
+        }
+
+        .quotes-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            border-radius: 12px;
+            z-index: -1;
+        }
+
+        .quote {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+
+
+        .quote-author {
+            font-size: 1.2rem;
+            color: #8c6d46;
+            font-style: italic;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .timeline::after {
+                left: 31px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+
+            .timeline-item::after {
+                left: 21px;
+            }
+
+            .timeline-item:nth-child(odd)::after {
+                right: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .main-nav {
+                flex-wrap: wrap;
+            }
+
+            .nav-item {
+                margin: 5px;
+                padding: 8px 15px;
+            }
+
+            .page-title {
+                font-size: 2.2rem;
+            }
+
+            .articles-grid,
+            .figures-container {
+                grid-template-columns: 1fr;
+            }
+
+            .quote {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <div class="top-nav">
+            <div class="logo">
+                <i class="fas fa-mountain"></i>
+                <span>云间文苑</span>
+            </div>
+
+            <div class="user-actions">
+                <div class="search-box">
+                    <input type="text" placeholder="搜索历史...">
+                    <button class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主导航 -->
+        <nav class="main-nav">
+            <a href="#" class="nav-item active">历史</a>
+            <a href="#" class="nav-item">非遗</a>
+            <a href="#" class="nav-item">公益</a>
+            <a href="#" class="nav-item">我的</a>
+        </nav>
+
+        <!-- 页面标题 -->
+        <header class="page-header">
+            <h1 class="page-title">历史长河</h1>
+            <p class="page-subtitle">以史为鉴，可知兴替。探索中华五千年文明，感受历史厚重与智慧</p>
+        </header>
+
+        <!-- 时间线 -->
+        <section class="content-section">
+            <h2 class="section-title">中华历史脉络</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">约公元前2070年</div>
+                        <h3 class="timeline-title">夏朝建立</h3>
+                        <p class="timeline-desc">中国史书中记载的第一个世袭制朝代，标志着中国从原始社会进入奴隶社会，禹传位于启，开创"家天下"的局面。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">公元前221年</div>
+                        <h3 class="timeline-title">秦朝统一</h3>
+                        <p class="timeline-desc">秦始皇嬴政统一六国，建立中国历史上第一个大一统王朝，推行书同文、车同轨，统一度量衡，修筑万里长城。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">公元618年</div>
+                        <h3 class="timeline-title">唐朝盛世</h3>
+                        <p class="timeline-desc">李渊建立唐朝，其后太宗李世民开创"贞观之治"，玄宗时期达到"开元盛世"，成为当时世界上最强盛的国家之一。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">1368年</div>
+                        <h3 class="timeline-title">明朝建立</h3>
+                        <p class="timeline-desc">朱元璋推翻元朝统治，建立明朝，恢复汉人统治。明成祖时期郑和七下西洋，展现了中国强大的航海技术。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">1912年</div>
+                        <h3 class="timeline-title">中华民国成立</h3>
+                        <p class="timeline-desc">辛亥革命成功，推翻清朝统治，结束了两千多年的封建帝制，孙中山就任中华民国临时大总统。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 精选文章 -->
+        <section class="content-section">
+            <h2 class="section-title">历史文章精选</h2>
+            <div class="articles-grid">
+                <div class="article-card">
+                    <div class="article-image">
+                        <img src="https://images.unsplash.com/photo-1547981609-4b6bfc67c272?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                            alt="丝绸之路">
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">丝绸之路：东西方文明交流的桥梁</h3>
+                        <p class="article-desc">丝绸之路不仅是古代贸易路线，更是文化、技术和思想交流的重要通道，对世界文明发展产生了深远影响。</p>
+                        <div class="article-meta">
+                            <span><i class="far fa-eye"></i> 1286</span>
+                            <span><i class="far fa-calendar"></i> 2023-10-15</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article-card">
+                    <div class="article-image">
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                            alt="科举制度">
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">科举制度：中国古代的选才之道</h3>
+                        <p class="article-desc">始于隋唐，盛于宋明的科举制度，是中国古代选拔官员的重要方式，对教育和社会流动产生了深远影响。</p>
+                        <div class="article-meta">
+                            <span><i class="far fa-eye"></i> 985</span>
+                            <span><i class="far fa-calendar"></i> 2023-10-10</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article-card">
+                    <div class="article-image">
+                        <img src="https://images.unsplash.com/photo-1577896851231-70ef188d5431?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                            alt="长城">
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">万里长城：中华民族的精神象征</h3>
+                        <p class="article-desc">从春秋战国到明朝，长城的修筑历时两千多年，不仅是军事防御工程，更是中华民族智慧和坚韧的象征。</p>
+                        <div class="article-meta">
+                            <span><i class="far fa-eye"></i> 1562</span>
+                            <span><i class="far fa-calendar"></i> 2023-10-05</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 历史名言 -->
+        <div class="quotes-section">
+            <p class="quote">以铜为镜，可以正衣冠；以古为镜，可以知兴替；以人为镜，可以明得失。</p>
+            <p class="quote-author">—— 唐太宗李世民</p>
+        </div>
+
+        <!-- 历史人物 -->
+        <section class="content-section">
+            <h2 class="section-title">历史名人</h2>
+            <div class="figures-container">
+                <div class="figure-card">
+                    <div class="figure-image">
+                        <img src="https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                            alt="孔子">
+                    </div>
+                    <h3 class="figure-name">孔子</h3>
+                    <p class="figure-dynasty">春秋时期</p>
+                    <p class="figure-desc">儒家学派创始人，中国古代著名思想家、教育家，被尊为"至圣先师"。</p>
+                </div>
+
+                <div class="figure-card">
+                    <div class="figure-image">
+                        <img src="https://images.unsplash.com/photo-1542665175-eef22647d1cc?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                            alt="秦始皇">
+                    </div>
+                    <h3 class="figure-name">秦始皇</h3>
+                    <p class="figure-dynasty">秦朝</p>
+                    <p class="figure-desc">中国第一位皇帝，完成统一大业，建立中央集权制度，对中国历史影响深远。</p>
+                </div>
+
+                <div class="figure-card">
+                    <div class="figure-image">
+                        <img src="https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                            alt="李白">
+                    </div>
+                    <h3 class="figure-name">李白</h3>
+                    <p class="figure-dynasty">唐朝</p>
+                    <p class="figure-desc">唐代著名诗人，被誉为"诗仙"，其诗作豪放奔放，想象丰富，影响深远。</p>
+                </div>
+
+                <div class="figure-card">
+                    <div class="figure-image">
+                        <img src="https://images.unsplash.com/photo-1519895602024-ebd33b7d4925?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                            alt="郑和">
+                    </div>
+                    <h3 class="figure-name">郑和</h3>
+                    <p class="figure-dynasty">明朝</p>
+                    <p class="figure-desc">明代著名航海家，七下西洋，开辟海上丝绸之路，促进中外文化交流。</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 简单的交互效果
+        document.addEventListener('DOMContentLoaded', function () {
+            // 导航项点击效果
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    navItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // 卡片悬停效果
+            const cards = document.querySelectorAll('.article-card, .figure-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function () {
+                    this.style.transform = 'translateY(-5px)';
+                });
+
+                card.addEventListener('mouseleave', function () {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+
+            // 搜索功能
+            const searchBox = document.querySelector('.search-box input');
+            const searchBtn = document.querySelector('.search-btn');
+
+            searchBtn.addEventListener('click', function () {
+                if (searchBox.value.trim() !== '') {
+                    alert(`搜索: ${searchBox.value}`);
+                    searchBox.value = '';
+                }
+            });
+
+            searchBox.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter' && this.value.trim() !== '') {
+                    alert(`搜索: ${this.value}`);
+                    this.value = '';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

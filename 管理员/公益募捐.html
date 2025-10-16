@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公益募捐 - 云间小阁</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image:
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+
+        .donation-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* 页面标题区域 */
+        .page-header {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .page-header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8c6d46, transparent);
+        }
+
+        .page-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 3.5rem;
+            color: #8c3c2c;
+            margin-bottom: 15px;
+            letter-spacing: 5px;
+            text-shadow: 2px 2px 4px rgba(92, 76, 62, 0.2);
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #8c6d46;
+            position: relative;
+            display: inline-block;
+        }
+
+        .page-subtitle::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8c3c2c, transparent);
+        }
+
+        /* 操作工具栏 */
+        .action-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: rgba(255, 253, 245, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .toolbar-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 10px 20px;
+            background: #8c6d46;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.9rem;
+        }
+
+        .action-btn:hover {
+            background: #745b3a;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border: 1px solid #d6ccc2;
+            border-radius: 30px;
+            background: rgba(255, 253, 245, 0.9);
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            color: #5c4c3e;
+            box-shadow: 0 2px 8px rgba(92, 76, 62, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8c6d46;
+        }
+
+        /* 数据概览卡片 */
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 253, 245, 0.9);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #d6ccc2;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.15);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            color: #8c6d46;
+            margin-bottom: 15px;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #8c3c2c;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #5c4c3e;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+
+        .trend-up {
+            color: #4c8c4c;
+        }
+
+        .trend-down {
+            color: #8c4c4c;
+        }
+
+        /* 募捐项目列表 */
+        .projects-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2rem;
+            color: #8c3c2c;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9e1d5;
+        }
+
+        .projects-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .project-card {
+            background: rgba(255, 253, 245, 0.9);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #d6ccc2;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.15);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            color: #5c4c3e;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .project-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .status-ongoing {
+            background: #e8e0d8;
+            color: #8c6d4c;
+        }
+
+        .status-completed {
+            background: #d8e8d8;
+            color: #4c8c4c;
+        }
+
+        .status-draft {
+            background: #e8e8d8;
+            color: #8c8c4c;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: #8c6d46;
+        }
+
+        .project-description {
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .progress-container {
+            margin-bottom: 20px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e9e1d5;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #8c6d46;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .project-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .project-btn {
+            flex: 1;
+            padding: 8px 15px;
+            background: none;
+            border: 1px solid #d6ccc2;
+            border-radius: 5px;
+            color: #5c4c3e;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        .project-btn:hover {
+            background: #8c6d46;
+            color: #fff;
+        }
+
+        /* 发布募捐表单 */
+        .form-section {
+            margin-bottom: 40px;
+        }
+
+        .form-container {
+            background: rgba(255, 253, 245, 0.9);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #d6ccc2;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #5c4c3e;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #d6ccc2;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            color: #5c4c3e;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #8c6d46;
+            box-shadow: 0 0 0 2px rgba(140, 109, 70, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .upload-label-info {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: bold;
+            color: #5c4c3e;
+        }
+
+        .custom-file-upload {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .custom-file-upload input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-box {
+            border: 2px dashed #d6ccc2;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            background: rgba(255, 253, 245, 0.7);
+            margin-top: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-box:hover {
+            border-color: #8c6d46;
+            background: rgba(255, 253, 245, 0.9);
+        }
+
+        .file-upload-box i {
+            font-size: 2.5rem;
+            color: #8c6d46;
+            margin-bottom: 10px;
+        }
+
+        .upload-text {
+            display: block;
+            font-size: 1.1rem;
+            color: #5c4c3e;
+            margin-bottom: 5px;
+        }
+
+        .upload-hint {
+            display: block;
+            font-size: 0.9rem;
+            color: #8c6d46;
+        }
+
+        .file-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .file-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #e9e1d5;
+        }
+
+        .file-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .file-preview .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #8c6d46;
+            color: #8c6d46;
+        }
+
+        .btn-outline:hover {
+            background: #f1e9dd;
+        }
+
+        .btn-primary {
+            background: #8c6d46;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #745b3a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.25);
+        }
+
+        /* 页脚 */
+        .page-footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 50px;
+            color: #8c6d46;
+            font-size: 0.9rem;
+            border-top: 1px solid #d6ccc2;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .action-toolbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+
+            .projects-container {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+
+        .decoration {
+            position: absolute;
+            opacity: 0.1;
+            z-index: -1;
+            font-family: 'Ma Shan Zheng', cursive;
+            color: #8c3c2c;
+        }
+
+        .decoration-1 {
+            top: 50px;
+            left: 5%;
+            font-size: 6rem;
+            transform: rotate(-10deg);
+        }
+
+        .decoration-2 {
+            bottom: 100px;
+            right: 5%;
+            font-size: 5rem;
+            transform: rotate(15deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="decoration decoration-1">善</div>
+    <div class="decoration decoration-2">爱</div>
+
+    <div class="donation-container">
+        <header class="page-header">
+            <h1 class="page-title">公益募捐</h1>
+            <p class="page-subtitle">汇聚爱心，传递温暖</p>
+        </header>
+
+        <!-- 操作工具栏 -->
+        <div class="action-toolbar">
+            <div class="toolbar-actions">
+                <button class="action-btn" id="newDonationBtn">
+                    <i class="fas fa-plus"></i> 发布募捐
+                </button>
+                <button class="action-btn">
+                    <i class="fas fa-download"></i> 导出数据
+                </button>
+            </div>
+
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="搜索募捐项目...">
+            </div>
+        </div>
+
+        <!-- 数据概览 -->
+        <div class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="stat-value">¥ 1,248,567</div>
+                <div class="stat-label">总募捐金额</div>
+                <div class="stat-trend trend-up">
+                    <i class="fas fa-arrow-up"></i> 15.2% 较上月
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-value">3,862</div>
+                <div class="stat-label">捐赠人数</div>
+                <div class="stat-trend trend-up">
+                    <i class="fas fa-arrow-up"></i> 8.7% 较上月
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                <div class="stat-value">156</div>
+                <div class="stat-label">公益项目数</div>
+                <div class="stat-trend trend-up">
+                    <i class="fas fa-arrow-up"></i> 5.3% 较上月
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-value">¥ 86,420</div>
+                <div class="stat-label">本月募捐金额</div>
+                <div class="stat-trend trend-down">
+                    <i class="fas fa-arrow-down"></i> 2.1% 较上月
+                </div>
+            </div>
+        </div>
+
+        <!-- 募捐项目列表 -->
+        <div class="projects-section">
+            <h2 class="section-title">募捐项目</h2>
+
+            <div class="projects-container">
+                <div class="project-card">
+                    <div class="project-header">
+                        <div>
+                            <h3 class="project-title">乡村教育援助计划</h3>
+                            <div class="project-meta">
+                                <span><i class="fas fa-calendar"></i> 2023-08-01 至 2023-12-31</span>
+                            </div>
+                        </div>
+                        <span class="project-status status-ongoing">进行中</span>
+                    </div>
+                    <p class="project-description">为偏远地区学校提供教育资源，改善教学条件，帮助孩子们获得更好的教育机会。</p>
+                    <div class="progress-container">
+                        <div class="progress-info">
+                            <span>已募捐: ¥386,250</span>
+                            <span>目标: ¥500,000</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 77.25%"></div>
+                        </div>
+                        <div class="progress-info">
+                            <span>77.25%</span>
+                            <span>剩余: 75天</span>
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <button class="project-btn"><i class="fas fa-eye"></i> 查看</button>
+                        <button class="project-btn"><i class="fas fa-edit"></i> 编辑</button>
+                        <button class="project-btn"><i class="fas fa-chart-bar"></i> 数据</button>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <div>
+                            <h3 class="project-title">环保公益林建设</h3>
+                            <div class="project-meta">
+                                <span><i class="fas fa-calendar"></i> 2023-06-15 至 2023-11-30</span>
+                            </div>
+                        </div>
+                        <span class="project-status status-completed">已完成</span>
+                    </div>
+                    <p class="project-description">在城市周边地区建设公益林，改善空气质量，为市民提供更多休闲空间。</p>
+                    <div class="progress-container">
+                        <div class="progress-info">
+                            <span>已募捐: ¥312,500</span>
+                            <span>目标: ¥300,000</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 104.17%"></div>
+                        </div>
+                        <div class="progress-info">
+                            <span>104.17%</span>
+                            <span>已完成</span>
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <button class="project-btn"><i class="fas fa-eye"></i> 查看</button>
+                        <button class="project-btn"><i class="fas fa-edit"></i> 编辑</button>
+                        <button class="project-btn"><i class="fas fa-chart-bar"></i> 数据</button>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <div>
+                            <h3 class="project-title">医疗救助基金</h3>
+                            <div class="project-meta">
+                                <span><i class="fas fa-calendar"></i> 2023-09-01 至 2024-02-29</span>
+                            </div>
+                        </div>
+                        <span class="project-status status-ongoing">进行中</span>
+                    </div>
+                    <p class="project-description">为贫困家庭提供医疗救助，帮助他们获得必要的医疗服务，减轻医疗负担。</p>
+                    <div class="progress-container">
+                        <div class="progress-info">
+                            <span>已募捐: ¥549,817</span>
+                            <span>目标: ¥1,000,000</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 54.98%"></div>
+                        </div>
+                        <div class="progress-info">
+                            <span>54.98%</span>
+                            <span>剩余: 133天</span>
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <button class="project-btn"><i class="fas fa-eye"></i> 查看</button>
+                        <button class="project-btn"><i class="fas fa-edit"></i> 编辑</button>
+                        <button class="project-btn"><i class="fas fa-chart-bar"></i> 数据</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 发布募捐表单 -->
+        <div class="form-section" id="donationFormSection" style="display: none;">
+            <h2 class="section-title">发布募捐</h2>
+
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="donationTitle">募捐项目标题</label>
+                    <input type="text" id="donationTitle" class="form-control" placeholder="请输入募捐项目标题">
+                </div>
+
+                <div class="form-group">
+                    <label for="donationType">募捐类型</label>
+                    <select id="donationType" class="form-control">
+                        <option value="">请选择募捐类型</option>
+                        <option value="education">教育公益</option>
+                        <option value="environment">环保公益</option>
+                        <option value="poverty">扶贫公益</option>
+                        <option value="health">医疗健康</option>
+                        <option value="elderly">养老公益</option>
+                        <option value="disaster">灾害救助</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="targetAmount">目标金额 (元)</label>
+                        <input type="number" id="targetAmount" class="form-control" placeholder="请输入目标金额">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="startDate">开始日期</label>
+                        <input type="date" id="startDate" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="endDate">结束日期</label>
+                        <input type="date" id="endDate" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="donationDescription">募捐描述</label>
+                    <textarea id="donationDescription" class="form-control" placeholder="请详细描述募捐项目背景、目的和用途..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="donationImages" class="upload-label-info">上传项目图片（可选）</label>
+                    <div class="custom-file-upload">
+                        <input type="file" id="donationImages" multiple accept="image/*">
+                        <div class="file-upload-box">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span class="upload-text">点击或拖拽图片至此处</span>
+                            <span class="upload-hint">支持JPG、PNG格式</span>
+                        </div>
+                        <div class="file-preview-container"></div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-outline" id="cancelDonationBtn">取消</button>
+                    <button class="btn btn-primary" id="submitDonationBtn">发布募捐</button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="page-footer">
+            <p>© 2023 云间小阁 | 汇聚爱心，传递温暖</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 显示/隐藏发布募捐表单
+            const newDonationBtn = document.getElementById('newDonationBtn');
+            const donationFormSection = document.getElementById('donationFormSection');
+            const cancelDonationBtn = document.getElementById('cancelDonationBtn');
+
+            newDonationBtn.addEventListener('click', function () {
+                donationFormSection.style.display = 'block';
+                // 滚动到表单区域
+                donationFormSection.scrollIntoView({ behavior: 'smooth' });
+            });
+
+            cancelDonationBtn.addEventListener('click', function () {
+                donationFormSection.style.display = 'none';
+                // 重置表单
+                document.getElementById('donationTitle').value = '';
+                document.getElementById('donationType').value = '';
+                document.getElementById('targetAmount').value = '';
+                document.getElementById('startDate').value = '';
+                document.getElementById('endDate').value = '';
+                document.getElementById('donationDescription').value = '';
+                document.querySelector('.file-preview-container').innerHTML = '';
+                document.getElementById('donationImages').value = '';
+            });
+
+            // 图片预览功能
+            const imageInput = document.getElementById('donationImages');
+            const imagePreview = document.querySelector('.file-preview-container');
+
+            imageInput.addEventListener('change', function (e) {
+                imagePreview.innerHTML = '';
+
+                if (this.files) {
+                    Array.from(this.files).forEach(file => {
+                        if (!file.type.match('image.*')) {
+                            alert('请上传图片文件');
+                            return;
+                        }
+
+                        const reader = new FileReader();
+
+                        reader.onload = function (event) {
+                            const previewDiv = document.createElement('div');
+                            previewDiv.className = 'file-preview';
+
+                            const img = document.createElement('img');
+                            img.src = event.target.result;
+
+                            const removeBtn = document.createElement('button');
+                            removeBtn.className = 'remove-btn';
+                            removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                            removeBtn.addEventListener('click', function () {
+                                previewDiv.remove();
+                                // 这里可以添加实际删除文件的逻辑
+                            });
+
+                            previewDiv.appendChild(img);
+                            previewDiv.appendChild(removeBtn);
+                            imagePreview.appendChild(previewDiv);
+                        };
+
+                        reader.readAsDataURL(file);
+                    });
+                }
+            });
+
+            // 拖放功能
+            const uploadBox = document.querySelector('.file-upload-box');
+            const fileInput = uploadBox.closest('.custom-file-upload').querySelector('input[type="file"]');
+
+            uploadBox.addEventListener('dragover', function (e) {
+                e.preventDefault();
+                this.style.borderColor = '#8c6d46';
+                this.style.backgroundColor = 'rgba(140, 109, 70, 0.1)';
+            });
+
+            uploadBox.addEventListener('dragleave', function (e) {
+                e.preventDefault();
+                this.style.borderColor = '#d6ccc2';
+                this.style.backgroundColor = 'rgba(255, 253, 245, 0.7)';
+            });
+
+            uploadBox.addEventListener('drop', function (e) {
+                e.preventDefault();
+                this.style.borderColor = '#d6ccc2';
+                this.style.backgroundColor = 'rgba(255, 253, 245, 0.7)';
+
+                if (e.dataTransfer.files) {
+                    fileInput.files = e.dataTransfer.files;
+                    const event = new Event('change');
+                    fileInput.dispatchEvent(event);
+                }
+            });
+
+            // 表单提交
+            const submitBtn = document.getElementById('submitDonationBtn');
+
+            submitBtn.addEventListener('click', function () {
+                const title = document.getElementById('donationTitle').value;
+                const type = document.getElementById('donationType').value;
+                const amount = document.getElementById('targetAmount').value;
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+                const description = document.getElementById('donationDescription').value;
+
+                if (!title || !type || !amount || !startDate || !endDate || !description) {
+                    alert('请填写完整信息');
+                    return;
+                }
+
+                // 模拟提交成功
+                alert('募捐项目已成功发布，等待审核！');
+                
+                // 隐藏表单并重置
+                donationFormSection.style.display = 'none';
+                document.getElementById('donationTitle').value = '';
+                document.getElementById('donationType').value = '';
+                document.getElementById('targetAmount').value = '';
+                document.getElementById('startDate').value = '';
+                document.getElementById('endDate').value = '';
+                document.getElementById('donationDescription').value = '';
+                imagePreview.innerHTML = '';
+                imageInput.value = '';
+            });
+
+            // 项目卡片操作
+            const projectBtns = document.querySelectorAll('.project-btn');
+
+            projectBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const projectTitle = this.closest('.project-card').querySelector('.project-title').textContent;
+                    
+                    if (this.innerHTML.includes('fa-eye')) {
+                        console.log('查看项目: ' + projectTitle);
+                    } else if (this.innerHTML.includes('fa-edit')) {
+                        console.log('编辑项目: ' + projectTitle);
+                    } else if (this.innerHTML.includes('fa-chart-bar')) {
+                        console.log('查看数据: ' + projectTitle);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仁爱之心 - 公益子页面</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image:
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 确保 <a> 标签及其父元素没有设置下划线 */
+        a,
+        a * {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* 顶部导航指示 */
+        .nav-indicator {
+            padding: 15px 0;
+            font-size: 0.9rem;
+            color: #8c6d46;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        .nav-indicator a {
+            color: #8c6d46;
+            text-decoration: none;
+        }
+
+        .nav-indicator span {
+            margin: 0 8px;
+        }
+
+        /* 页面标题 */
+        .page-header {
+            text-align: center;
+            padding: 40px 0 30px;
+            position: relative;
+        }
+
+        .page-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.8rem;
+            color: #5c4c3e;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .page-title::before,
+        .page-title::after {
+            content: "※";
+            position: relative;
+            margin: 0 15px;
+            color: #c4a77d;
+            font-size: 1.8rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #745b3a;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* 内容区域 */
+        .content-section {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+        }
+
+        .content-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        /* 公益项目展示 */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #d6ccc2;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .project-card:hover .project-image img {
+            transform: scale(1.05);
+        }
+
+        .project-content {
+            padding: 20px;
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .project-desc {
+            color: #745b3a;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .project-status {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: #8c6d46;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e6ddd0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d);
+            border-radius: 4px;
+        }
+
+        .project-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .action-btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+            background: #8c6d46;
+            color: white;
+        }
+
+        .action-btn.outline {
+            background: transparent;
+            color: #8c6d46;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(92, 76, 62, 0.2);
+        }
+
+        /* 公益故事 */
+        .stories-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .story-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            transition: all 0.3s ease;
+        }
+
+        .story-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .story-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .story-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #c4a77d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 15px;
+        }
+
+        .story-author {
+            font-weight: bold;
+            color: #5c4c3e;
+        }
+
+        .story-date {
+            font-size: 0.9rem;
+            color: #8c6d46;
+        }
+
+        .story-content {
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .story-image {
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .story-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .story-actions {
+            display: flex;
+            gap: 15px;
+            border-top: 1px solid #d6ccc2;
+            padding-top: 15px;
+        }
+
+        .story-action {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #8c6d46;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .story-action:hover {
+            color: #5c4c3e;
+        }
+
+        /* 数据统计 */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            color: #8c6d46;
+            margin-bottom: 15px;
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #745b3a;
+            font-size: 1.1rem;
+        }
+
+        /* 行动号召 */
+        .cta-section {
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        .cta-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.2rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+        }
+
+        .cta-desc {
+            font-size: 1.1rem;
+            color: #745b3a;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.8;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .cta-btn {
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .cta-btn.primary {
+            background: #8c6d46;
+            color: white;
+        }
+
+        .cta-btn.secondary {
+            background: transparent;
+            color: #8c6d46;
+            border: 1px solid #8c6d46;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(92, 76, 62, 0.25);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+
+            .projects-grid,
+            .stories-container,
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title {
+                font-size: 2.2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 导航指示 -->
+        <div class="nav-indicator">
+            <a href="#">首页</a>
+            <span>/</span>
+            <a href="#">公益</a>
+            <span>/</span>
+            <span>仁爱之心</span>
+        </div>
+
+        <!-- 页面标题 -->
+        <header class="page-header">
+            <h1 class="page-title">仁爱之心</h1>
+            <p class="page-subtitle">传承千年慈善文化，用爱心温暖世界，让公益成为生活方式</p>
+        </header>
+
+        <!-- 公益项目 -->
+        <section class="content-section">
+            <h2 class="section-title">公益项目</h2>
+            <div class="projects-grid">
+                <!-- 项目1 -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                            alt="山区教育支持">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">山区教育支持计划</h3>
+                        <p class="project-desc">为偏远山区儿童提供教育资源，改善学习环境，让每个孩子都有接受良好教育的机会。</p>
+
+                        <div class="project-status">
+                            <span>已筹: ￥86,542</span>
+                            <span>目标: ￥120,000</span>
+                        </div>
+
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 72%"></div>
+                        </div>
+
+                        <div class="project-actions">
+                            <button class="action-btn">捐赠支持</button>
+                            <a href="文章/公益-文章.html">
+                                <button class="action-btn outline">了解更多</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 项目2 -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1577896851231-70ef188d5431?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                            alt="环境保护">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">河流保护行动</h3>
+                        <p class="project-desc">清理河道垃圾，保护水资源，恢复河流生态系统，让我们的母亲河重现清澈。</p>
+
+                        <div class="project-status">
+                            <span>已筹: ￥45,230</span>
+                            <span>目标: ￥80,000</span>
+                        </div>
+
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 56%"></div>
+                        </div>
+
+                        <div class="project-actions">
+                            <button class="action-btn">捐赠支持</button>
+                            <a href="文章/公益-文章.html">
+                                <button class="action-btn outline">了解更多</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 项目3 -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1547981609-4b6bfc67c272?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                            alt="老人关怀">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">孤寡老人关怀计划</h3>
+                        <p class="project-desc">为社区孤寡老人提供日常照料、健康关怀和精神慰藉，让他们安享晚年。</p>
+
+                        <div class="project-status">
+                            <span>已筹: ￥68,900</span>
+                            <span>目标: ￥100,000</span>
+                        </div>
+
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 69%"></div>
+                        </div>
+
+                        <div class="project-actions">
+                            <button class="action-btn">捐赠支持</button>
+                            <a href="文章/公益-文章.html">
+                                <button class="action-btn outline">了解更多</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">知识分享</h2>
+            <div class="projects-grid">
+                <!-- 故事1 -->
+                <a href="文章/公益-文章.html" target="_blank" rel="noopener noreferrer">
+                    <div class="story-card">
+                        <div class="story-header">
+                            <div class="story-avatar">张</div>
+                            <div>
+                                <div class="story-author">张明志愿者</div>
+                                <div class="story-date">2023年10月15日</div>
+                            </div>
+                        </div>
+
+                        <div class="story-content">
+                            <p>这是我第三次参与山区支教活动，看到孩子们渴望知识的眼神，我觉得所有的付出都是值得的。这次我们为学校带来了500本图书和一批教学设备，孩子们高兴极了！</p>
+                        </div>
+
+                        <div class="story-image">
+                            <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                alt="支教活动">
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 故事2 -->
+                <a href="文章/公益-文章.html" target="_blank" rel="noopener noreferrer">
+                    <div class="story-card">
+                        <div class="story-header">
+                            <div class="story-avatar">李</div>
+                            <div>
+                                <div class="story-author">李华捐赠者</div>
+                                <div class="story-date">2023年10月12日</div>
+                            </div>
+                        </div>
+
+                        <div class="story-content">
+                            <p>我和家人连续五年支持"河流保护行动"，每年都会参加清理活动。今年看到河道明显变得干净了，鱼儿也回来了，这种成就感无法用言语表达！保护环境就是保护我们自己的未来。</p>
+                        </div>
+
+                        <div class="story-image">
+                            <img src="https://images.unsplash.com/photo-1535016120720-40c646be5580?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                alt="河流清理">
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 公益故事 -->
+        <section class="content-section">
+            <h2 class="section-title">爱心故事</h2>
+            <div class="stories-container">
+                <!-- 故事1 -->
+                <a href="../子页面-2/社区分享.html">
+                    <div class="story-card">
+                        <div class="story-header">
+                            <div class="story-avatar">张</div>
+                            <div>
+                                <div class="story-author">张明志愿者</div>
+                                <div class="story-date">2023年10月15日</div>
+                            </div>
+                        </div>
+
+                        <div class="story-content">
+                            <p>这是我第三次参与山区支教活动，看到孩子们渴望知识的眼神，我觉得所有的付出都是值得的。这次我们为学校带来了500本图书和一批教学设备，孩子们高兴极了！</p>
+                        </div>
+
+                        <div class="story-image">
+                            <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                alt="支教活动">
+                        </div>
+
+                        <div class="story-actions">
+                            <div class="story-action">
+                                <i class="far fa-heart"></i>
+                                <span>128</span>
+                            </div>
+                            <div class="story-action">
+                                <i class="far fa-comment"></i>
+                                <span>24</span>
+                            </div>
+                            <div class="story-action">
+                                <i class="fas fa-share-alt"></i>
+                                <span>分享</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 故事2 -->
+                <a href="../子页面-2/社区分享.html">
+                    <div class="story-card">
+                        <div class="story-header">
+                            <div class="story-avatar">李</div>
+                            <div>
+                                <div class="story-author">李华捐赠者</div>
+                                <div class="story-date">2023年10月12日</div>
+                            </div>
+                        </div>
+
+                        <div class="story-content">
+                            <p>我和家人连续五年支持"河流保护行动"，每年都会参加清理活动。今年看到河道明显变得干净了，鱼儿也回来了，这种成就感无法用言语表达！保护环境就是保护我们自己的未来。</p>
+                        </div>
+
+                        <div class="story-image">
+                            <img src="https://images.unsplash.com/photo-1535016120720-40c646be5580?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                alt="河流清理">
+                        </div>
+
+                        <div class="story-actions">
+                            <div class="story-action">
+                                <i class="far fa-heart"></i>
+                                <span>96</span>
+                            </div>
+                            <div class="story-action">
+                                <i class="far fa-comment"></i>
+                                <span>18</span>
+                            </div>
+                            <div class="story-action">
+                                <i class="fas fa-share-alt"></i>
+                                <span>分享</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 数据统计 -->
+        <section class="content-section">
+            <h2 class="section-title">我们的影响力</h2>
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                    <div class="stat-number">5,280+</div>
+                    <div class="stat-label">志愿者加入</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <div class="stat-number">127</div>
+                    <div class="stat-label">公益项目</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number">25,000+</div>
+                    <div class="stat-label">受益人群</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-donate"></i>
+                    </div>
+                    <div class="stat-number">￥3.2M</div>
+                    <div class="stat-label">捐赠金额</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 行动号召 -->
+        <section class="cta-section">
+            <h2 class="cta-title">加入我们，一起改变世界</h2>
+            <p class="cta-desc">无论您能贡献时间、专业技能还是资源，每一种形式的支持都对我们的公益使命至关重要。小小的行动，汇聚成大大的改变。</p>
+
+            <div class="cta-buttons">
+                <button class="cta-btn primary">成为志愿者</button>
+                <button class="cta-btn secondary">捐赠支持</button>
+                <button class="cta-btn secondary">分享传播</button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 简单的交互效果
+        document.addEventListener('DOMContentLoaded', function () {
+            // 项目卡片悬停效果
+            const projectCards = document.querySelectorAll('.project-card, .story-card, .stat-card');
+            projectCards.forEach(card => {
+                card.addEventListener('mouseenter', function () {
+                    this.style.transform = 'translateY(-5px)';
+                });
+
+                card.addEventListener('mouseleave', function () {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+
+            // 点赞功能
+            const likeButtons = document.querySelectorAll('.story-action:first-child');
+            likeButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const icon = this.querySelector('i');
+                    const count = this.querySelector('span');
+
+                    if (icon.classList.contains('far')) {
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                        count.textContent = parseInt(count.textContent) + 1;
+                    } else {
+                        icon.classList.remove('fas');
+                        icon.classList.add('far');
+                        count.textContent = parseInt(count.textContent) - 1;
+                    }
+                });
+            });
+
+            // 按钮点击效果
+            const buttons = document.querySelectorAll('.action-btn, .cta-btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function () {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 200);
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
