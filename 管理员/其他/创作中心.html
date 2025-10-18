@@ -338,9 +338,11 @@
                         <i class="fas fa-user"></i> 管理员
                     </button>
                 </a>
-                <button class="admin-btn" id="logoutBtn">
-                    <i class="fas fa-sign-out-alt"></i> 退出
-                </button>
+                <a href="../../index.html">
+                    <button class="admin-btn" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> 退出
+                    </button>
+                </a>
             </div>
         </nav>
     </header>
@@ -476,13 +478,15 @@
             //     directNavigate('welfare');
             // });
 
-            // 退出按钮事件
-            document.getElementById('logoutBtn').addEventListener('click', function () {
+            // 退出按钮事件 - 绑定到包裹按钮的a标签
+            document.getElementById('logoutBtn').parentElement.addEventListener('click', function (e) {
+                e.preventDefault(); // 阻止a标签的默认跳转行为
                 if (confirm('确定要退出管理员账号吗？')) {
                     alert('已退出管理员账号');
-                    // 实际项目中这里会执行退出登录的逻辑
-                    // window.location.href = 'login.html';
+                    // 用户确认退出，执行跳转
+                    window.location.href = '../../index.html';
                 }
+                // 如果用户点击取消，则不执行任何操作，保持在当前页面
             });
         });
     </script>

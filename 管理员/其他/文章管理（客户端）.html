@@ -5,27 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>云间小阁 - 文章管理</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Noto Serif SC', serif;
             background-color: #f8f4e9;
             color: #5c4c3e;
             line-height: 1.6;
-            background-image: 
+            background-image:
                 radial-gradient(#d6ccc2 1px, transparent 1px),
                 radial-gradient(#d6ccc2 1px, transparent 1px);
             background-size: 40px 40px;
             background-position: 0 0, 20px 20px;
             position: relative;
         }
-        
+
         body::before {
             content: "";
             position: absolute;
@@ -36,13 +37,13 @@
             background: rgba(248, 244, 233, 0.8);
             z-index: -1;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
-        
+
         /* 头部样式 */
         .header {
             display: flex;
@@ -52,20 +53,20 @@
             margin-bottom: 30px;
             border-bottom: 2px solid #d6ccc2;
         }
-        
+
         .logo {
             font-family: 'Ma Shan Zheng', cursive;
             font-size: 2.5rem;
             color: #8c6d46;
             letter-spacing: 3px;
         }
-        
+
         .user-info {
             display: flex;
             align-items: center;
             gap: 15px;
         }
-        
+
         .user-avatar {
             width: 50px;
             height: 50px;
@@ -77,13 +78,13 @@
             color: white;
             font-weight: bold;
         }
-        
+
         /* 内容布局 */
         .content-wrapper {
             display: flex;
             gap: 30px;
         }
-        
+
         /* 侧边栏 */
         .sidebar {
             width: 250px;
@@ -94,7 +95,7 @@
             border: 1px solid #d6ccc2;
             height: fit-content;
         }
-        
+
         .sidebar-title {
             font-family: 'Ma Shan Zheng', cursive;
             font-size: 1.8rem;
@@ -104,7 +105,7 @@
             padding-bottom: 10px;
             border-bottom: 1px solid #d6ccc2;
         }
-        
+
         .menu-item {
             padding: 15px;
             margin-bottom: 10px;
@@ -115,35 +116,36 @@
             align-items: center;
             gap: 10px;
         }
-        
-        .menu-item:hover, .menu-item.active {
+
+        .menu-item:hover,
+        .menu-item.active {
             background: rgba(140, 109, 70, 0.1);
         }
-        
+
         .menu-item i {
             font-size: 1.2rem;
             color: #8c6d46;
             width: 25px;
         }
-        
+
         /* 主内容区 */
         .main-content {
             flex: 1;
         }
-        
+
         .content-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
         }
-        
+
         .page-title {
             font-family: 'Ma Shan Zheng', cursive;
             font-size: 2.2rem;
             color: #5c4c3e;
         }
-        
+
         .btn {
             padding: 12px 25px;
             background: #8c6d46;
@@ -158,13 +160,13 @@
             align-items: center;
             gap: 8px;
         }
-        
+
         .btn:hover {
             background: #745b3a;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(92, 76, 62, 0.25);
         }
-        
+
         /* 文章列表 */
         .article-list {
             background: rgba(255, 253, 245, 0.95);
@@ -173,22 +175,22 @@
             box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
             border: 1px solid #d6ccc2;
         }
-        
+
         .article-item {
             display: flex;
             padding: 20px;
             border-bottom: 1px solid #d6ccc2;
             transition: all 0.3s ease;
         }
-        
+
         .article-item:last-child {
             border-bottom: none;
         }
-        
+
         .article-item:hover {
             background: rgba(140, 109, 70, 0.05);
         }
-        
+
         .article-thumb {
             width: 120px;
             height: 90px;
@@ -197,24 +199,24 @@
             margin-right: 20px;
             flex-shrink: 0;
         }
-        
+
         .article-thumb img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        
+
         .article-info {
             flex: 1;
         }
-        
+
         .article-title {
             font-size: 1.3rem;
             color: #5c4c3e;
             margin-bottom: 8px;
             font-weight: bold;
         }
-        
+
         .article-meta {
             display: flex;
             gap: 15px;
@@ -222,24 +224,25 @@
             color: #8c6d46;
             margin-bottom: 10px;
         }
-        
+
         .article-desc {
             color: #5c4c3e;
             font-size: 0.95rem;
             line-height: 1.5;
             display: -webkit-box;
             -webkit-line-clamp: 2;
+            line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-        
+
         .article-actions {
             display: flex;
             gap: 10px;
             align-items: center;
             margin-left: 20px;
         }
-        
+
         .action-btn {
             width: 40px;
             height: 40px;
@@ -253,12 +256,12 @@
             color: #8c6d46;
             font-size: 1.1rem;
         }
-        
+
         .action-btn:hover {
             background: #8c6d46;
             color: white;
         }
-        
+
         /* 模态框 */
         .modal {
             display: none;
@@ -272,7 +275,7 @@
             justify-content: center;
             align-items: center;
         }
-        
+
         .modal-content {
             background: rgba(255, 253, 245, 0.98);
             width: 90%;
@@ -283,7 +286,7 @@
             position: relative;
             border: 1px solid #d6ccc2;
         }
-        
+
         .modal-header {
             display: flex;
             justify-content: space-between;
@@ -292,36 +295,36 @@
             padding-bottom: 15px;
             border-bottom: 1px solid #d6ccc2;
         }
-        
+
         .modal-title {
             font-family: 'Ma Shan Zheng', cursive;
             font-size: 1.8rem;
             color: #5c4c3e;
         }
-        
+
         .close-modal {
             font-size: 1.5rem;
             color: #8c6d46;
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        
+
         .close-modal:hover {
             color: #745b3a;
             transform: rotate(90deg);
         }
-        
+
         .form-group {
             margin-bottom: 20px;
         }
-        
+
         .form-label {
             display: block;
             margin-bottom: 8px;
             color: #5c4c3e;
             font-weight: bold;
         }
-        
+
         .form-control {
             width: 100%;
             padding: 14px 16px;
@@ -333,72 +336,424 @@
             color: #5c4c3e;
             transition: all 0.3s ease;
         }
-        
+
         .form-control:focus {
             outline: none;
             border-color: #8c6d46;
             box-shadow: 0 0 0 2px rgba(140, 109, 70, 0.2);
         }
-        
+
         textarea.form-control {
             min-height: 150px;
             resize: vertical;
         }
-        
+
         .form-actions {
             display: flex;
             justify-content: flex-end;
             gap: 15px;
             margin-top: 25px;
         }
-        
+
         .btn-secondary {
             background: #d6ccc2;
             color: #5c4c3e;
         }
-        
+
         .btn-secondary:hover {
             background: #c4b5a9;
         }
-        
+
+        /* 新增内容区域样式 */
+        .content-section {
+            display: none;
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        /* 分类管理样式 */
+        .category-tree {
+            margin-top: 20px;
+        }
+
+        .category-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            border: 1px solid #d6ccc2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .category-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-icon {
+            color: #8c6d46;
+            font-size: 1.2rem;
+        }
+
+        .category-name {
+            font-weight: bold;
+            color: #5c4c3e;
+        }
+
+        .category-count {
+            background: #e9e1d5;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: #8c6d46;
+        }
+
+        /* 用户管理样式 - 修改为卡片式布局 */
+        .user-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .user-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            transition: all 0.3s ease;
+        }
+
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(92, 76, 62, 0.15);
+        }
+
+        .user-card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e9e1d5;
+        }
+
+        .user-card-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #c4a77d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 15px;
+        }
+
+        .user-card-info h3 {
+            color: #5c4c3e;
+            margin-bottom: 5px;
+        }
+
+        .user-card-info p {
+            color: #8c6d46;
+            font-size: 0.9rem;
+        }
+
+        .user-card-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .user-detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-detail-label {
+            font-size: 0.8rem;
+            color: #8c6d46;
+            margin-bottom: 3px;
+        }
+
+        .user-detail-value {
+            font-weight: bold;
+            color: #5c4c3e;
+        }
+
+        .user-role-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .role-admin {
+            background: #f1e9dd;
+            color: #8c6d46;
+        }
+
+        .role-editor {
+            background: #e8e0d8;
+            color: #8c6d4c;
+        }
+
+        .role-user {
+            background: #d8e8d8;
+            color: #4c8c4c;
+        }
+
+        .user-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .status-active {
+            background: #d8e8d8;
+            color: #4c8c4c;
+        }
+
+        .status-inactive {
+            background: #e8d8d8;
+            color: #8c4c4c;
+        }
+
+        .user-card-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e9e1d5;
+        }
+
+        /* 数据统计样式 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #f9f5eb;
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #e9e1d5;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(92, 76, 62, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(92, 76, 62, 0.15);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            color: #8c6d46;
+            margin-bottom: 15px;
+        }
+
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #8c3c2c;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #5c4c3e;
+            font-size: 1rem;
+        }
+
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .chart-card {
+            background: #f9f5eb;
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #e9e1d5;
+            box-shadow: 0 2px 10px rgba(92, 76, 62, 0.1);
+        }
+
+        .chart-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.3rem;
+            color: #8c3c2c;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .chart-placeholder {
+            height: 250px;
+            background: rgba(255, 253, 245, 0.7);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8c6d46;
+            font-size: 1.1rem;
+            border: 1px dashed #d6ccc2;
+        }
+
+        /* 系统设置样式 */
+        .settings-group {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        .settings-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.5rem;
+            color: #5c4c3e;
+            margin-bottom: 15px;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .setting-info h4 {
+            color: #5c4c3e;
+            margin-bottom: 5px;
+        }
+
+        .setting-info p {
+            color: #8c6d46;
+            font-size: 0.9rem;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #d6ccc2;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.toggle-slider {
+            background-color: #8c6d46;
+        }
+
+        input:checked+.toggle-slider:before {
+            transform: translateX(26px);
+        }
+
         /* 响应式设计 */
         @media (max-width: 900px) {
             .content-wrapper {
                 flex-direction: column;
             }
-            
+
             .sidebar {
                 width: 100%;
                 margin-bottom: 20px;
             }
         }
-        
+
         @media (max-width: 600px) {
             .article-item {
                 flex-direction: column;
             }
-            
+
             .article-thumb {
                 width: 100%;
                 height: 180px;
                 margin-right: 0;
                 margin-bottom: 15px;
             }
-            
+
             .article-actions {
                 margin-left: 0;
                 margin-top: 15px;
                 justify-content: flex-end;
             }
-            
+
             .header {
                 flex-direction: column;
                 gap: 15px;
                 text-align: center;
             }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+
+            .user-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .user-card-details {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <!-- 头部 -->
@@ -412,119 +767,613 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- 内容区域 -->
         <div class="content-wrapper">
             <!-- 侧边栏 -->
             <div class="sidebar">
                 <h2 class="sidebar-title">管理菜单</h2>
-                <div class="menu-item active">
+                <div class="menu-item active" data-target="article-management">
                     <i class="fas fa-file-alt"></i>
                     <span>文章管理</span>
                 </div>
-                <div class="menu-item">
+                <div class="menu-item" data-target="category-management">
                     <i class="fas fa-layer-group"></i>
                     <span>分类管理</span>
                 </div>
-                <div class="menu-item">
+                <div class="menu-item" data-target="user-management">
                     <i class="fas fa-users"></i>
                     <span>用户管理</span>
                 </div>
-                <div class="menu-item">
+                <div class="menu-item" data-target="data-statistics">
                     <i class="fas fa-chart-bar"></i>
                     <span>数据统计</span>
                 </div>
-                <div class="menu-item">
+                <div class="menu-item" data-target="system-settings">
                     <i class="fas fa-cog"></i>
                     <span>系统设置</span>
                 </div>
             </div>
-            
+
             <!-- 主内容区 -->
             <div class="main-content">
-                <div class="content-header">
-                    <h1 class="page-title">文章管理</h1>
-                    <button class="btn" id="addArticleBtn">
-                        <i class="fas fa-plus"></i>
-                        <span>新建文章</span>
-                    </button>
+                <!-- 文章管理 -->
+                <div class="content-section active" id="article-management">
+                    <div class="content-header">
+                        <h1 class="page-title">文章管理</h1>
+                        <button class="btn" id="addArticleBtn">
+                            <i class="fas fa-plus"></i>
+                            <span>新建文章</span>
+                        </button>
+                    </div>
+
+                    <div class="article-list">
+                        <!-- 文章项 -->
+                        <div class="article-item">
+                            <div class="article-thumb">
+                                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                    alt="文章缩略图">
+                            </div>
+                            <div class="article-info">
+                                <h3 class="article-title">仁爱之心：传统美德与现代公益的完美融合</h3>
+                                <div class="article-meta">
+                                    <span><i class="fas fa-calendar-alt"></i> 2023-10-15</span>
+                                    <span><i class="fas fa-eye"></i> 1286</span>
+                                    <span><i class="fas fa-heart"></i> 326</span>
+                                </div>
+                                <p class="article-desc">
+                                    中华民族自古以来就有"仁者爱人"的传统美德，公益慈善思想源远流长。从孔子的"仁爱"思想到墨子的"兼爱"主张，从范仲淹的"先天下之忧而忧"到现代公益理念...</p>
+                            </div>
+                            <div class="article-actions">
+                                <div class="action-btn" onclick="editArticle(1)">
+                                    <i class="fas fa-edit"></i>
+                                </div>
+                                <div class="action-btn" onclick="deleteArticle(1)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="article-item">
+                            <div class="article-thumb">
+                                <img src="https://images.unsplash.com/photo-1577896851231-70ef188d5431?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                    alt="文章缩略图">
+                            </div>
+                            <div class="article-info">
+                                <h3 class="article-title">传统手工艺的保护与传承</h3>
+                                <div class="article-meta">
+                                    <span><i class="fas fa-calendar-alt"></i> 2023-10-10</span>
+                                    <span><i class="fas fa-eye"></i> 985</span>
+                                    <span><i class="fas fa-heart"></i> 245</span>
+                                </div>
+                                <p class="article-desc">
+                                    中国传统手工艺是中华文明的重要组成部分，但随着现代化进程的加快，许多传统手工艺面临失传的危机。本文探讨了如何保护和传承这些宝贵的文化遗产...</p>
+                            </div>
+                            <div class="article-actions">
+                                <div class="action-btn" onclick="editArticle(2)">
+                                    <i class="fas fa-edit"></i>
+                                </div>
+                                <div class="action-btn" onclick="deleteArticle(2)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="article-item">
+                            <div class="article-thumb">
+                                <img src="https://images.unsplash.com/photo-1547981609-4b6bfc67c272?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                    alt="文章缩略图">
+                            </div>
+                            <div class="article-info">
+                                <h3 class="article-title">茶文化中的哲学思想</h3>
+                                <div class="article-meta">
+                                    <span><i class="fas fa-calendar-alt"></i> 2023-10-05</span>
+                                    <span><i class="fas fa-eye"></i> 1562</span>
+                                    <span><i class="fas fa-heart"></i> 412</span>
+                                </div>
+                                <p class="article-desc">
+                                    中国茶文化源远流长，不仅是一种饮品文化，更蕴含着深厚的哲学思想。本文从茶道精神入手，探讨其中蕴含的和敬清寂、天人合一等哲学理念...</p>
+                            </div>
+                            <div class="article-actions">
+                                <div class="action-btn" onclick="editArticle(3)">
+                                    <i class="fas fa-edit"></i>
+                                </div>
+                                <div class="action-btn" onclick="deleteArticle(3)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="article-list">
-                    <!-- 文章项 -->
-                    <div class="article-item">
-                        <div class="article-thumb">
-                            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="文章缩略图">
-                        </div>
-                        <div class="article-info">
-                            <h3 class="article-title">仁爱之心：传统美德与现代公益的完美融合</h3>
-                            <div class="article-meta">
-                                <span><i class="fas fa-calendar-alt"></i> 2023-10-15</span>
-                                <span><i class="fas fa-eye"></i> 1286</span>
-                                <span><i class="fas fa-heart"></i> 326</span>
+
+                <!-- 分类管理 -->
+                <div class="content-section" id="category-management">
+                    <div class="content-header">
+                        <h1 class="page-title">分类管理</h1>
+                        <button class="btn" id="addCategoryBtn">
+                            <i class="fas fa-plus"></i>
+                            <span>添加分类</span>
+                        </button>
+                    </div>
+
+                    <div class="category-tree">
+                        <div class="category-item">
+                            <div class="category-info">
+                                <i class="fas fa-landmark category-icon"></i>
+                                <span class="category-name">中国历史</span>
+                                <span class="category-count">156</span>
                             </div>
-                            <p class="article-desc">中华民族自古以来就有"仁者爱人"的传统美德，公益慈善思想源远流长。从孔子的"仁爱"思想到墨子的"兼爱"主张，从范仲淹的"先天下之忧而忧"到现代公益理念...</p>
-                        </div>
-                        <div class="article-actions">
-                            <div class="action-btn" onclick="editArticle(1)">
-                                <i class="fas fa-edit"></i>
+                            <div class="article-actions">
+                                <div class="action-btn" onclick="editCategory(1)">
+                                    <i class="fas fa-edit"></i>
+                                </div>
+                                <div class="action-btn" onclick="deleteCategory(1)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </div>
                             </div>
-                            <div class="action-btn" onclick="deleteArticle(1)">
-                                <i class="fas fa-trash-alt"></i>
+                        </div>
+
+                        <div class="category-item" style="margin-left: 20px;">
+                            <div class="category-info">
+                                <i class="fas fa-archway category-icon"></i>
+                                <span class="category-name">上古时期</span>
+                                <span class="category-count">24</span>
+                            </div>
+                            <div class="article-actions">
+                                <div class="action-btn" onclick="editCategory(2)">
+                                    <i class="fas fa-edit"></i>
+                                </div>
+                                <div class="action-btn" onclick="deleteCategory(2)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="category-item" style="margin-left: 40px;">
+                            <div class="category-info">
+                                <i class="fas fa-crown category-icon"></i>
+                                <span class="category-name">夏朝</span>
+                                <span class="category-count">8</span>
+                            </div>
+                            <div class="article-actions">
+                                <div class="action-btn" onclick="editCategory(3)">
+                                    <i class="fas fa-edit"></i>
+                                </div>
+                                <div class="action-btn" onclick="deleteCategory(3)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="category-item" style="margin-left: 20px;">
+                            <div class="category-info">
+                                <i class="fas fa-dragon category-icon"></i>
+                                <span class="category-name">明清时期</span>
+                                <span class="category-count">42</span>
+                            </div>
+                            <div class="article-actions">
+                                <div class="action-btn" onclick="editCategory(4)">
+                                    <i class="fas fa-edit"></i>
+                                </div>
+                                <div class="action-btn" onclick="deleteCategory(4)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="category-item">
+                            <div class="category-info">
+                                <i class="fas fa-palette category-icon"></i>
+                                <span class="category-name">非物质文化遗产</span>
+                                <span class="category-count">287</span>
+                            </div>
+                            <div class="article-actions">
+                                <div class="action-btn" onclick="editCategory(5)">
+                                    <i class="fas fa-edit"></i>
+                                </div>
+                                <div class="action-btn" onclick="deleteCategory(5)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="category-item" style="margin-left: 20px;">
+                            <div class="category-info">
+                                <i class="fas fa-cut category-icon"></i>
+                                <span class="category-name">传统技艺</span>
+                                <span class="category-count">124</span>
+                            </div>
+                            <div class="article-actions">
+                                <div class="action-btn" onclick="editCategory(6)">
+                                    <i class="fas fa-edit"></i>
+                                </div>
+                                <div class="action-btn" onclick="deleteCategory(6)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="category-item" style="margin-left: 40px;">
+                            <div class="category-info">
+                                <i class="fas fa-mask category-icon"></i>
+                                <span class="category-name">剪纸</span>
+                                <span class="category-count">36</span>
+                            </div>
+                            <div class="article-actions">
+                                <div class="action-btn" onclick="editCategory(7)">
+                                    <i class="fas fa-edit"></i>
+                                </div>
+                                <div class="action-btn" onclick="deleteCategory(7)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="article-item">
-                        <div class="article-thumb">
-                            <img src="https://images.unsplash.com/photo-1577896851231-70ef188d5431?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="文章缩略图">
-                        </div>
-                        <div class="article-info">
-                            <h3 class="article-title">传统手工艺的保护与传承</h3>
-                            <div class="article-meta">
-                                <span><i class="fas fa-calendar-alt"></i> 2023-10-10</span>
-                                <span><i class="fas fa-eye"></i> 985</span>
-                                <span><i class="fas fa-heart"></i> 245</span>
+                </div>
+
+                <!-- 用户管理 - 修改为卡片式布局 -->
+                <div class="content-section" id="user-management">
+                    <div class="content-header">
+                        <h1 class="page-title">用户管理</h1>
+                        <button class="btn" id="addUserBtn">
+                            <i class="fas fa-plus"></i>
+                            <span>添加用户</span>
+                        </button>
+                    </div>
+
+                    <div class="user-cards">
+                        <!-- 用户卡片 -->
+                        <div class="user-card">
+                            <div class="user-card-header">
+                                <div class="user-card-avatar">张</div>
+                                <div class="user-card-info">
+                                    <h3>张文化</h3>
+                                    <p>zhangwenhua@example.com</p>
+                                </div>
                             </div>
-                            <p class="article-desc">中国传统手工艺是中华文明的重要组成部分，但随着现代化进程的加快，许多传统手工艺面临失传的危机。本文探讨了如何保护和传承这些宝贵的文化遗产...</p>
-                        </div>
-                        <div class="article-actions">
-                            <div class="action-btn" onclick="editArticle(2)">
-                                <i class="fas fa-edit"></i>
+                            <div class="user-card-details">
+                                <div class="user-detail-item">
+                                    <span class="user-detail-label">角色</span>
+                                    <span class="user-detail-value"><span class="user-role-badge role-editor">编辑</span></span>
+                                </div>
+                                <div class="user-detail-item">
+                                    <span class="user-detail-label">注册时间</span>
+                                    <span class="user-detail-value">2023-05-12</span>
+                                </div>
+                                <div class="user-detail-item">
+                                    <span class="user-detail-label">状态</span>
+                                    <span class="user-detail-value"><span class="user-status status-active">活跃</span></span>
+                                </div>
+                                <div class="user-detail-item">
+                                    <span class="user-detail-label">文章数</span>
+                                    <span class="user-detail-value">42</span>
+                                </div>
                             </div>
-                            <div class="action-btn" onclick="deleteArticle(2)">
-                                <i class="fas fa-trash-alt"></i>
+                            <div class="user-card-actions">
+                                <div class="action-btn" onclick="editUser(1)">
+                                    <i class="fas fa-edit"></i>
+                                </div>
+                                <div class="action-btn" onclick="resetPassword(1)">
+                                    <i class="fas fa-key"></i>
+                                </div>
+                                <div class="action-btn" onclick="deleteUser(1)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="user-card">
+                            <div class="user-card-header">
+                                <div class="user-card-avatar">李</div>
+                                <div class="user-card-info">
+                                    <h3>李历史</h3>
+                                    <p>lilishi@example.com</p>
+                                </div>
+                            </div>
+                            <div class="user-card-details">
+                                <div class="user-detail-item">
+                                    <span class="user-detail-label">角色</span>
+                                    <span class="user-detail-value"><span class="user-role-badge role-user">普通用户</span></span>
+                                </div>
+                                <div class="user-detail-item">
+                                    <span class="user-detail-label">注册时间</span>
+                                    <span class="user-detail-value">2023-08-23</span>
+                                </div>
+                                <div class="user-detail-item">
+                                    <span class="user-detail-label">状态</span>
+                                    <span class="user-detail-value"><span class="user-status status-active">活跃</span></span>
+                                </div>
+                                <div class="user-detail-item">
+                                    <span class="user-detail-label">文章数</span>
+                                    <span class="user-detail-value">18</span>
+                                </div>
+                            </div>
+                            <div class="user-card-actions">
+                                <div class="action-btn" onclick="editUser(2)">
+                                    <i class="fas fa-edit"></i>
+                                </div>
+                                <div class="action-btn" onclick="resetPassword(2)">
+                                    <i class="fas fa-key"></i>
+                                </div>
+                                <div class="action-btn" onclick="deleteUser(2)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="user-card">
+                            <div class="user-card-header">
+                                <div class="user-card-avatar">王</div>
+                                <div class="user-card-info">
+                                    <h3>王艺匠</h3>
+                                    <p>wangyijiang@example.com</p>
+                                </div>
+                            </div>
+                            <div class="user-card-details">
+                                <div class="user-detail-item">
+                                    <span class="user-detail-label">角色</span>
+                                    <span class="user-detail-value"><span class="user-role-badge role-admin">管理员</span></span>
+                                </div>
+                                <div class="user-detail-item">
+                                    <span class="user-detail-label">注册时间</span>
+                                    <span class="user-detail-value">2023-01-15</span>
+                                </div>
+                                <div class="user-detail-item">
+                                    <span class="user-detail-label">状态</span>
+                                    <span class="user-detail-value"><span class="user-status status-active">活跃</span></span>
+                                </div>
+                                <div class="user-detail-item">
+                                    <span class="user-detail-label">文章数</span>
+                                    <span class="user-detail-value">127</span>
+                                </div>
+                            </div>
+                            <div class="user-card-actions">
+                                <div class="action-btn" onclick="editUser(3)">
+                                    <i class="fas fa-edit"></i>
+                                </div>
+                                <div class="action-btn" onclick="resetPassword(3)">
+                                    <i class="fas fa-key"></i>
+                                </div>
+                                <div class="action-btn" onclick="deleteUser(3)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="user-card">
+                            <div class="user-card-header">
+                                <div class="user-card-avatar">赵</div>
+                                <div class="user-card-info">
+                                    <h3>赵公益</h3>
+                                    <p>zhaogongyi@example.com</p>
+                                </div>
+                            </div>
+                            <div class="user-card-details">
+                                <div class="user-detail-item">
+                                    <span class="user-detail-label">角色</span>
+                                    <span class="user-detail-value"><span class="user-role-badge role-user">普通用户</span></span>
+                                </div>
+                                <div class="user-detail-item">
+                                    <span class="user-detail-label">注册时间</span>
+                                    <span class="user-detail-value">2023-09-30</span>
+                                </div>
+                                <div class="user-detail-item">
+                                    <span class="user-detail-label">状态</span>
+                                    <span class="user-detail-value"><span class="user-status status-inactive">未激活</span></span>
+                                </div>
+                                <div class="user-detail-item">
+                                    <span class="user-detail-label">文章数</span>
+                                    <span class="user-detail-value">0</span>
+                                </div>
+                            </div>
+                            <div class="user-card-actions">
+                                <div class="action-btn" onclick="editUser(4)">
+                                    <i class="fas fa-edit"></i>
+                                </div>
+                                <div class="action-btn" onclick="resetPassword(4)">
+                                    <i class="fas fa-key"></i>
+                                </div>
+                                <div class="action-btn" onclick="deleteUser(4)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="article-item">
-                        <div class="article-thumb">
-                            <img src="https://images.unsplash.com/photo-1547981609-4b6bfc67c272?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="文章缩略图">
+                </div>
+
+                <!-- 数据统计 -->
+                <div class="content-section" id="data-statistics">
+                    <div class="content-header">
+                        <h1 class="page-title">数据统计</h1>
+                        <button class="btn">
+                            <i class="fas fa-download"></i>
+                            <span>导出报表</span>
+                        </button>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="stat-value">1,248</div>
+                            <div class="stat-label">文章总数</div>
                         </div>
-                        <div class="article-info">
-                            <h3 class="article-title">茶文化中的哲学思想</h3>
-                            <div class="article-meta">
-                                <span><i class="fas fa-calendar-alt"></i> 2023-10-05</span>
-                                <span><i class="fas fa-eye"></i> 1562</span>
-                                <span><i class="fas fa-heart"></i> 412</span>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
                             </div>
-                            <p class="article-desc">中国茶文化源远流长，不仅是一种饮品文化，更蕴含着深厚的哲学思想。本文从茶道精神入手，探讨其中蕴含的和敬清寂、天人合一等哲学理念...</p>
+                            <div class="stat-value">386</div>
+                            <div class="stat-label">注册用户</div>
                         </div>
-                        <div class="article-actions">
-                            <div class="action-btn" onclick="editArticle(3)">
-                                <i class="fas fa-edit"></i>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-eye"></i>
                             </div>
-                            <div class="action-btn" onclick="deleteArticle(3)">
-                                <i class="fas fa-trash-alt"></i>
+                            <div class="stat-value">24,567</div>
+                            <div class="stat-label">本月浏览量</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-comments"></i>
                             </div>
+                            <div class="stat-value">842</div>
+                            <div class="stat-label">评论总数</div>
+                        </div>
+                    </div>
+
+                    <div class="charts-container">
+                        <div class="chart-card">
+                            <h3 class="chart-title">文章分类分布</h3>
+                            <div class="chart-placeholder">
+                                <i class="fas fa-chart-pie"></i> 分类分布图表区域
+                            </div>
+                        </div>
+
+                        <div class="chart-card">
+                            <h3 class="chart-title">月度访问趋势</h3>
+                            <div class="chart-placeholder">
+                                <i class="fas fa-chart-line"></i> 访问趋势图表区域
+                            </div>
+                        </div>
+
+                        <div class="chart-card">
+                            <h3 class="chart-title">用户活跃时段</h3>
+                            <div class="chart-placeholder">
+                                <i class="fas fa-chart-bar"></i> 活跃时段图表区域
+                            </div>
+                        </div>
+
+                        <div class="chart-card">
+                            <h3 class="chart-title">热门文章排行</h3>
+                            <div class="chart-placeholder">
+                                <i class="fas fa-chart-area"></i> 热门文章图表区域
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 系统设置 -->
+                <div class="content-section" id="system-settings">
+                    <div class="content-header">
+                        <h1 class="page-title">系统设置</h1>
+                        <button class="btn" onclick="saveSettings()">
+                            <i class="fas fa-save"></i>
+                            <span>保存设置</span>
+                        </button>
+                    </div>
+
+                    <div class="settings-group">
+                        <h3 class="settings-title">基本设置</h3>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>网站名称</h4>
+                                <p>显示在网站标题和页面的名称</p>
+                            </div>
+                            <input type="text" class="form-control" value="云间小阁" style="width: 200px;">
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>网站描述</h4>
+                                <p>简要描述网站的主题和内容</p>
+                            </div>
+                            <input type="text" class="form-control" value="文化传承，知识共享" style="width: 300px;">
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>每页显示文章数</h4>
+                                <p>文章列表页面每页显示的文章数量</p>
+                            </div>
+                            <input type="number" class="form-control" value="10" style="width: 100px;">
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <h3 class="settings-title">功能设置</h3>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>允许用户注册</h4>
+                                <p>是否允许新用户注册账户</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>文章评论功能</h4>
+                                <p>是否开启文章的评论功能</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>文章审核机制</h4>
+                                <p>新发布的文章是否需要审核</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <h3 class="settings-title">安全设置</h3>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>密码强度要求</h4>
+                                <p>用户密码必须包含大小写字母和数字</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>登录失败锁定</h4>
+                                <p>连续登录失败5次后锁定账户30分钟</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>会话超时时间</h4>
+                                <p>用户无操作后自动退出登录的时间</p>
+                            </div>
+                            <select class="form-control" style="width: 150px;">
+                                <option>30分钟</option>
+                                <option selected>1小时</option>
+                                <option>2小时</option>
+                                <option>4小时</option>
+                            </select>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <!-- 编辑文章模态框 -->
     <div class="modal" id="editModal">
         <div class="modal-content">
@@ -557,7 +1406,7 @@
             </form>
         </div>
     </div>
-    
+
     <!-- 删除确认模态框 -->
     <div class="modal" id="deleteModal">
         <div class="modal-content">
@@ -598,44 +1447,44 @@
                 image: "https://images.unsplash.com/photo-1547981609-4b6bfc67c272?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
             }
         };
-        
+
         let currentArticleId = null;
-        
+
         // 打开模态框
         function openModal(modalId) {
             document.getElementById(modalId).style.display = "flex";
         }
-        
+
         // 关闭模态框
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = "none";
         }
-        
+
         // 编辑文章
         function editArticle(id) {
             currentArticleId = id;
             const article = articles[id];
-            
+
             document.getElementById('articleId').value = id;
             document.getElementById('articleTitle').value = article.title;
             document.getElementById('articleDesc').value = article.desc;
             document.getElementById('articleContent').value = article.content;
-            
+
             openModal('editModal');
         }
-        
+
         // 保存文章
         function saveArticle() {
             const id = document.getElementById('articleId').value;
             const title = document.getElementById('articleTitle').value;
             const desc = document.getElementById('articleDesc').value;
             const content = document.getElementById('articleContent').value;
-            
+
             if (!title || !desc || !content) {
                 alert('请填写所有必填字段');
                 return;
             }
-            
+
             // 更新文章数据
             articles[id] = {
                 title,
@@ -643,25 +1492,25 @@
                 content,
                 image: articles[id].image // 保持原有图片
             };
-            
+
             // 更新页面上的文章信息
             const articleItem = document.querySelector(`.article-item:nth-child(${id})`);
             articleItem.querySelector('.article-title').textContent = title;
             articleItem.querySelector('.article-desc').textContent = desc;
-            
+
             alert('文章保存成功！');
             closeModal('editModal');
         }
-        
+
         // 删除文章
         function deleteArticle(id) {
             currentArticleId = id;
             const article = articles[id];
-            
+
             document.getElementById('deleteArticleTitle').textContent = article.title;
             openModal('deleteModal');
         }
-        
+
         // 确认删除
         function confirmDelete() {
             if (currentArticleId) {
@@ -670,35 +1519,98 @@
                 if (articleItem) {
                     articleItem.remove();
                 }
-                
+
                 // 从数据中删除文章
                 delete articles[currentArticleId];
-                
+
                 alert('文章已删除');
                 closeModal('deleteModal');
                 currentArticleId = null;
             }
         }
-        
+
         // 添加新建文章按钮事件
-        document.getElementById('addArticleBtn').addEventListener('click', function() {
+        document.getElementById('addArticleBtn').addEventListener('click', function () {
             // 清空表单
             document.getElementById('articleId').value = '';
             document.getElementById('articleTitle').value = '';
             document.getElementById('articleDesc').value = '';
             document.getElementById('articleContent').value = '';
-            
+
             openModal('editModal');
         });
-        
+
         // 点击模态框外部关闭
-        window.addEventListener('click', function(event) {
+        window.addEventListener('click', function (event) {
             const modals = document.querySelectorAll('.modal');
             modals.forEach(modal => {
                 if (event.target === modal) {
                     modal.style.display = 'none';
                 }
             });
+        });
+
+        // 菜单切换功能
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function () {
+                // 移除所有活动状态
+                document.querySelectorAll('.menu-item').forEach(i => {
+                    i.classList.remove('active');
+                });
+
+                // 隐藏所有内容区域
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+
+                // 添加当前活动状态
+                this.classList.add('active');
+
+                // 显示对应内容区域
+                const targetId = this.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+
+        // 分类管理功能
+        function editCategory(id) {
+            alert(`编辑分类 ID: ${id}`);
+        }
+
+        function deleteCategory(id) {
+            if (confirm('确定要删除这个分类吗？此操作将同时删除该分类下的所有文章。')) {
+                alert(`删除分类 ID: ${id}`);
+            }
+        }
+
+        // 用户管理功能
+        function editUser(id) {
+            alert(`编辑用户 ID: ${id}`);
+        }
+
+        function resetPassword(id) {
+            alert(`重置用户 ID: ${id} 的密码`);
+        }
+
+        function deleteUser(id) {
+            if (confirm('确定要删除这个用户吗？此操作不可恢复。')) {
+                alert(`删除用户 ID: ${id}`);
+            }
+        }
+
+        // 系统设置保存
+        function saveSettings() {
+            alert('系统设置已保存');
+        }
+
+        // 添加分类按钮
+        document.getElementById('addCategoryBtn').addEventListener('click', function () {
+            alert('添加新分类');
+        });
+
+        // 添加用户按钮
+        document.getElementById('addUserBtn').addEventListener('click', function () {
+            alert('添加新用户');
         });
     </script>
 </body>
