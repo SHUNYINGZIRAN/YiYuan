@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase 集成示例 - YiYuan</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+        }
+        .section h3 {
+            color: #333;
+            margin-top: 0;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .status.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .article-list {
+            list-style: none;
+            padding: 0;
+        }
+        .article-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+        }
+        .article-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .article-meta {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>YiYuan - Supabase 集成示例</h1>
+        <p>这个页面展示了如何在你的项目中集成 Supabase 后端服务。</p>
+        
+        <!-- 认证状态显示 -->
+        <div class="section">
+            <h3>用户认证状态</h3>
+            <div id="authStatus">
+                <p>正在检查认证状态...</p>
+            </div>
+        </div>
+
+        <!-- 登录表单 -->
+        <div class="section login-required">
+            <h3>用户登录</h3>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">邮箱:</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">密码:</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn">登录</button>
+            </form>
+            <div id="loginStatus"></div>
+        </div>
+
+        <!-- 注册表单 -->
+        <div class="section login-required">
+            <h3>用户注册</h3>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerEmail">邮箱:</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">密码:</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerUsername">用户名:</label>
+                    <input type="text" id="registerUsername" required>
+                </div>
+                <button type="submit" class="btn">注册</button>
+            </form>
+            <div id="registerStatus"></div>
+        </div>
+
+        <!-- 用户信息 -->
+        <div class="section logout-required hidden">
+            <h3>用户信息</h3>
+            <div id="userInfo"></div>
+            <button id="logoutBtn" class="btn btn-danger">登出</button>
+        </div>
+
+        <!-- 文章管理 -->
+        <div class="section logout-required hidden">
+            <h3>文章管理</h3>
+            
+            <!-- 创建文章 -->
+            <h4>创建新文章</h4>
+            <form id="articleForm">
+                <div class="form-group">
+                    <label for="articleTitle">标题:</label>
+                    <input type="text" id="articleTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="articleCategory">分类:</label>
+                    <select id="articleCategory" required>
+                        <option value="history">历史</option>
+                        <option value="heritage">非遗</option>
+                        <option value="charity">公益</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="articleContent">内容:</label>
+                    <textarea id="articleContent" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn">发布文章</button>
+            </form>
+            <div id="articleStatus"></div>
+
+            <!-- 文章列表 -->
+            <h4>我的文章</h4>
+            <button id="loadArticlesBtn" class="btn">加载文章</button>
+            <ul id="articleList" class="article-list"></ul>
+        </div>
+    </div>
+
+    <!-- 引入 Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- 引入我们的服务文件 -->
+    <script src="../config/supabase.js"></script>
+    <script src="../services/auth.js"></script>
+    <script src="../services/database.js"></script>
+
+    <script>
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', async function() {
+            // 初始化 Supabase
+            window.SupabaseConfig.init();
+            
+            // 初始化服务
+            await window.authService.init();
+            window.databaseService.init();
+
+            // 设置事件监听器
+            setupEventListeners();
+            
+            // 更新UI状态
+            updateAuthStatus();
+        });
+
+        function setupEventListeners() {
+            // 登录表单
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            
+            // 注册表单
+            document.getElementById('registerForm').addEventListener('submit', handleRegister);
+            
+            // 登出按钮
+            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+            
+            // 文章表单
+            document.getElementById('articleForm').addEventListener('submit', handleCreateArticle);
+            
+            // 加载文章按钮
+            document.getElementById('loadArticlesBtn').addEventListener('click', loadUserArticles);
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            const result = await window.authService.signIn(email, password);
+            showStatus('loginStatus', result);
+            
+            if (result.success) {
+                document.getElementById('loginForm').reset();
+                updateAuthStatus();
+            }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const username = document.getElementById('registerUsername').value;
+            
+            const result = await window.authService.signUp(email, password, { username });
+            showStatus('registerStatus', result);
+            
+            if (result.success) {
+                document.getElementById('registerForm').reset();
+            }
+        }
+
+        async function handleLogout() {
+            const result = await window.authService.signOut();
+            showStatus('authStatus', result);
+            updateAuthStatus();
+        }
+
+        async function handleCreateArticle(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('articleTitle').value;
+            const category = document.getElementById('articleCategory').value;
+            const content = document.getElementById('articleContent').value;
+            
+            const articleData = {
+                title,
+                category,
+                content,
+                summary: content.substring(0, 200) + '...'
+            };
+            
+            const result = await window.databaseService.createArticle(articleData);
+            showStatus('articleStatus', result);
+            
+            if (result.success) {
+                document.getElementById('articleForm').reset();
+                loadUserArticles(); // 重新加载文章列表
+            }
+        }
+
+        async function loadUserArticles() {
+            const user = window.authService.getCurrentUser();
+            if (!user) return;
+            
+            // 这里简化处理，实际应该有专门的获取用户文章的方法
+            const result = await window.databaseService.getArticles();
+            
+            if (result.success) {
+                displayArticles(result.data.filter(article => article.author_id === user.id));
+            } else {
+                showStatus('articleStatus', result);
+            }
+        }
+
+        function displayArticles(articles) {
+            const articleList = document.getElementById('articleList');
+            articleList.innerHTML = '';
+            
+            if (articles.length === 0) {
+                articleList.innerHTML = '<li>暂无文章</li>';
+                return;
+            }
+            
+            articles.forEach(article => {
+                const li = document.createElement('li');
+                li.className = 'article-item';
+                li.innerHTML = `
+                    <div class="article-title">${article.title}</div>
+                    <div class="article-meta">
+                        分类: ${getCategoryName(article.category)} | 
+                        创建时间: ${new Date(article.created_at).toLocaleString()} |
+                        浏览: ${article.view_count} | 
+                        点赞: ${article.like_count}
+                    </div>
+                `;
+                articleList.appendChild(li);
+            });
+        }
+
+        function getCategoryName(category) {
+            const categoryMap = {
+                'history': '历史',
+                'heritage': '非遗',
+                'charity': '公益'
+            };
+            return categoryMap[category] || category;
+        }
+
+        function updateAuthStatus() {
+            const user = window.authService.getCurrentUser();
+            const authStatus = document.getElementById('authStatus');
+            const userInfo = document.getElementById('userInfo');
+            
+            if (user) {
+                authStatus.innerHTML = `<p class="status success">已登录用户: ${user.email}</p>`;
+                userInfo.innerHTML = `
+                    <p><strong>邮箱:</strong> ${user.email}</p>
+                    <p><strong>用户ID:</strong> ${user.id}</p>
+                    <p><strong>注册时间:</strong> ${new Date(user.created_at).toLocaleString()}</p>
+                `;
+                
+                // 显示已登录用户的内容，隐藏登录表单
+                document.querySelectorAll('.login-required').forEach(el => el.classList.add('hidden'));
+                document.querySelectorAll('.logout-required').forEach(el => el.classList.remove('hidden'));
+            } else {
+                authStatus.innerHTML = '<p class="status error">未登录</p>';
+                
+                // 显示登录表单，隐藏已登录用户的内容
+                document.querySelectorAll('.login-required').forEach(el => el.classList.remove('hidden'));
+                document.querySelectorAll('.logout-required').forEach(el => el.classList.add('hidden'));
+            }
+        }
+
+        function showStatus(elementId, result) {
+            const element = document.getElementById(elementId);
+            const statusClass = result.success ? 'success' : 'error';
+            element.innerHTML = `<div class="status ${statusClass}">${result.message}</div>`;
+            
+            // 3秒后清除状态信息
+            setTimeout(() => {
+                element.innerHTML = '';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
