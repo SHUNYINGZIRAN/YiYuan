@@ -3,10 +3,10 @@
  * 用于连接 Supabase 后端服务
  */
 
-// Supabase 项目配置 - 请替换为你的实际配置
+// Supabase 项目配置 - 已更新为实际配置
 const SUPABASE_CONFIG = {
-    url: 'YOUR_SUPABASE_PROJECT_URL', // 替换为你的 Supabase 项目 URL
-    anonKey: 'YOUR_SUPABASE_ANON_KEY' // 替换为你的 Supabase anon key
+    url: 'https://lghlufysvtsfjpjjkhwh.supabase.co', // 你的 Supabase 项目 URL
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGx1ZnlzdnRzZmpwampraHdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4NTE3ODQsImV4cCI6MjA3NjQyNzc4NH0.ir6UUDrjetkGNd9TiGJqfErtGnjyin34EsVVlcUMXkQ' // 你的 Supabase anon key
 };
 
 // 创建 Supabase 客户端
