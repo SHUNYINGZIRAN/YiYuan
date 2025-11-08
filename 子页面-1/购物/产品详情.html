@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产品详情 - 云间文苑</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image:
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 顶部导航栏 */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 2px solid #d6ccc2;
+        }
+
+        .logo {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.2rem;
+            color: #8c6d46;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            margin-left: 10px;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            padding: 8px 15px;
+            background: #8c6d46;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        .nav-btn:hover {
+            background: #745b3a;
+        }
+
+        .cart-icon {
+            position: relative;
+            font-size: 1.2rem;
+            color: #8c6d46;
+            cursor: pointer;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #8c3c2c;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 页面标题 */
+        .page-header {
+            text-align: center;
+            padding: 40px 0 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .page-header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8c6d46, transparent);
+        }
+
+        .page-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 3rem;
+            color: #8c3c2c;
+            margin-bottom: 15px;
+            letter-spacing: 5px;
+            text-shadow: 2px 2px 4px rgba(92, 76, 62, 0.2);
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #8c6d46;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* 产品详情内容 */
+        .product-container {
+            margin: 40px 0;
+        }
+
+        .product-detail {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        /* 产品图片区域 */
+        .product-gallery {
+            flex: 1;
+            max-width: 500px;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 400px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            margin-bottom: 15px;
+            border: 1px solid #d6ccc2;
+        }
+
+        .main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumbnail-gallery {
+            display: flex;
+            gap: 10px;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .thumbnail.active {
+            border-color: #8c6d46;
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 产品信息区域 */
+        .product-info {
+            flex: 1;
+        }
+
+        .product-card {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .product-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .product-title {
+            font-size: 2rem;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .product-subtitle {
+            font-size: 1.1rem;
+            color: #8c6d46;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .product-price {
+            font-size: 2.2rem;
+            color: #8c3c2c;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .product-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #8c6d46;
+            font-size: 0.95rem;
+        }
+
+        .product-description {
+            color: #745b3a;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        /* 产品规格 */
+        .spec-list {
+            margin-bottom: 25px;
+        }
+
+        .spec-item {
+            display: flex;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9e1d5;
+        }
+
+        .spec-label {
+            width: 120px;
+            color: #8c6d46;
+            font-weight: bold;
+        }
+
+        .spec-value {
+            flex: 1;
+            color: #5c4c3e;
+        }
+
+        /* 购买选项 */
+        .purchase-options {
+            margin-bottom: 25px;
+        }
+
+        .option-group {
+            margin-bottom: 15px;
+        }
+
+        .option-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #5c4c3e;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            padding: 8px 15px;
+            border: 1px solid #d6ccc2;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.8);
+            color: #5c4c3e;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-btn.active {
+            background: #8c6d46;
+            color: white;
+            border-color: #8c6d46;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            width: 36px;
+            height: 36px;
+            border: 1px solid #d6ccc2;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            background: #f1e9dd;
+        }
+
+        .quantity-input {
+            width: 60px;
+            height: 36px;
+            border: 1px solid #d6ccc2;
+            border-radius: 6px;
+            text-align: center;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            color: #5c4c3e;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        /* 操作按钮 */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .action-btn.primary {
+            background: #8c6d46;
+            color: white;
+        }
+
+        .action-btn.outline {
+            background: transparent;
+            color: #8c6d46;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.2);
+        }
+
+        /* 标签页 */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #d6ccc2;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 12px 25px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: #5c4c3e;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: #8c6d46;
+            border-bottom-color: #8c6d46;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 评价区域 */
+        .reviews-summary {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 253, 245, 0.9);
+            border-radius: 12px;
+            border: 1px solid #d6ccc2;
+        }
+
+        .rating-overview {
+            text-align: center;
+            padding: 20px;
+            min-width: 200px;
+        }
+
+        .rating-score {
+            font-size: 3rem;
+            color: #8c6d46;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .rating-stars {
+            color: #e9b949;
+            margin-bottom: 10px;
+        }
+
+        .rating-count {
+            color: #8c6d46;
+            font-size: 0.9rem;
+        }
+
+        .rating-details {
+            flex: 1;
+        }
+
+        .rating-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .rating-label {
+            width: 80px;
+            font-size: 0.9rem;
+            color: #5c4c3e;
+        }
+
+        .rating-progress {
+            flex: 1;
+            height: 8px;
+            background: #e9e1d5;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0 10px;
+        }
+
+        .rating-fill {
+            height: 100%;
+            background: #e9b949;
+        }
+
+        .rating-percent {
+            width: 40px;
+            text-align: right;
+            font-size: 0.9rem;
+            color: #8c6d46;
+        }
+
+        .review-list {
+            margin-top: 30px;
+        }
+
+        .review-item {
+            padding: 20px;
+            border-bottom: 1px solid #e9e1d5;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .reviewer {
+            font-weight: bold;
+            color: #5c4c3e;
+        }
+
+        .review-date {
+            color: #8c6d46;
+            font-size: 0.9rem;
+        }
+
+        .review-rating {
+            color: #e9b949;
+            margin-bottom: 10px;
+        }
+
+        .review-content {
+            color: #745b3a;
+            line-height: 1.6;
+        }
+
+        /* 页脚 */
+        .page-footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 50px;
+            color: #8c6d46;
+            font-size: 0.9rem;
+            border-top: 1px solid #d6ccc2;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .product-detail {
+                flex-direction: column;
+            }
+
+            .product-gallery {
+                max-width: 100%;
+            }
+
+            .reviews-summary {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+            }
+
+            .tab {
+                flex: 1;
+                text-align: center;
+            }
+        }
+
+        /* 视频展示区域样式 */
+        .video-section {
+            margin-top: 30px;
+        }
+
+        .video-title {
+            font-size: 1.2rem;
+            color: #8b7355;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+        }
+
+        .video-placeholder {
+            text-align: center;
+            color: #8b7355;
+        }
+
+        .video-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            opacity: 0.7;
+        }
+
+        .video-placeholder p {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <div class="top-nav">
+            <div class="logo">
+                <i class="fas fa-mountain"></i>
+                <span>云间文苑</span>
+            </div>
+
+            <div class="user-actions">
+                <button class="nav-btn" id="backBtn">
+                    <i class="fas fa-arrow-left"></i> 返回商店
+                </button>
+                <!-- <div class="cart-icon"> -->
+                <!-- <i class="fas fa-shopping-cart"></i> -->
+                <!-- <span class="cart-count">3</span> -->
+                <!-- </div> -->
+            </div>
+        </div>
+
+        <!-- 页面标题 -->
+        <header class="page-header">
+            <h1 class="page-title">产品详情</h1>
+            <p class="page-subtitle">品味传统工艺之美</p>
+        </header>
+
+        <!-- 产品详情内容 -->
+        <div class="product-container">
+            <div class="product-detail">
+                <!-- 产品图片区域 -->
+                <div class="product-gallery">
+                    <div class="main-image">
+                        <img src="https://images.unsplash.com/photo-1587332278433-97428c3e9a09?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
+                            alt="景德镇手工青花瓷茶具套装" id="mainImage">
+                    </div>
+                    <div class="thumbnail-gallery">
+                        <div class="thumbnail active"
+                            data-image="https://images.unsplash.com/photo-1587332278433-97428c3e9a09?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80">
+                            <img src="https://images.unsplash.com/photo-1587332278433-97428c3e9a09?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
+                                alt="茶具正面">
+                        </div>
+                        <div class="thumbnail"
+                            data-image="https://images.unsplash.com/photo-1594736797933-d0e6e4f5a65a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80">
+                            <img src="https://images.unsplash.com/photo-1594736797933-d0e6e4f5a65a?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
+                                alt="茶具细节">
+                        </div>
+                        <div class="thumbnail"
+                            data-image="https://images.unsplash.com/photo-1611073311983-d9a8c7de6a1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80">
+                            <img src="https://images.unsplash.com/photo-1611073311983-d9a8c7de6a1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
+                                alt="茶具套装">
+                        </div>
+                        <div class="thumbnail"
+                            data-image="https://images.unsplash.com/photo-1547981609-4b6bfc67c272?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80">
+                            <img src="https://images.unsplash.com/photo-1547981609-4b6bfc67c272?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
+                                alt="使用场景">
+                        </div>
+                    </div>
+
+                    <!-- 视频展示区域 -->
+                    <div class="video-section">
+                        <h3 class="video-title">工艺展示视频</h3>
+                        <div class="video-container">
+                            <div class="video-placeholder">
+                                <i class="fas fa-play-circle"></i>
+                                <p>点击播放制作工艺展示视频</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 产品信息区域 -->
+                <div class="product-info">
+                    <div class="product-card">
+                        <h1 class="product-title">景德镇手工青花瓷茶具套装</h1>
+                        <p class="product-subtitle">非遗传承 · 手工绘制 · 匠心之作</p>
+
+                        <div class="product-price">¥ 1,280</div>
+
+                        <div class="product-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-star"></i>
+                                <span>4.8 (128评价)</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-shopping-bag"></i>
+                                <span>156已售</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-box"></i>
+                                <span>现货</span>
+                            </div>
+                        </div>
+
+                        <p class="product-description">
+                            这款景德镇手工青花瓷茶具套装采用传统青花瓷工艺，由资深匠人手工绘制山水图案。
+                            每件作品都经过72道工序精心制作，从选料、制坯、绘画到烧制，无不体现匠人的用心与技艺。
+                            青花色泽纯正，图案典雅，既实用又具有收藏价值。
+                        </p>
+
+                        <div class="spec-list">
+                            <div class="spec-item">
+                                <div class="spec-label">材质</div>
+                                <div class="spec-value">高岭土、钴料</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">工艺</div>
+                                <div class="spec-value">手工绘制、高温烧制</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">尺寸</div>
+                                <div class="spec-value">茶壶: 15×10×12cm, 茶杯: 6×6×5cm</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">套装内容</div>
+                                <div class="spec-value">茶壶×1, 茶杯×4, 茶盘×1, 茶叶罐×1</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">产地</div>
+                                <div class="spec-value">江西景德镇</div>
+                            </div>
+                        </div>
+
+                        <div class="purchase-options">
+                            <div class="option-group">
+                                <label class="option-label">图案选择</label>
+                                <div class="option-buttons">
+                                    <button class="option-btn active">山水图</button>
+                                    <button class="option-btn">花鸟图</button>
+                                    <button class="option-btn">龙凤图</button>
+                                </div>
+                            </div>
+
+                            <div class="option-group">
+                                <label class="option-label">包装选项</label>
+                                <div class="option-buttons">
+                                    <button class="option-btn active">普通包装</button>
+                                    <button class="option-btn">礼品包装 (+¥50)</button>
+                                </div>
+                            </div>
+
+                            <div class="option-group">
+                                <label class="option-label">数量</label>
+                                <div class="quantity-selector">
+                                    <button class="quantity-btn" id="decreaseQty">-</button>
+                                    <input type="text" class="quantity-input" value="1" id="quantity">
+                                    <button class="quantity-btn" id="increaseQty">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="action-btn outline" id="addToCartBtn">
+                                <i class="fas fa-heart"></i> 展品收藏
+                            </button>
+                            <button class="action-btn primary" id="buyNowBtn">
+                                <i class="fas fa-bolt"></i> 立即购买
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 标签页内容 -->
+            <div class="product-card">
+                <div class="tabs">
+                    <div class="tab active" data-tab="description">产品详情</div>
+                    <div class="tab" data-tab="specifications">规格参数</div>
+                    <div class="tab" data-tab="reviews">用户评价</div>
+                    <div class="tab" data-tab="shipping">配送说明</div>
+                </div>
+
+                <!-- 产品详情 -->
+                <div class="tab-content active" id="descriptionContent">
+                    <h3>产品故事</h3>
+                    <p>景德镇青花瓷始于唐代，成熟于元代，盛于明清。这款茶具套装继承了传统青花瓷的精髓，采用天然钴料绘制，经1300℃高温烧制而成。每一件作品都由景德镇资深匠人手工制作，保留了传统工艺的独特韵味。
+                    </p>
+
+                    <h3>工艺特点</h3>
+                    <p>青花瓷以其白地蓝花为主要特征，色泽清新淡雅，图案古朴典雅。我们的匠人采用传统分水技法，使青花呈现出浓淡深浅的变化，如同中国传统水墨画般富有层次感。</p>
+
+                    <h3>使用与保养</h3>
+                    <p>使用前建议用温水清洗，避免骤冷骤热。清洗时使用软布，避免使用硬质刷子或研磨性清洁剂。长期使用后，茶具会逐渐形成包浆，色泽更加温润。</p>
+                </div>
+
+                <!-- 规格参数 -->
+                <div class="tab-content" id="specificationsContent">
+                    <div class="spec-list">
+                        <div class="spec-item">
+                            <div class="spec-label">产品名称</div>
+                            <div class="spec-value">景德镇手工青花瓷茶具套装</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">产品材质</div>
+                            <div class="spec-value">高岭土、天然钴料</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">烧制温度</div>
+                            <div class="spec-value">1300℃</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">产品重量</div>
+                            <div class="spec-value">约2.5kg</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">包装尺寸</div>
+                            <div class="spec-value">35×25×15cm</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">产地</div>
+                            <div class="spec-value">江西景德镇</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">制造商</div>
+                            <div class="spec-value">景德镇传统工艺坊</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 用户评价 -->
+                <div class="tab-content" id="reviewsContent">
+                    <div class="reviews-summary">
+                        <div class="rating-overview">
+                            <div class="rating-score">4.8</div>
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <div class="rating-count">128条评价</div>
+                        </div>
+                        <div class="rating-details">
+                            <div class="rating-bar">
+                                <div class="rating-label">5星</div>
+                                <div class="rating-progress">
+                                    <div class="rating-fill" style="width: 80%"></div>
+                                </div>
+                                <div class="rating-percent">80%</div>
+                            </div>
+                            <div class="rating-bar">
+                                <div class="rating-label">4星</div>
+                                <div class="rating-progress">
+                                    <div class="rating-fill" style="width: 15%"></div>
+                                </div>
+                                <div class="rating-percent">15%</div>
+                            </div>
+                            <div class="rating-bar">
+                                <div class="rating-label">3星</div>
+                                <div class="rating-progress">
+                                    <div class="rating-fill" style="width: 3%"></div>
+                                </div>
+                                <div class="rating-percent">3%</div>
+                            </div>
+                            <div class="rating-bar">
+                                <div class="rating-label">2星</div>
+                                <div class="rating-progress">
+                                    <div class="rating-fill" style="width: 1%"></div>
+                                </div>
+                                <div class="rating-percent">1%</div>
+                            </div>
+                            <div class="rating-bar">
+                                <div class="rating-label">1星</div>
+                                <div class="rating-progress">
+                                    <div class="rating-fill" style="width: 1%"></div>
+                                </div>
+                                <div class="rating-percent">1%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="review-list">
+                        <div class="review-item">
+                            <div class="review-header">
+                                <div class="reviewer">文心居士</div>
+                                <div class="review-date">2023-10-15</div>
+                            </div>
+                            <div class="review-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="review-content">
+                                非常精美的茶具，青花图案绘制精细，色泽纯正。使用起来手感很好，茶汤口感也有所提升。包装也很用心，适合送礼。
+                            </div>
+                        </div>
+
+                        <div class="review-item">
+                            <div class="review-header">
+                                <div class="reviewer">茶道爱好者</div>
+                                <div class="review-date">2023-10-10</div>
+                            </div>
+                            <div class="review-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <div class="review-content">
+                                作为茶道爱好者，对茶具的要求比较高。这款茶具整体不错，手工绘制的图案很有特色，但有一个茶杯底部稍微有点不平，放在桌上有点晃动。不过客服态度很好，及时解决了问题。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 配送说明 -->
+                <div class="tab-content" id="shippingContent">
+                    <h3>配送信息</h3>
+                    <p>我们使用顺丰速运进行配送，一般情况下1-3天可达。偏远地区可能会稍有延迟。</p>
+
+                    <h3>配送费用</h3>
+                    <p>订单满200元免运费，未满200元收取15元运费。</p>
+
+                    <h3>配送范围</h3>
+                    <p>全国大部分地区均可配送，部分偏远地区（如新疆、西藏等）可能需要额外配送时间。</p>
+
+                    <h3>包装说明</h3>
+                    <p>所有商品均采用防震包装，确保运输安全。如需礼品包装，请在购买时选择相应选项。</p>
+                </div>
+            </div>
+        </div>
+
+        <footer class="page-footer">
+            <p>© 2023 云间文苑 | 传承匠心，品味传统工艺之美</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 返回按钮
+            const backBtn = document.getElementById('backBtn');
+            backBtn.addEventListener('click', function () {
+                alert('返回匠人商店');
+                // 实际应用中这里会跳转到商店页面
+            });
+
+            // 缩略图点击事件
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            const mainImage = document.getElementById('mainImage');
+
+            thumbnails.forEach(thumbnail => {
+                thumbnail.addEventListener('click', function () {
+                    const imageUrl = this.getAttribute('data-image');
+                    mainImage.src = imageUrl;
+
+                    // 更新激活状态
+                    thumbnails.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // 数量选择器
+            const decreaseBtn = document.getElementById('decreaseQty');
+            const increaseBtn = document.getElementById('increaseQty');
+            const quantityInput = document.getElementById('quantity');
+
+            decreaseBtn.addEventListener('click', function () {
+                let currentQty = parseInt(quantityInput.value);
+                if (currentQty > 1) {
+                    quantityInput.value = currentQty - 1;
+                }
+            });
+
+            increaseBtn.addEventListener('click', function () {
+                let currentQty = parseInt(quantityInput.value);
+                quantityInput.value = currentQty + 1;
+            });
+
+            // 选项按钮
+            const optionBtns = document.querySelectorAll('.option-btn');
+            optionBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const parent = this.parentElement;
+                    parent.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // 标签页切换
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function () {
+                    const tabId = this.getAttribute('data-tab');
+
+                    // 更新标签状态
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // 更新内容显示
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === `${tabId}Content`) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            // 加入购物车按钮
+            const addToCartBtn = document.getElementById('addToCartBtn');
+            addToCartBtn.addEventListener('click', function () {
+                const quantity = parseInt(quantityInput.value);
+                alert(`已将 ${quantity} 件商品加入收藏列表`);
+
+                // 更新购物车数量
+                const cartCount = document.querySelector('.cart-count');
+                const currentCount = parseInt(cartCount.textContent);
+                cartCount.textContent = currentCount + quantity;
+            });
+
+            // 立即购买按钮
+            const buyNowBtn = document.getElementById('buyNowBtn');
+            buyNowBtn.addEventListener('click', function () {
+                const quantity = parseInt(quantityInput.value);
+                alert(`立即购买 ${quantity} 件商品`);
+                // 实际应用中这里会跳转到结算页面
+            });
+        });
+    </script>
+</body>
+
+</html>

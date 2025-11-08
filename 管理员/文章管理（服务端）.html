@@ -191,6 +191,11 @@
             border-bottom: 2px solid #e9e1d5;
         }
 
+        /* 当只有操作按钮时，右对齐 */
+        .content-header:has(.content-actions):not(:has(.content-title)) {
+            justify-content: flex-end;
+        }
+
         .content-title {
             font-family: 'Ma Shan Zheng', cursive;
             font-size: 2rem;
@@ -922,6 +927,77 @@
             flex: 1;
             margin-bottom: 0;
         }
+
+        /* 商品管理特定样式 */
+        .product-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .status-onsale {
+            background: #d8e8d8;
+            color: #4c8c4c;
+        }
+
+        .status-soldout {
+            background: #e8e0d8;
+            color: #8c6d4c;
+        }
+
+        .status-offline {
+            background: #e8d8d8;
+            color: #8c4c4c;
+        }
+
+        .product-params {
+            margin-top: 20px;
+        }
+
+        .param-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .param-name {
+            flex: 1;
+        }
+
+        .param-value {
+            flex: 2;
+        }
+
+        .add-param-btn {
+            background: #f1e9dd;
+            border: 1px dashed #d6ccc2;
+            padding: 10px;
+            border-radius: 8px;
+            color: #8c6d46;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .add-param-btn:hover {
+            background: #e9e1d5;
+            border-color: #8c6d46;
+        }
+
+        .remove-param-btn {
+            background: #e8d8d8;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #8c4c4c;
+        }
     </style>
 </head>
 
@@ -984,6 +1060,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="#" class="nav-link" data-content="products">
+                            <i class="fas fa-box"></i>
+                            <span>商品管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="#" class="nav-link" data-content="stats">
                             <i class="fas fa-chart-bar"></i>
                             <span>数据统计</span>
@@ -1018,7 +1100,7 @@
 
             <main class="content-area">
                 <div class="content-header">
-                    <h2 class="content-title">文章管理</h2>
+                    <h2 class="content-title">平台管理</h2>
                     <div class="content-actions">
                         <button class="header-btn">
                             <i class="fas fa-download"></i> 导出
@@ -1251,21 +1333,191 @@
                     </div>
                 </div>
 
+                <!-- 商品管理内容 -->
+                <div class="content-section" id="products-content" style="display: none;">
+                    <div class="content-header">
+                        <div class="content-actions">
+                            <button class="header-btn" id="addProductBtn">
+                                <i class="fas fa-plus"></i> 添加商品
+                            </button>
+                            <!-- <button class="header-btn"> -->
+                            <!-- <i class="fas fa-download"></i> 导出 -->
+                            <!-- </button> -->
+                        </div>
+                    </div>
+
+                    <div class="review-filters">
+                        <button class="filter-btn active">全部商品</button>
+                        <button class="filter-btn">在售商品</button>
+                        <button class="filter-btn">已售罄</button>
+                        <button class="filter-btn">已下架</button>
+                    </div>
+
+                    <table class="articles-table">
+                        <thead>
+                            <tr>
+                                <th>商品名称</th>
+                                <th>价格</th>
+                                <th>库存</th>
+                                <th>销量</th>
+                                <th>状态</th>
+                                <th>上架时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>传统茶具套装</td>
+                                <td>¥ 299</td>
+                                <td>156</td>
+                                <td>248</td>
+                                <td><span class="product-status status-onsale">在售</span></td>
+                                <td>2023-10-15</td>
+                                <td>
+                                    <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>剪纸艺术框画</td>
+                                <td>¥ 128</td>
+                                <td>0</td>
+                                <td>86</td>
+                                <td><span class="product-status status-soldout">已售罄</span></td>
+                                <td>2023-10-10</td>
+                                <td>
+                                    <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>传统纹样丝巾</td>
+                                <td>¥ 189</td>
+                                <td>42</td>
+                                <td>156</td>
+                                <td><span class="product-status status-onsale">在售</span></td>
+                                <td>2023-09-28</td>
+                                <td>
+                                    <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>文化主题笔记本</td>
+                                <td>¥ 59</td>
+                                <td>0</td>
+                                <td>312</td>
+                                <td><span class="product-status status-offline">已下架</span></td>
+                                <td>2023-09-15</td>
+                                <td>
+                                    <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- 商品表单 -->
+                    <div class="editor-container" id="product-form" style="display: none; margin-top: 30px;">
+                        <h3 class="chart-title" id="product-form-title">添加商品</h3>
+
+                        <div class="form-group">
+                            <label for="productName">商品名称</label>
+                            <input type="text" id="productName" class="form-control" placeholder="请输入商品名称">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="productPrice">价格</label>
+                                <input type="number" id="productPrice" class="form-control" placeholder="0.00" min="0"
+                                    step="0.01">
+                            </div>
+                            <div class="form-group">
+                                <label for="productStock">库存</label>
+                                <input type="number" id="productStock" class="form-control" placeholder="0" min="0">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productCategory">商品分类</label>
+                            <select id="productCategory" class="form-control">
+                                <option value="">请选择商品分类</option>
+                                <option value="tea">茶具茶艺</option>
+                                <option value="papercut">剪纸艺术</option>
+                                <option value="silk">丝绸制品</option>
+                                <option value="pottery">陶瓷制品</option>
+                                <option value="book">文化书籍</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productDescription">商品描述</label>
+                            <textarea id="productDescription" class="form-control" placeholder="请输入商品描述..."
+                                rows="5"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productImages" class="upload-label-info">商品图片</label>
+                            <div class="custom-file-upload">
+                                <input type="file" id="productImages" multiple accept="image/*">
+                                <div class="file-upload-box">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span class="upload-text">点击或拖拽图片至此处</span>
+                                    <span class="upload-hint">支持JPG、PNG格式，最多5张</span>
+                                </div>
+                                <div class="file-preview-container" id="productImagePreview"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productVideo" class="upload-label-info">商品视频（可选）</label>
+                            <div class="custom-file-upload">
+                                <input type="file" id="productVideo" accept="video/*">
+                                <div class="file-upload-box">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span class="upload-text">点击或拖拽视频至此处</span>
+                                    <span class="upload-hint">支持MP4、MOV格式，仅限1个</span>
+                                </div>
+                                <div class="video-preview-container" id="productVideoPreview"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productDetail" class="upload-label-info">产品详情</label>
+                            <textarea id="productDetail" class="form-control" placeholder="请输入产品详情..."
+                                rows="8"></textarea>
+                        </div>
+
+                        <div class="form-group product-params">
+                            <label class="upload-label-info">产品参数</label>
+                            <div id="productParams">
+                                <div class="param-row">
+                                    <input type="text" class="form-control param-name" placeholder="参数名称">
+                                    <input type="text" class="form-control param-value" placeholder="参数值">
+                                    <button class="remove-param-btn"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+                            <div class="add-param-btn" id="addParamBtn">
+                                <i class="fas fa-plus"></i> 添加参数
+                            </div>
+                        </div>
+
+                        <div class="editor-actions">
+                            <button class="btn btn-outline" id="cancelProductBtn">取消</button>
+                            <button class="btn btn-primary" id="saveProductBtn">保存商品</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 其他内容区域保持不变 -->
                 <!-- 数据统计内容 -->
                 <a href="数据统计.html" target="_blank" rel="noopener noreferrer">
                     <div class="content-section" id="stats-content" style="display: none;">
-                        <!-- <div class="content-header"> -->
-                        <!-- <h2 class="content-title">数据统计</h2> -->
-                        <!-- <div class="content-actions"> -->
-                        <!-- <button class="header-btn"> -->
-                        <!-- <i class="fas fa-download"></i> 导出报表 -->
-                        <!-- </button> -->
-                        <!-- <button class="header-btn"> -->
-                        <!-- <i class="fas fa-calendar"></i> 选择时间段 -->
-                        <!-- </button> -->
-                        <!-- </div> -->
-                        <!-- </div> -->
-
                         <div class="stats-grid">
                             <div class="stat-card">
                                 <div class="stat-icon">
@@ -1334,18 +1586,6 @@
 
                 <!-- 用户管理内容 -->
                 <div class="content-section" id="users-content" style="display: none;">
-                    <!-- <div class="content-header"> -->
-                    <!-- <h2 class="content-title">用户管理</h2> -->
-                    <!-- <div class="content-actions"> -->
-                    <!-- <button class="header-btn"> -->
-                    <!-- <i class="fas fa-plus"></i> 添加用户 -->
-                    <!-- </button> -->
-                    <!-- <button class="header-btn"> -->
-                    <!-- <i class="fas fa-download"></i> 导出用户 -->
-                    <!-- </button> -->
-                    <!-- </div> -->
-                    <!-- </div> -->
-
                     <div class="user-filters">
                         <div class="user-search">
                             <i class="fas fa-search"></i>
@@ -1438,18 +1678,6 @@
 
                 <!-- 分类管理内容 -->
                 <div class="content-section" id="categories-content" style="display: none;">
-                    <!-- <div class="content-header"> -->
-                    <!-- <h2 class="content-title">分类管理</h2> -->
-                    <!-- <div class="content-actions"> -->
-                    <!-- <button class="header-btn" id="addCategoryBtn"> -->
-                    <!-- <i class="fas fa-plus"></i> 添加分类 -->
-                    <!-- </button> -->
-                    <!-- <button class="header-btn"> -->
-                    <!-- <i class="fas fa-sync"></i> 刷新 -->
-                    <!-- </button> -->
-                    <!-- </div> -->
-                    <!-- </div> -->
-
                     <div class="category-toolbar">
                         <div class="user-search">
                             <i class="fas fa-search"></i>
@@ -1594,20 +1822,6 @@
                 </div>
                 <!-- 公益募捐内容 -->
                 <div class="content-section" id="donation-content" style="display: none;">
-                    <!-- <div class="content-header"> -->
-                    <!-- <h2 class="content-title">公益募捐</h2> -->
-                    <!-- <div class="content-actions"> -->
-                    <!-- <button class="header-btn"> -->
-                    <!-- <i class="fas fa-download"></i> 导出 -->
-                    <!-- </button> -->
-                    <!-- <button class="header-btn"> -->
-                    <!-- <i class="fas fa-filter"></i> 筛选 -->
-                    <!-- </button> -->
-                    <!-- <button class="header-btn"> -->
-                    <!-- <i class="fas fa-plus"></i> 发布募捐 -->
-                    <!-- </button> -->
-                    <!-- </div> -->
-                    <!-- </div> -->
                     <a href="公益募捐.html" target="_blank" rel="noopener noreferrer">
                         <div class="stats-grid">
                             <div class="stat-card">
@@ -1721,18 +1935,6 @@
                 </div>
                 <!-- 平台收益内容 -->
                 <div class="content-section" id="income-content" style="display: none;">
-                    <!-- <div class="content-header"> -->
-                    <!-- <h2 class="content-title">平台收益</h2> -->
-                    <!-- <div class="content-actions"> -->
-                    <!-- <button class="header-btn"> -->
-                    <!-- <i class="fas fa-download"></i> 导出 -->
-                    <!-- </button> -->
-                    <!-- <button class="header-btn"> -->
-                    <!-- <i class="fas fa-filter"></i> 筛选 -->
-                    <!-- </button> -->
-                    <!-- </div> -->
-                    <!-- </div> -->
-
                     <div class="stats-grid">
                         <div class="stat-card">
                             <div class="stat-icon">
@@ -1924,7 +2126,7 @@
             });
 
             // 点击其他区域时取消图表按钮的选中状态
-            document.addEventListener('click', function(e) {
+            document.addEventListener('click', function (e) {
                 // 如果点击的不是图表按钮，则移除所有图表按钮的选中状态
                 if (!e.target.closest('.action-btn') || !e.target.closest('.action-btn').innerHTML.includes('fa-chart-bar')) {
                     document.querySelectorAll('.action-btn').forEach(button => {
@@ -2313,13 +2515,192 @@
             const categoryForm = document.getElementById('categoryForm');
             const cancelCategoryBtn = document.getElementById('cancelCategoryBtn');
 
-            addCategoryBtn.addEventListener('click', function () {
-                categoryForm.style.display = 'block';
-            });
+            if (addCategoryBtn) {
+                addCategoryBtn.addEventListener('click', function () {
+                    categoryForm.style.display = 'block';
+                });
+            }
 
-            cancelCategoryBtn.addEventListener('click', function () {
-                categoryForm.style.display = 'none';
-            });
+            if (cancelCategoryBtn) {
+                cancelCategoryBtn.addEventListener('click', function () {
+                    categoryForm.style.display = 'none';
+                });
+            }
+
+            // ====================== 商品管理功能 ======================
+
+            // 商品管理相关元素
+            const addProductBtn = document.getElementById('addProductBtn');
+            const productForm = document.getElementById('product-form');
+            const cancelProductBtn = document.getElementById('cancelProductBtn');
+            const saveProductBtn = document.getElementById('saveProductBtn');
+            const addParamBtn = document.getElementById('addParamBtn');
+            const productParams = document.getElementById('productParams');
+            const productImageInput = document.getElementById('productImages');
+            const productImagePreview = document.getElementById('productImagePreview');
+            const productVideoInput = document.getElementById('productVideo');
+            const productVideoPreview = document.getElementById('productVideoPreview');
+
+            // 添加商品按钮点击事件
+            if (addProductBtn) {
+                addProductBtn.addEventListener('click', function () {
+                    productForm.style.display = 'block';
+                    document.getElementById('product-form-title').textContent = '添加商品';
+                    resetProductForm();
+                });
+            }
+
+            // 取消商品编辑
+            if (cancelProductBtn) {
+                cancelProductBtn.addEventListener('click', function () {
+                    productForm.style.display = 'none';
+                    resetProductForm();
+                });
+            }
+
+            // 保存商品
+            if (saveProductBtn) {
+                saveProductBtn.addEventListener('click', function () {
+                    const productName = document.getElementById('productName').value;
+                    const productPrice = document.getElementById('productPrice').value;
+                    const productStock = document.getElementById('productStock').value;
+                    const productCategory = document.getElementById('productCategory').value;
+                    const productDescription = document.getElementById('productDescription').value;
+                    const productDetail = document.getElementById('productDetail').value;
+
+                    if (!productName || !productPrice || !productStock || !productCategory || !productDescription) {
+                        alert('请填写完整商品信息');
+                        return;
+                    }
+
+                    // 模拟保存成功
+                    alert('商品保存成功！');
+                    productForm.style.display = 'none';
+                    resetProductForm();
+                });
+            }
+
+            // 添加参数行
+            if (addParamBtn) {
+                addParamBtn.addEventListener('click', function () {
+                    addParamRow();
+                });
+            }
+
+            // 初始化参数行
+            function addParamRow() {
+                const paramRow = document.createElement('div');
+                paramRow.className = 'param-row';
+                paramRow.innerHTML = `
+                    <input type="text" class="form-control param-name" placeholder="参数名称">
+                    <input type="text" class="form-control param-value" placeholder="参数值">
+                    <button class="remove-param-btn"><i class="fas fa-times"></i></button>
+                `;
+
+                // 添加删除参数事件
+                const removeBtn = paramRow.querySelector('.remove-param-btn');
+                removeBtn.addEventListener('click', function () {
+                    paramRow.remove();
+                });
+
+                productParams.appendChild(paramRow);
+            }
+
+            // 重置商品表单
+            function resetProductForm() {
+                document.getElementById('productName').value = '';
+                document.getElementById('productPrice').value = '';
+                document.getElementById('productStock').value = '';
+                document.getElementById('productCategory').value = '';
+                document.getElementById('productDescription').value = '';
+                document.getElementById('productDetail').value = '';
+
+                // 清空参数区域
+                productParams.innerHTML = '';
+                addParamRow(); // 添加一个初始参数行
+
+                // 清空图片和视频预览
+                productImagePreview.innerHTML = '';
+                productVideoPreview.innerHTML = '';
+
+                // 清空文件输入
+                productImageInput.value = '';
+                productVideoInput.value = '';
+            }
+
+            // 商品图片预览
+            if (productImageInput) {
+                productImageInput.addEventListener('change', function (e) {
+                    productImagePreview.innerHTML = '';
+
+                    if (this.files) {
+                        Array.from(this.files).forEach(file => {
+                            if (!file.type.match('image.*')) {
+                                alert('请上传图片文件');
+                                return;
+                            }
+
+                            const reader = new FileReader();
+
+                            reader.onload = function (event) {
+                                const previewDiv = document.createElement('div');
+                                previewDiv.className = 'file-preview';
+
+                                const img = document.createElement('img');
+                                img.src = event.target.result;
+
+                                const removeBtn = document.createElement('button');
+                                removeBtn.className = 'remove-btn';
+                                removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                                removeBtn.addEventListener('click', function () {
+                                    previewDiv.remove();
+                                });
+
+                                previewDiv.appendChild(img);
+                                previewDiv.appendChild(removeBtn);
+                                productImagePreview.appendChild(previewDiv);
+                            };
+
+                            reader.readAsDataURL(file);
+                        });
+                    }
+                });
+            }
+
+            // 商品视频预览
+            if (productVideoInput) {
+                productVideoInput.addEventListener('change', function (e) {
+                    productVideoPreview.innerHTML = '';
+
+                    if (this.files && this.files[0]) {
+                        const file = this.files[0];
+                        if (!file.type.match('video.*')) {
+                            alert('请上传视频文件');
+                            return;
+                        }
+
+                        const videoURL = URL.createObjectURL(file);
+                        const preview = document.createElement('div');
+                        preview.className = 'video-preview';
+                        preview.innerHTML = `
+                            <video src="${videoURL}" controls></video>
+                            <div class="remove-file">&times;</div>
+                        `;
+
+                        // 添加删除功能
+                        const removeBtn = preview.querySelector('.remove-file');
+                        removeBtn.addEventListener('click', function () {
+                            productVideoPreview.innerHTML = '';
+                        });
+
+                        productVideoPreview.innerHTML = '';
+                        productVideoPreview.appendChild(preview);
+                    }
+                });
+            }
+
+            // 初始化一个参数行
+            addParamRow();
         });
     </script>
 </body>

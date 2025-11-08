@@ -94,6 +94,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 setTimeout(() => {
                     myContent.style.display = 'block';
                 }, 10);
+            } else if (index === 5) { // 店肆
+                // 显示店肆页面
+                document.querySelector('.zong .liu').style.display = 'block';
             }
         });
     });
@@ -481,3 +484,85 @@ function initMastersCarousel() {
         animationId = requestAnimationFrame(animate);
     });
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    // 导航项点击效果
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+        item.addEventListener('click', function (e) {
+            e.preventDefault();
+            navItems.forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    // 匠人商店标签切换
+    const storeTabs = document.querySelectorAll('.store-tab');
+    const storeContents = document.querySelectorAll('.store-content');
+
+    storeTabs.forEach(tab => {
+        tab.addEventListener('click', function () {
+            const tabId = this.getAttribute('data-tab');
+
+            // 更新标签状态
+            storeTabs.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+
+            // 更新内容显示
+            storeContents.forEach(content => {
+                content.classList.remove('active');
+                if (content.id === `${tabId}Content`) {
+                    content.classList.add('active');
+                }
+            });
+        });
+    });
+
+    // 商品操作按钮 - 只针对产品卡片内部的按钮
+    const productBtns = document.querySelectorAll('.product-card .product-actions .product-btn');
+    productBtns.forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            // 阻止事件冒泡和默认行为，避免a标签跳转
+            e.preventDefault();
+            e.stopPropagation();
+
+            const action = this.textContent;
+            const productTitle = this.closest('.product-card').querySelector('.product-title').textContent;
+
+            if (action === '收藏' || action === '取消收藏') {
+                alert(`${action}商品: ${productTitle}`);
+            } else if (action === '点击购买') {
+                alert(`恭喜您！已成功购买"${productTitle}"`);
+            }
+        });
+    });
+
+    // 分类筛选按钮
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    categoryBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            categoryBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    // 搜索功能
+    const searchInput = document.querySelector('.search-box input');
+    const searchBtn = document.querySelector('.search-btn');
+
+    searchBtn.addEventListener('click', function () {
+        const keyword = searchInput.value;
+        if (keyword.trim() !== '') {
+            alert(`搜索关键词: ${keyword}`);
+        }
+    });
+
+    searchInput.addEventListener('keyup', function (e) {
+        if (e.key === 'Enter') {
+            const keyword = searchInput.value;
+            if (keyword.trim() !== '') {
+                alert(`搜索关键词: ${keyword}`);
+            }
+        }
+    });
+});

@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>匠人商店 - 云间文苑</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image:
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 顶部导航栏 */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 2px solid #d6ccc2;
+        }
+
+        .logo {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.2rem;
+            color: #8c6d46;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            margin-left: 10px;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            padding: 5px 15px;
+            border: 1px solid #d6ccc2;
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            padding: 8px;
+            outline: none;
+            font-family: 'Noto Serif SC', serif;
+            color: #5c4c3e;
+            width: 200px;
+        }
+
+        .search-btn {
+            background: none;
+            border: none;
+            color: #8c6d46;
+            cursor: pointer;
+        }
+
+        .cart-icon {
+            position: relative;
+            font-size: 1.2rem;
+            color: #8c6d46;
+            cursor: pointer;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #8c3c2c;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 主导航 */
+        .main-nav {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #d6ccc2;
+        }
+
+        .nav-item {
+            padding: 10px 25px;
+            font-size: 1.2rem;
+            color: #5c4c3e;
+            text-decoration: none;
+            position: relative;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item::after {
+            content: "";
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: #8c6d46;
+            transition: width 0.3s ease;
+        }
+
+        .nav-item.active {
+            color: #8c6d46;
+            font-weight: bold;
+        }
+
+        .nav-item.active::after {
+            width: 100%;
+        }
+
+        .nav-item:hover::after {
+            width: 100%;
+        }
+
+        /* 页面标题 */
+        .page-header {
+            text-align: center;
+            padding: 40px 0 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .page-header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8c6d46, transparent);
+        }
+
+        .page-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 3rem;
+            color: #8c3c2c;
+            margin-bottom: 15px;
+            letter-spacing: 5px;
+            text-shadow: 2px 2px 4px rgba(92, 76, 62, 0.2);
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #8c6d46;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* 匠人商店内容 */
+        .store-container {
+            margin: 40px 0;
+        }
+
+        .store-tabs {
+            display: flex;
+            border-bottom: 1px solid #d6ccc2;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .store-tab {
+            padding: 12px 25px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: #5c4c3e;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .store-tab.active {
+            color: #8c6d46;
+            border-bottom-color: #8c6d46;
+            font-weight: bold;
+        }
+
+        .store-content {
+            display: none;
+        }
+
+        .store-content.active {
+            display: block;
+        }
+
+        /* 产品浏览 */
+        .products-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        .category-filter {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 8px 20px;
+            background: rgba(255, 253, 245, 0.9);
+            border: 1px solid #d6ccc2;
+            border-radius: 30px;
+            color: #5c4c3e;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: #8c6d46;
+            color: #fff;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .product-card {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .product-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-content {
+            padding: 20px;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+            font-weight: bold;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            color: #8c3c2c;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #8c6d46;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+
+        .product-description {
+            color: #745b3a;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .product-btn {
+            flex: 1;
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+            background: transparent;
+            color: #8c6d46;
+            text-align: center;
+        }
+
+        .product-btn.primary {
+            background: #8c6d46;
+            color: white;
+        }
+
+        .product-btn:hover {
+            background: #8c6d46;
+            color: white;
+        }
+
+        /* 我的订单 */
+        .orders-section {
+            margin-bottom: 40px;
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+        }
+
+        .orders-table th {
+            background: rgba(140, 109, 70, 0.1);
+            padding: 15px;
+            text-align: left;
+            color: #5c4c3e;
+            font-weight: bold;
+            border-bottom: 2px solid #d6ccc2;
+        }
+
+        .orders-table td {
+            padding: 15px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        .orders-table tr:hover {
+            background: rgba(140, 109, 70, 0.05);
+        }
+
+        .order-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .status-pending {
+            background: #e8e0d8;
+            color: #8c6d4c;
+        }
+
+        .status-shipped {
+            background: #d8e8d8;
+            color: #4c8c4c;
+        }
+
+        .status-delivered {
+            background: #d8e8e8;
+            color: #4c8c8c;
+        }
+
+        .status-cancelled {
+            background: #e8d8d8;
+            color: #8c4c4c;
+        }
+
+        /* 商品收藏 */
+        .favorites-section {
+            margin-bottom: 40px;
+        }
+
+        /* 页脚 */
+        .page-footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 50px;
+            color: #8c6d46;
+            font-size: 0.9rem;
+            border-top: 1px solid #d6ccc2;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .main-nav {
+                flex-wrap: wrap;
+            }
+
+            .nav-item {
+                margin: 5px;
+                padding: 8px 15px;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .store-tabs {
+                flex-wrap: wrap;
+            }
+
+            .store-tab {
+                flex: 1;
+                text-align: center;
+            }
+
+            .category-filter {
+                justify-content: center;
+            }
+
+            .orders-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <div class="top-nav">
+            <div class="logo">
+                <i class="fas fa-mountain"></i>
+                <span>云间文苑</span>
+            </div>
+
+            <div class="user-actions">
+                <div class="search-box">
+                    <input type="text" placeholder="搜索商品...">
+                    <button class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <div class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">3</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主导航 -->
+        <nav class="main-nav">
+            <a href="#" class="nav-item">历史</a>
+            <a href="#" class="nav-item">非遗</a>
+            <a href="#" class="nav-item">公益</a>
+            <a href="#" class="nav-item">我的</a>
+            <a href="#" class="nav-item active">匠人商店</a>
+        </nav>
+
+        <!-- 页面标题 -->
+        <header class="page-header">
+            <h1 class="page-title">匠人商店</h1>
+            <p class="page-subtitle">传承匠心，品味传统工艺之美</p>
+        </header>
+
+        <!-- 匠人商店内容 -->
+        <div class="store-container">
+            <div class="store-tabs">
+                <div class="store-tab active" data-tab="products">产品浏览</div>
+                <div class="store-tab" data-tab="orders">我的订单</div>
+                <div class="store-tab" data-tab="favorites">商品收藏</div>
+            </div>
+
+            <!-- 产品浏览 -->
+            <div class="store-content active" id="productsContent">
+                <section class="products-section">
+                    <h2 class="section-title">精选商品</h2>
+                    
+                    <div class="category-filter">
+                        <button class="category-btn active">全部</button>
+                        <button class="category-btn">陶瓷工艺</button>
+                        <button class="category-btn">剪纸艺术</button>
+                        <button class="category-btn">文房四宝</button>
+                        <button class="category-btn">香道文化</button>
+                        <button class="category-btn">织绣工艺</button>
+                    </div>
+                    
+                    <div class="products-grid">
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1587332278433-97428c3e9a09?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="传统茶具">
+                            </div>
+                            <div class="product-content">
+                                <h3 class="product-title">景德镇手工青花瓷茶具套装</h3>
+                                <div class="product-price">¥ 1,280</div>
+                                <div class="product-meta">
+                                    <span><i class="fas fa-star"></i> 4.8</span>
+                                    <span>销量: 128</span>
+                                </div>
+                                <p class="product-description">采用传统青花瓷工艺，手工绘制山水图案，每件作品都是独一无二的艺术品。</p>
+                                <div class="product-actions">
+                                    <button class="product-btn">收藏</button>
+                                    <button class="product-btn primary">加入购物车</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1594736797933-d0e6e4f5a65a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="手工剪纸">
+                            </div>
+                            <div class="product-content">
+                                <h3 class="product-title">非遗剪纸艺术 - 福禄寿喜系列</h3>
+                                <div class="product-price">¥ 360</div>
+                                <div class="product-meta">
+                                    <span><i class="fas fa-star"></i> 4.9</span>
+                                    <span>销量: 86</span>
+                                </div>
+                                <p class="product-description">由非遗传承人手工剪制，寓意吉祥的传统剪纸艺术作品，适合家居装饰和礼品赠送。</p>
+                                <div class="product-actions">
+                                    <button class="product-btn">收藏</button>
+                                    <button class="product-btn primary">加入购物车</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1611073311983-d9a8c7de6a1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="文房四宝">
+                            </div>
+                            <div class="product-content">
+                                <h3 class="product-title">传统文房四宝 - 徽墨宣纸套装</h3>
+                                <div class="product-price">¥ 580</div>
+                                <div class="product-meta">
+                                    <span><i class="fas fa-star"></i> 4.7</span>
+                                    <span>销量: 64</span>
+                                </div>
+                                <p class="product-description">精选优质徽墨和宣纸，配以手工毛笔和砚台，是书法爱好者的理想选择。</p>
+                                <div class="product-actions">
+                                    <button class="product-btn">收藏</button>
+                                    <button class="product-btn primary">加入购物车</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1594736797933-d0e6e4f5a65a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="香道用品">
+                            </div>
+                            <div class="product-content">
+                                <h3 class="product-title">传统香道文化 - 沉香檀香礼盒</h3>
+                                <div class="product-price">¥ 890</div>
+                                <div class="product-meta">
+                                    <span><i class="fas fa-star"></i> 4.6</span>
+                                    <span>销量: 42</span>
+                                </div>
+                                <p class="product-description">精选优质沉香和檀香原料，配以传统香道器具，体验东方香道文化的独特魅力。</p>
+                                <div class="product-actions">
+                                    <button class="product-btn">收藏</button>
+                                    <button class="product-btn primary">加入购物车</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1587332278433-97428c3e9a09?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="刺绣作品">
+                            </div>
+                            <div class="product-content">
+                                <h3 class="product-title">苏绣精品 - 江南水乡图</h3>
+                                <div class="product-price">¥ 2,150</div>
+                                <div class="product-meta">
+                                    <span><i class="fas fa-star"></i> 4.9</span>
+                                    <span>销量: 28</span>
+                                </div>
+                                <p class="product-description">苏绣大师手工绣制，描绘江南水乡的优美景色，针法细腻，色彩丰富，极具收藏价值。</p>
+                                <div class="product-actions">
+                                    <button class="product-btn">收藏</button>
+                                    <button class="product-btn primary">加入购物车</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1611073311983-d9a8c7de6a1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="漆器">
+                            </div>
+                            <div class="product-content">
+                                <h3 class="product-title">传统漆器 - 牡丹纹饰首饰盒</h3>
+                                <div class="product-price">¥ 680</div>
+                                <div class="product-meta">
+                                    <span><i class="fas fa-star"></i> 4.5</span>
+                                    <span>销量: 35</span>
+                                </div>
+                                <p class="product-description">采用传统大漆工艺制作，表面绘制精美的牡丹图案，既是实用品也是艺术品。</p>
+                                <div class="product-actions">
+                                    <button class="product-btn">收藏</button>
+                                    <button class="product-btn primary">加入购物车</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- 我的订单 -->
+            <div class="store-content" id="ordersContent">
+                <section class="orders-section">
+                    <h2 class="section-title">我的订单</h2>
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>订单号</th>
+                                <th>商品</th>
+                                <th>金额</th>
+                                <th>下单时间</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>DD20231015001</td>
+                                <td>景德镇手工青花瓷茶具套装</td>
+                                <td>¥ 1,280</td>
+                                <td>2023-10-15</td>
+                                <td><span class="order-status status-delivered">已送达</span></td>
+                                <td>
+                                    <button class="product-btn">查看详情</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>DD20231012001</td>
+                                <td>非遗剪纸艺术 - 福禄寿喜系列</td>
+                                <td>¥ 360</td>
+                                <td>2023-10-12</td>
+                                <td><span class="order-status status-shipped">已发货</span></td>
+                                <td>
+                                    <button class="product-btn">查看物流</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>DD20231008001</td>
+                                <td>传统文房四宝 - 徽墨宣纸套装</td>
+                                <td>¥ 580</td>
+                                <td>2023-10-08</td>
+                                <td><span class="order-status status-pending">待发货</span></td>
+                                <td>
+                                    <button class="product-btn">取消订单</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>DD20231001001</td>
+                                <td>传统香道文化 - 沉香檀香礼盒</td>
+                                <td>¥ 890</td>
+                                <td>2023-10-01</td>
+                                <td><span class="order-status status-cancelled">已取消</span></td>
+                                <td>
+                                    <button class="product-btn">重新购买</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+
+            <!-- 商品收藏 -->
+            <div class="store-content" id="favoritesContent">
+                <section class="favorites-section">
+                    <h2 class="section-title">商品收藏</h2>
+                    <div class="products-grid">
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1587332278433-97428c3e9a09?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="传统茶具">
+                            </div>
+                            <div class="product-content">
+                                <h3 class="product-title">景德镇手工青花瓷茶具套装</h3>
+                                <div class="product-price">¥ 1,280</div>
+                                <div class="product-meta">
+                                    <span><i class="fas fa-star"></i> 4.8</span>
+                                    <span>收藏时间: 2023-10-10</span>
+                                </div>
+                                <p class="product-description">采用传统青花瓷工艺，手工绘制山水图案，每件作品都是独一无二的艺术品。</p>
+                                <div class="product-actions">
+                                    <button class="product-btn">取消收藏</button>
+                                    <button class="product-btn primary">加入购物车</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1611073311983-d9a8c7de6a1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="文房四宝">
+                            </div>
+                            <div class="product-content">
+                                <h3 class="product-title">传统文房四宝 - 徽墨宣纸套装</h3>
+                                <div class="product-price">¥ 580</div>
+                                <div class="product-meta">
+                                    <span><i class="fas fa-star"></i> 4.7</span>
+                                    <span>收藏时间: 2023-10-05</span>
+                                </div>
+                                <p class="product-description">精选优质徽墨和宣纸，配以手工毛笔和砚台，是书法爱好者的理想选择。</p>
+                                <div class="product-actions">
+                                    <button class="product-btn">取消收藏</button>
+                                    <button class="product-btn primary">加入购物车</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1587332278433-97428c3e9a09?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="刺绣作品">
+                            </div>
+                            <div class="product-content">
+                                <h3 class="product-title">苏绣精品 - 江南水乡图</h3>
+                                <div class="product-price">¥ 2,150</div>
+                                <div class="product-meta">
+                                    <span><i class="fas fa-star"></i> 4.9</span>
+                                    <span>收藏时间: 2023-09-28</span>
+                                </div>
+                                <p class="product-description">苏绣大师手工绣制，描绘江南水乡的优美景色，针法细腻，色彩丰富，极具收藏价值。</p>
+                                <div class="product-actions">
+                                    <button class="product-btn">取消收藏</button>
+                                    <button class="product-btn primary">加入购物车</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <footer class="page-footer">
+            <p>© 2023 云间文苑 | 传承匠心，品味传统工艺之美</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 导航项点击效果
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    navItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // 匠人商店标签切换
+            const storeTabs = document.querySelectorAll('.store-tab');
+            const storeContents = document.querySelectorAll('.store-content');
+
+            storeTabs.forEach(tab => {
+                tab.addEventListener('click', function () {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // 更新标签状态
+                    storeTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 更新内容显示
+                    storeContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === `${tabId}Content`) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            // 商品操作按钮
+            const productBtns = document.querySelectorAll('.product-btn');
+            productBtns.forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    const action = this.textContent;
+                    const productTitle = this.closest('.product-card').querySelector('.product-title').textContent;
+
+                    if (action === '收藏' || action === '取消收藏') {
+                        alert(`${action}商品: ${productTitle}`);
+                    } else if (action === '加入购物车') {
+                        alert(`已将"${productTitle}"加入购物车`);
+                    }
+                });
+            });
+
+            // 分类筛选按钮
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // 搜索功能
+            const searchInput = document.querySelector('.search-box input');
+            const searchBtn = document.querySelector('.search-btn');
+            
+            searchBtn.addEventListener('click', function() {
+                const keyword = searchInput.value;
+                if (keyword.trim() !== '') {
+                    alert(`搜索关键词: ${keyword}`);
+                }
+            });
+            
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    const keyword = searchInput.value;
+                    if (keyword.trim() !== '') {
+                        alert(`搜索关键词: ${keyword}`);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

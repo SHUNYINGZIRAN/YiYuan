@@ -2015,12 +2015,12 @@
         }
 
         /* 主内容区域-文章管理 */
-        .container .zong .main-content-four {
+        .container .zong .si .main-content-four {
             flex: 1;
             width: 100%;
         }
 
-        .container .zong .main-content-four .content-section {
+        .container .zong .si .main-content-four .content-section {
             background: rgba(255, 253, 245, 0.95);
             border-radius: 12px;
             padding: 30px;
@@ -2030,7 +2030,7 @@
             position: relative;
         }
 
-        .container .zong .main-content-four .content-section::before {
+        .container .zong .si .main-content-four .content-section::before {
             content: "";
             position: absolute;
             top: 0;
@@ -2041,7 +2041,7 @@
             border-radius: 12px 12px 0 0;
         }
 
-        .container .zong .main-content-four .section-title {
+        .container .zong .si .main-content-four .section-title {
             font-family: 'Ma Shan Zheng', cursive;
             font-size: 1.8rem;
             color: #5c4c3e;
@@ -2051,7 +2051,7 @@
         }
 
         /* 文章管理样式 */
-        .container .zong .main-content-four .article-management-header {
+        .container .zong .si .main-content-four .article-management-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -2060,13 +2060,13 @@
             gap: 15px;
         }
 
-        .container .zong .main-content-four .article-search {
+        .container .zong .si .main-content-four .article-search {
             position: relative;
             flex: 1;
             min-width: 250px;
         }
 
-        .container .zong .main-content-four .article-search input {
+        .container .zong .si .main-content-four .article-search input {
             width: 100%;
             padding: 12px 20px 12px 45px;
             border: 1px solid #d6ccc2;
@@ -2077,7 +2077,7 @@
             color: #5c4c3e;
         }
 
-        .container .zong .main-content-four .article-search i {
+        .container .zong .si .main-content-four .article-search i {
             position: absolute;
             left: 15px;
             top: 50%;
@@ -2085,13 +2085,13 @@
             color: #8c6d46;
         }
 
-        .container .zong .main-content-four .article-filter {
+        .container .zong .si .main-content-four .article-filter {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
         }
 
-        .container .zong .main-content-four .filter-btn {
+        .container .zong .si .main-content-four .filter-btn {
             padding: 8px 16px;
             background: rgba(255, 255, 255, 0.8);
             border: 1px solid #d6ccc2;
@@ -2103,19 +2103,19 @@
             transition: all 0.3s ease;
         }
 
-        .container .zong .main-content-four .filter-btn:hover,
-        .container .zong .main-content-four .filter-btn.active {
+        .container .zong .si .main-content-four .filter-btn:hover,
+        .container .zong .si .main-content-four .filter-btn.active {
             background: #8c6d46;
             color: #fff;
         }
 
-        .container .zong .main-content-four .article-list {
+        .container .zong .si .main-content-four .article-list {
             display: grid;
             grid-template-columns: 1fr;
             gap: 20px;
         }
 
-        .container .zong .main-content-four .article-item {
+        .container .zong .si .main-content-four .article-item {
             background: rgba(255, 255, 255, 0.8);
             border-radius: 10px;
             padding: 20px;
@@ -2126,19 +2126,19 @@
             flex-direction: column;
         }
 
-        .container .zong .main-content-four .article-item:hover {
+        .container .zong .si .main-content-four .article-item:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
         }
 
-        .container .zong .main-content-four .article-header {
+        .container .zong .si .main-content-four .article-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 15px;
         }
 
-        .container .zong .main-content-four .article-title {
+        .container .zong .si .main-content-four .article-title {
             font-size: 1.3rem;
             color: #5c4c3e;
             font-weight: bold;
@@ -2146,35 +2146,35 @@
             flex: 1;
         }
 
-        .container .zong .main-content-four .article-status {
+        .container .zong .si .main-content-four .article-status {
             padding: 5px 12px;
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: bold;
         }
 
-        .container .zong .main-content-four .status-published {
+        .container .zong .si .main-content-four .status-published {
             background: rgba(76, 175, 80, 0.2);
             color: #2e7d32;
         }
 
-        .container .zong .main-content-four .status-draft {
+        .container .zong .si .main-content-four .status-draft {
             background: rgba(158, 158, 158, 0.2);
             color: #616161;
         }
 
-        .container .zong .main-content-four .status-pending {
+        .container .zong .si .main-content-four .status-pending {
             background: rgba(255, 152, 0, 0.2);
             color: #ef6c00;
         }
 
-        .container .zong .main-content-four .article-content {
+        .container .zong .si .main-content-four .article-content {
             display: flex;
             gap: 20px;
             margin-bottom: 15px;
         }
 
-        .container .zong .main-content-four .article-thumb {
+        .container .zong .si .main-content-four .article-thumb {
             width: 120px;
             height: 90px;
             border-radius: 8px;
@@ -2182,13 +2182,13 @@
             flex-shrink: 0;
         }
 
-        .container .zong .main-content-four .article-thumb img {
+        .container .zong .si .main-content-four .article-thumb img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .container .zong .main-content-four .article-desc {
+        .container .zong .si .main-content-four .article-desc {
             color: #745b3a;
             font-size: 0.95rem;
             line-height: 1.5;
@@ -2200,7 +2200,7 @@
             overflow: hidden;
         }
 
-        .container .zong .main-content-four .article-meta {
+        .container .zong .si .main-content-four .article-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -2208,19 +2208,19 @@
             border-top: 1px solid #e9e1d5;
         }
 
-        .container .zong .main-content-four .article-info {
+        .container .zong .si .main-content-four .article-info {
             display: flex;
             gap: 15px;
             font-size: 0.85rem;
             color: #8c6d46;
         }
 
-        .container .zong .main-content-four .article-actions {
+        .container .zong .si .main-content-four .article-actions {
             display: flex;
             gap: 10px;
         }
 
-        .container .zong .main-content-four .article-action-btn {
+        .container .zong .si .main-content-four .article-action-btn {
             padding: 8px 15px;
             border-radius: 6px;
             font-family: 'Noto Serif SC', serif;
@@ -2235,47 +2235,47 @@
             gap: 5px;
         }
 
-        .container .zong .main-content-four .article-action-btn:hover {
+        .container .zong .si .main-content-four .article-action-btn:hover {
             background: #8c6d46;
             color: white;
         }
 
-        .container .zong .main-content-four .btn-delete {
+        .container .zong .si .main-content-four .btn-delete {
             color: #e74c3c;
             border-color: #e74c3c;
         }
 
-        .container .zong .main-content-four .btn-delete:hover {
+        .container .zong .si .main-content-four .btn-delete:hover {
             background: #e74c3c;
             color: white;
         }
 
-        .container .zong .main-content-four .empty-state {
+        .container .zong .si .main-content-four .empty-state {
             text-align: center;
             padding: 60px 20px;
             grid-column: 1 / -1;
         }
 
-        .container .zong .main-content-four .empty-state i {
+        .container .zong .si .main-content-four .empty-state i {
             font-size: 3rem;
             color: #d6ccc2;
             margin-bottom: 20px;
         }
 
-        .container .zong .main-content-four .empty-state h3 {
+        .container .zong .si .main-content-four .empty-state h3 {
             font-family: 'Ma Shan Zheng', cursive;
             font-size: 1.5rem;
             color: #8c6d46;
             margin-bottom: 15px;
         }
 
-        .container .zong .main-content-four .empty-state p {
+        .container .zong .si .main-content-four .empty-state p {
             color: #5c4c3e;
             max-width: 500px;
             margin: 0 auto 30px;
         }
 
-        .container .zong .main-content-four .create-btn {
+        .container .zong .si .main-content-four .create-btn {
             padding: 10px 25px;
             background: #8c6d46;
             color: #fff;
@@ -2290,19 +2290,19 @@
             gap: 8px;
         }
 
-        .container .zong .main-content-four .create-btn:hover {
+        .container .zong .si .main-content-four .create-btn:hover {
             background: #745b3a;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(92, 76, 62, 0.25);
         }
 
         /* 主内容区域-消息通知 */
-        .container .zong .main-content-five {
+        .container .zong .si .main-content-five {
             flex: 1;
             width: 100%;
         }
 
-        .container .zong .main-content-five .content-section {
+        .container .zong .si .main-content-five .content-section {
             background: rgba(255, 253, 245, 0.95);
             border-radius: 12px;
             padding: 30px;
@@ -2312,7 +2312,7 @@
             position: relative;
         }
 
-        .container .zong .main-content-five .content-section::before {
+        .container .zong .si .main-content-five .content-section::before {
             content: "";
             position: absolute;
             top: 0;
@@ -2323,7 +2323,7 @@
             border-radius: 12px 12px 0 0;
         }
 
-        .container .zong .main-content-five .section-title {
+        .container .zong .si .main-content-five .section-title {
             font-family: 'Ma Shan Zheng', cursive;
             font-size: 1.8rem;
             color: #5c4c3e;
@@ -2333,7 +2333,7 @@
         }
 
         /* 消息通知样式 */
-        .container .zong .main-content-five .notifications-header {
+        .container .zong .si .main-content-five .notifications-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -2342,13 +2342,13 @@
             gap: 15px;
         }
 
-        .container .zong .main-content-five .notifications-filter {
+        .container .zong .si .main-content-five .notifications-filter {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
         }
 
-        .container .zong .main-content-five .filter-btn {
+        .container .zong .si .main-content-five .filter-btn {
             padding: 8px 16px;
             background: rgba(255, 255, 255, 0.8);
             border: 1px solid #d6ccc2;
@@ -2360,18 +2360,18 @@
             transition: all 0.3s ease;
         }
 
-        .container .zong .main-content-five .filter-btn:hover,
-        .container .zong .main-content-five .filter-btn.active {
+        .container .zong .si .main-content-five .filter-btn:hover,
+        .container .zong .si .main-content-five .filter-btn.active {
             background: #8c6d46;
             color: #fff;
         }
 
-        .container .zong .main-content-five .notifications-actions {
+        .container .zong .si .main-content-five .notifications-actions {
             display: flex;
             gap: 10px;
         }
 
-        .container .zong .main-content-five .action-btn {
+        .container .zong .si .main-content-five .action-btn {
             padding: 8px 16px;
             border-radius: 20px;
             font-family: 'Noto Serif SC', serif;
@@ -2386,18 +2386,18 @@
             gap: 5px;
         }
 
-        .container .zong .main-content-five .action-btn:hover {
+        .container .zong .si .main-content-five .action-btn:hover {
             background: #8c6d46;
             color: white;
         }
 
-        .container .zong .main-content-five .notifications-list {
+        .container .zong .si .main-content-five .notifications-list {
             display: grid;
             grid-template-columns: 1fr;
             gap: 15px;
         }
 
-        .container .zong .main-content-five .notification-item {
+        .container .zong .si .main-content-five .notification-item {
             background: rgba(255, 255, 255, 0.8);
             border-radius: 10px;
             padding: 20px;
@@ -2410,17 +2410,17 @@
             position: relative;
         }
 
-        .container .zong .main-content-five .notification-item.unread {
+        .container .zong .si .main-content-five .notification-item.unread {
             background: rgba(140, 109, 70, 0.05);
             border-left: 4px solid #8c6d46;
         }
 
-        .container .zong .main-content-five .notification-item:hover {
+        .container .zong .si .main-content-five .notification-item:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(92, 76, 62, 0.15);
         }
 
-        .container .zong .main-content-five .notification-icon {
+        .container .zong .si .main-content-five .notification-icon {
             width: 50px;
             height: 50px;
             border-radius: 50%;
@@ -2433,11 +2433,11 @@
             color: #8c6d46;
         }
 
-        .container .zong .main-content-five .notification-content {
+        .container .zong .si .main-content-five .notification-content {
             flex: 1;
         }
 
-        .container .zong .main-content-five .notification-title {
+        .container .zong .si .main-content-five .notification-title {
             font-size: 1.1rem;
             color: #5c4c3e;
             font-weight: bold;
@@ -2447,41 +2447,41 @@
             gap: 10px;
         }
 
-        .container .zong .main-content-five .notification-badge {
+        .container .zong .si .main-content-five .notification-badge {
             padding: 3px 8px;
             border-radius: 12px;
             font-size: 0.7rem;
             font-weight: bold;
         }
 
-        .container .zong .main-content-five .badge-comment {
+        .container .zong .si .main-content-five .badge-comment {
             background: rgba(76, 175, 80, 0.2);
             color: #2e7d32;
         }
 
-        .container .zong .main-content-five .badge-like {
+        .container .zong .si .main-content-five .badge-like {
             background: rgba(244, 67, 54, 0.2);
             color: #c62828;
         }
 
-        .container .zong .main-content-five .badge-system {
+        .container .zong .si .main-content-five .badge-system {
             background: rgba(33, 150, 243, 0.2);
             color: #1565c0;
         }
 
-        .container .zong .main-content-five .badge-follow {
+        .container .zong .si .main-content-five .badge-follow {
             background: rgba(156, 39, 176, 0.2);
             color: #7b1fa2;
         }
 
-        .container .zong .main-content-five .notification-text {
+        .container .zong .si .main-content-five .notification-text {
             color: #745b3a;
             font-size: 0.95rem;
             line-height: 1.5;
             margin-bottom: 10px;
         }
 
-        .container .zong .main-content-five .notification-meta {
+        .container .zong .si .main-content-five .notification-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -2489,18 +2489,18 @@
             color: #8c6d46;
         }
 
-        .container .zong .main-content-five .notification-time {
+        .container .zong .si .main-content-five .notification-time {
             display: flex;
             align-items: center;
             gap: 5px;
         }
 
-        .container .zong .main-content-five .notification-actions {
+        .container .zong .si .main-content-five .notification-actions {
             display: flex;
             gap: 10px;
         }
 
-        .container .zong .main-content-five .notification-btn {
+        .container .zong .si .main-content-five .notification-btn {
             background: none;
             border: none;
             color: #8c6d46;
@@ -2512,43 +2512,43 @@
             gap: 5px;
         }
 
-        .container .zong .main-content-five .notification-btn:hover {
+        .container .zong .si .main-content-five .notification-btn:hover {
             color: #745b3a;
         }
 
-        .container .zong .main-content-five .empty-state {
+        .container .zong .si .main-content-five .empty-state {
             text-align: center;
             padding: 60px 20px;
             grid-column: 1 / -1;
         }
 
-        .container .zong .main-content-five .empty-state i {
+        .container .zong .si .main-content-five .empty-state i {
             font-size: 3rem;
             color: #d6ccc2;
             margin-bottom: 20px;
         }
 
-        .container .zong .main-content-five .empty-state h3 {
+        .container .zong .si .main-content-five .empty-state h3 {
             font-family: 'Ma Shan Zheng', cursive;
             font-size: 1.5rem;
             color: #8c6d46;
             margin-bottom: 15px;
         }
 
-        .container .zong .main-content-five .empty-state p {
+        .container .zong .si .main-content-five .empty-state p {
             color: #5c4c3e;
             max-width: 500px;
             margin: 0 auto 30px;
         }
 
-        .container .zong .main-content-five .pagination {
+        .container .zong .si .main-content-five .pagination {
             display: flex;
             justify-content: center;
             gap: 10px;
             margin-top: 30px;
         }
 
-        .container .zong .main-content-five .page-btn {
+        .container .zong .si .main-content-five .page-btn {
             width: 40px;
             height: 40px;
             display: flex;
@@ -2564,19 +2564,19 @@
             transition: all 0.3s ease;
         }
 
-        .container .zong .main-content-five.page-btn:hover,
-        .container .zong .main-content-five .page-btn.active {
+        .container .zong .si .main-content-five.page-btn:hover,
+        .container .zong .si .main-content-five .page-btn.active {
             background: #8c6d46;
             color: #fff;
         }
 
         /* 主内容区域-账号设置 */
-        .container .zong .main-content-six {
+        .container .zong .si .main-content-six {
             flex: 1;
             width: 100%;
         }
 
-        .container .zong .main-content-six .content-section {
+        .container .zong .si .main-content-six .content-section {
             background: rgba(255, 253, 245, 0.95);
             border-radius: 12px;
             padding: 30px;
@@ -2586,7 +2586,7 @@
             position: relative;
         }
 
-        .container .zong .main-content-six .content-section::before {
+        .container .zong .si .main-content-six .content-section::before {
             content: "";
             position: absolute;
             top: 0;
@@ -2597,7 +2597,7 @@
             border-radius: 12px 12px 0 0;
         }
 
-        .container .zong .main-content-six .section-title {
+        .container .zong .si .main-content-six .section-title {
             font-family: 'Ma Shan Zheng', cursive;
             font-size: 1.8rem;
             color: #5c4c3e;
@@ -2607,26 +2607,26 @@
         }
 
         /* 账号设置样式 */
-        .container .zong .main-content-six .settings-grid {
+        .container .zong .si .main-content-six .settings-grid {
             display: grid;
             grid-template-columns: 1fr;
             gap: 25px;
         }
 
-        .container .zong .main-content-six .setting-group {
+        .container .zong .si .main-content-six .setting-group {
             padding: 20px;
             background: rgba(255, 255, 255, 0.7);
             border-radius: 10px;
             border: 1px solid #d6ccc2;
         }
 
-        .container .zong .main-content-six .setting-header {
+        .container .zong .si .main-content-six .setting-header {
             display: flex;
             align-items: center;
             margin-bottom: 20px;
         }
 
-        .container .zong .main-content-six .setting-icon {
+        .container .zong .si .main-content-six .setting-icon {
             width: 40px;
             height: 40px;
             background: #8c6d46;
@@ -2639,28 +2639,28 @@
             font-size: 1.2rem;
         }
 
-        .container .zong .main-content-six .setting-title {
+        .container .zong .si .main-content-six .setting-title {
             font-size: 1.4rem;
             color: #5c4c3e;
             font-weight: bold;
         }
 
-        .container .zong .main-content-six .setting-content {
+        .container .zong .si .main-content-six .setting-content {
             margin-left: 55px;
         }
 
-        .container .zong .main-content-six .form-group {
+        .container .zong .si .main-content-six .form-group {
             margin-bottom: 20px;
         }
 
-        .container .zong .main-content-six .form-label {
+        .container .zong .si .main-content-six .form-label {
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
             color: #5c4c3e;
         }
 
-        .container .zong .main-content-six .form-input {
+        .container .zong .si .main-content-six .form-input {
             width: 100%;
             padding: 12px 15px;
             border: 1px solid #d6ccc2;
@@ -2672,19 +2672,19 @@
             transition: all 0.3s ease;
         }
 
-        .container .zong .main-content-six .form-input:focus {
+        .container .zong .si .main-content-six .form-input:focus {
             outline: none;
             border-color: #8c6d46;
             box-shadow: 0 0 0 2px rgba(140, 109, 70, 0.2);
         }
 
-        .container .zong .main-content-six .form-hint {
+        .container .zong .si .main-content-six .form-hint {
             font-size: 0.85rem;
             color: #8c6d46;
             margin-top: 5px;
         }
 
-        .container .zong .main-content-six .btn {
+        .container .zong .si .main-content-six .btn {
             padding: 10px 20px;
             border-radius: 8px;
             font-family: 'Noto Serif SC', serif;
@@ -2694,35 +2694,35 @@
             border: 1px solid #8c6d46;
         }
 
-        .container .zong .main-content-six .btn.primary {
+        .container .zong .si .main-content-six .btn.primary {
             background: #8c6d46;
             color: white;
         }
 
-        .container .zong .main-content-six .btn.outline {
+        .container .zong .si .main-content-six .btn.outline {
             background: transparent;
             color: #8c6d46;
         }
 
-        .container .zong .main-content-six .btn:hover {
+        .container .zong .si .main-content-six .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(92, 76, 62, 0.2);
         }
 
-        .container .zong .main-content-six .toggle-switch {
+        .container .zong .si .main-content-six .toggle-switch {
             position: relative;
             display: inline-block;
             width: 50px;
             height: 24px;
         }
 
-        .container .zong .main-content-six .toggle-switch input {
+        .container .zong .si .main-content-six .toggle-switch input {
             opacity: 0;
             width: 0;
             height: 0;
         }
 
-        .container .zong .main-content-six .slider {
+        .container .zong .si .main-content-six .slider {
             position: absolute;
             cursor: pointer;
             top: 0;
@@ -2734,7 +2734,7 @@
             border-radius: 24px;
         }
 
-        .container .zong .main-content-six .slider:before {
+        .container .zong .si .main-content-six .slider:before {
             position: absolute;
             content: "";
             height: 18px;
@@ -2746,37 +2746,37 @@
             border-radius: 50%;
         }
 
-        .container .zong .main-content-six input:checked+.slider {
+        .container .zong .si .main-content-six input:checked+.slider {
             background-color: #8c6d46;
         }
 
-        .container .zong .main-content-six input:checked+.slider:before {
+        .container .zong .si .main-content-six input:checked+.slider:before {
             transform: translateX(26px);
         }
 
-        .container .zong .main-content-six .toggle-label {
+        .container .zong .si .main-content-six .toggle-label {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 15px;
         }
 
-        .container .zong .main-content-six .toggle-text {
+        .container .zong .si .main-content-six .toggle-text {
             flex: 1;
         }
 
-        .container .zong .main-content-six .toggle-desc {
+        .container .zong .si .main-content-six .toggle-desc {
             font-size: 0.9rem;
             color: #745b3a;
             margin-top: 5px;
         }
 
         /* 主内容区域-隐私设置 */
-        .container .zong .main-content-seven {
+        .container .zong .si .main-content-seven {
             flex: 1;
         }
 
-        .container .zong .main-content-seven .content-section {
+        .container .zong .si .main-content-seven .content-section {
             background: rgba(255, 253, 245, 0.95);
             border-radius: 12px;
             padding: 30px;
@@ -2786,7 +2786,7 @@
             position: relative;
         }
 
-        .container .zong .main-content-seven .content-section::before {
+        .container .zong .si .main-content-seven .content-section::before {
             content: "";
             position: absolute;
             top: 0;
@@ -2797,7 +2797,7 @@
             border-radius: 12px 12px 0 0;
         }
 
-        .container .zong .main-content-seven .section-title {
+        .container .zong .si .main-content-seven .section-title {
             font-family: 'Ma Shan Zheng', cursive;
             font-size: 1.8rem;
             color: #5c4c3e;
@@ -2807,26 +2807,26 @@
         }
 
         /* 隐私设置样式 */
-        .container .zong .main-content-seven .privacy-settings {
+        .container .zong .si .main-content-seven .privacy-settings {
             display: grid;
             grid-template-columns: 1fr;
             gap: 25px;
         }
 
-        .container .zong .main-content-seven .privacy-group {
+        .container .zong .si .main-content-seven .privacy-group {
             padding: 20px;
             background: rgba(255, 255, 255, 0.8);
             border-radius: 10px;
             border: 1px solid #d6ccc2;
         }
 
-        .container .zong .main-content-seven .privacy-header {
+        .container .zong .si .main-content-seven .privacy-header {
             display: flex;
             align-items: center;
             margin-bottom: 20px;
         }
 
-        .container .zong .main-content-seven .privacy-icon {
+        .container .zong .si .main-content-seven .privacy-icon {
             width: 40px;
             height: 40px;
             background: #8c6d46;
@@ -2839,61 +2839,61 @@
             font-size: 1.2rem;
         }
 
-        .container .zong .main-content-seven .privacy-title {
+        .container .zong .si .main-content-seven .privacy-title {
             font-size: 1.4rem;
             color: #5c4c3e;
             font-weight: bold;
         }
 
-        .container .zong .main-content-seven .privacy-content {
+        .container .zong .si .main-content-seven .privacy-content {
             margin-left: 55px;
         }
 
-        .container .zong .main-content-seven .privacy-item {
+        .container .zong .si .main-content-seven .privacy-item {
             margin-bottom: 20px;
             padding-bottom: 20px;
             border-bottom: 1px solid #e9e1d5;
         }
 
-        .container .zong .main-content-seven .privacy-item:last-child {
+        .container .zong .si .main-content-seven .privacy-item:last-child {
             border-bottom: none;
             margin-bottom: 0;
             padding-bottom: 0;
         }
 
-        .container .zong .main-content-seven .privacy-label {
+        .container .zong .si .main-content-seven .privacy-label {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
         }
 
-        .container .zong .main-content-seven .privacy-name {
+        .container .zong .si .main-content-seven .privacy-name {
             font-weight: bold;
             color: #5c4c3e;
         }
 
-        .container .zong .main-content-seven .privacy-desc {
+        .container .zong .si .main-content-seven .privacy-desc {
             font-size: 0.9rem;
             color: #745b3a;
             margin-bottom: 15px;
             line-height: 1.5;
         }
 
-        .container .zong .main-content-seven .toggle-switch {
+        .container .zong .si .main-content-seven .toggle-switch {
             position: relative;
             display: inline-block;
             width: 50px;
             height: 24px;
         }
 
-        .container .zong .main-content-seven .toggle-switch input {
+        .container .zong .si .main-content-seven .toggle-switch input {
             opacity: 0;
             width: 0;
             height: 0;
         }
 
-        .container .zong .main-content-seven .slider {
+        .container .zong .si .main-content-seven .slider {
             position: absolute;
             cursor: pointer;
             top: 0;
@@ -2905,7 +2905,7 @@
             border-radius: 24px;
         }
 
-        .container .zong .main-content-seven .slider:before {
+        .container .zong .si .main-content-seven .slider:before {
             position: absolute;
             content: "";
             height: 18px;
@@ -2917,15 +2917,15 @@
             border-radius: 50%;
         }
 
-        .container .zong .main-content-seven input:checked+.slider {
+        .container .zong .si .main-content-seven input:checked+.slider {
             background-color: #8c6d46;
         }
 
-        .container .zong .main-content-seven input:checked+.slider:before {
+        .container .zong .si .main-content-seven input:checked+.slider:before {
             transform: translateX(26px);
         }
 
-        .container .zong .main-content-seven .select-control {
+        .container .zong .si .main-content-seven .select-control {
             padding: 10px 15px;
             border: 1px solid #d6ccc2;
             border-radius: 8px;
@@ -2937,7 +2937,7 @@
             max-width: 250px;
         }
 
-        .container .zong .main-content-seven .privacy-actions {
+        .container .zong .si .main-content-seven .privacy-actions {
             display: flex;
             justify-content: flex-end;
             gap: 15px;
@@ -2946,7 +2946,7 @@
             border-top: 1px solid #d6ccc2;
         }
 
-        .container .zong .main-content-seven .privacy-btn {
+        .container .zong .si .main-content-seven .privacy-btn {
             padding: 12px 25px;
             border-radius: 8px;
             font-family: 'Noto Serif SC', serif;
@@ -2956,17 +2956,17 @@
             border: 1px solid #8c6d46;
         }
 
-        .container .zong .main-content-seven .privacy-btn.primary {
+        .container .zong .si .main-content-seven .privacy-btn.primary {
             background: #8c6d46;
             color: white;
         }
 
-        .container .zong .main-content-seven .privacy-btn.outline {
+        .container .zong .si .main-content-seven .privacy-btn.outline {
             background: transparent;
             color: #8c6d46;
         }
 
-        .container .zong .main-content-seven .privacy-btn:hover {
+        .container .zong .si .main-content-seven .privacy-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(92, 76, 62, 0.2);
         }
@@ -3224,6 +3224,314 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(92, 76, 62, 0.2);
         }
+
+        /* 页面标题 - 匠人商店 */
+        .container .zong .liu .page-header {
+            text-align: center;
+            padding: 40px 0 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .container .zong .liu .page-header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8c6d46, transparent);
+        }
+
+        .container .zong .liu .page-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 3rem;
+            color: #8c3c2c;
+            margin-bottom: 15px;
+            letter-spacing: 5px;
+            text-shadow: 2px 2px 4px rgba(92, 76, 62, 0.2);
+        }
+
+        .container .zong .liu .page-subtitle {
+            font-size: 1.2rem;
+            color: #8c6d46;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* 匠人商店内容 */
+        .container .zong .liu .store-container {
+            margin: 40px 0;
+        }
+
+        .container .zong .liu .store-tabs {
+            display: flex;
+            border-bottom: 1px solid #d6ccc2;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .container .zong .liu .store-tab {
+            padding: 12px 25px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: #5c4c3e;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .container .zong .liu .store-tab.active {
+            color: #8c6d46;
+            border-bottom-color: #8c6d46;
+            font-weight: bold;
+        }
+
+        .container .zong .liu .store-content {
+            display: none;
+        }
+
+        .container .zong .liu .store-content.active {
+            display: block;
+        }
+
+        /* 产品浏览 */
+        .container .zong .liu .products-section {
+            margin-bottom: 40px;
+        }
+
+        .container .zong .liu .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        .container .zong .liu .category-filter {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .container .zong .liu .category-btn {
+            padding: 8px 20px;
+            background: rgba(255, 253, 245, 0.9);
+            border: 1px solid #d6ccc2;
+            border-radius: 30px;
+            color: #5c4c3e;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .container .zong .liu .category-btn:hover,
+        .container .zong .liu .category-btn.active {
+            background: #8c6d46;
+            color: #fff;
+        }
+
+        .container .zong .liu .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .container .zong .liu .product-card {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .container .zong .liu .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.2);
+        }
+
+        .container .zong .liu .product-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .container .zong .liu .product-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .container .zong .liu .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .container .zong .liu .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .container .zong .liu .product-content {
+            padding: 20px;
+        }
+
+        .container .zong .liu .product-title {
+            font-size: 1.2rem;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+            font-weight: bold;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .container .zong .liu .product-price {
+            font-size: 1.3rem;
+            color: #8c3c2c;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .container .zong .liu .product-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #8c6d46;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+
+        .container .zong .liu .product-description {
+            color: #745b3a;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .container .zong .liu .product-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .container .zong .liu .product-btn {
+            flex: 1;
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+            background: transparent;
+            color: #8c6d46;
+            text-align: center;
+        }
+
+        .container .zong .liu .product-btn.primary {
+            background: #8c6d46;
+            color: white;
+        }
+
+        .container .zong .liu .product-btn:hover {
+            background: #8c6d46;
+            color: white;
+        }
+
+        /* 我的订单 */
+        .container .zong .liu .orders-section {
+            margin-bottom: 40px;
+        }
+
+        .container .zong .liu .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+        }
+
+        .container .zong .liu .orders-table th {
+            background: rgba(140, 109, 70, 0.1);
+            padding: 15px;
+            text-align: left;
+            color: #5c4c3e;
+            font-weight: bold;
+            border-bottom: 2px solid #d6ccc2;
+        }
+
+        .container .zong .liu .orders-table td {
+            padding: 15px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        .container .zong .liu .orders-table tr:hover {
+            background: rgba(140, 109, 70, 0.05);
+        }
+
+        .container .zong .liu .order-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .container .zong .liu .status-pending {
+            background: #e8e0d8;
+            color: #8c6d4c;
+        }
+
+        .container .zong .liu .status-shipped {
+            background: #d8e8d8;
+            color: #4c8c4c;
+        }
+
+        .container .zong .liu .status-delivered {
+            background: #d8e8e8;
+            color: #4c8c8c;
+        }
+
+        .container .zong .liu .status-cancelled {
+            background: #e8d8d8;
+            color: #8c4c4c;
+        }
+
+        /* 商品收藏 */
+        .container .zong .liu .favorites-section {
+            margin-bottom: 40px;
+        }
+
+        /* 页脚 */
+        /* .page-footer { */
+        /* text-align: center; */
+        /* padding: 40px 0; */
+        /* margin-top: 50px; */
+        /* color: #8c6d46; */
+        /* font-size: 0.9rem; */
+        /* border-top: 1px solid #d6ccc2; */
+        /* } */
 
         /* 响应式设计 */
         @media (max-width: 992px) {

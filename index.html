@@ -171,7 +171,8 @@
             <a href="#" class="nav-item">非遗</a>
             <a href="#" class="nav-item">公益</a>
             <a href="#" class="nav-item" id="myProfileNav">我的</a>
-            <a href="#" class="nav-item" id="editProfileNav" style="display: none;">编辑资料</a>
+            <a href="#" class="nav-item" id="editProfileNav" style="display: none; margin: 0;">编辑资料</a>
+            <a href="#" class="nav-item">店肆</a>
         </nav>
 
         <ul class="zong">
@@ -2352,6 +2353,311 @@
                             <button class="form-btn outline" id="discardBtn">放弃更改</button>
                             <button class="form-btn primary" id="submitBtn">保存资料</button>
                         </div>
+                    </div>
+                </div>
+            </li>
+            <li class="liu">
+                <!-- 页面标题 -->
+                <header class="page-header">
+                    <h1 class="page-title">匠人商店</h1>
+                    <p class="page-subtitle">传承匠心，品味传统工艺之美</p>
+                </header>
+
+                <!-- 匠人商店内容 -->
+                <div class="store-container">
+                    <div class="store-tabs">
+                        <div class="store-tab active" data-tab="products">产品浏览</div>
+                        <div class="store-tab" data-tab="orders">我的订单</div>
+                        <div class="store-tab" data-tab="favorites">商品收藏</div>
+                    </div>
+
+                    <!-- 产品浏览 -->
+                    <div class="store-content active" id="productsContent">
+                        <section class="products-section">
+                            <h2 class="section-title">精选商品</h2>
+
+                            <div class="category-filter">
+                                <button class="category-btn active">全部</button>
+                                <button class="category-btn">陶瓷工艺</button>
+                                <button class="category-btn">剪纸艺术</button>
+                                <button class="category-btn">文房四宝</button>
+                                <button class="category-btn">香道文化</button>
+                                <button class="category-btn">织绣工艺</button>
+                            </div>
+
+                            <div class="products-grid">
+                                <div class="product-card">
+                                    <a href="子页面-1/购物/产品详情.html" target="_blank" rel="noopener noreferrer">
+                                        <div class="product-image">
+                                            <img src="https://images.unsplash.com/photo-1587332278433-97428c3e9a09?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                                alt="传统茶具">
+                                        </div>
+                                        <div class="product-content">
+                                            <h3 class="product-title">景德镇手工青花瓷茶具套装</h3>
+                                            <div class="product-price">¥ 1,280</div>
+                                            <div class="product-meta">
+                                                <span><i class="fas fa-star"></i> 4.8</span>
+                                                <span>销量: 128</span>
+                                            </div>
+                                            <p class="product-description">采用传统青花瓷工艺，手工绘制山水图案，每件作品都是独一无二的艺术品。</p>
+                                            <div class="product-actions">
+                                                <button class="product-btn">收藏</button>
+                                                <button class="product-btn primary">点击购买</button>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="product-card">
+                                    <a href="子页面-1/购物/产品详情.html" target="_blank" rel="noopener noreferrer">
+                                        <div class="product-image">
+                                            <img src="https://images.unsplash.com/photo-1594736797933-d0e6e4f5a65a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                                alt="手工剪纸">
+                                        </div>
+                                        <div class="product-content">
+                                            <h3 class="product-title">非遗剪纸艺术 - 福禄寿喜系列</h3>
+                                            <div class="product-price">¥ 360</div>
+                                            <div class="product-meta">
+                                                <span><i class="fas fa-star"></i> 4.9</span>
+                                                <span>销量: 86</span>
+                                            </div>
+                                            <p class="product-description">由非遗传承人手工剪制，寓意吉祥的传统剪纸艺术作品，适合家居装饰和礼品赠送。</p>
+                                            <div class="product-actions">
+                                                <button class="product-btn">收藏</button>
+                                                <button class="product-btn primary">点击购买</button>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="product-card">
+                                    <a href="子页面-1/购物/产品详情.html" target="_blank" rel="noopener noreferrer">
+                                        <div class="product-image">
+                                            <img src="https://images.unsplash.com/photo-1611073311983-d9a8c7de6a1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                                alt="文房四宝">
+                                        </div>
+                                        <div class="product-content">
+                                            <h3 class="product-title">传统文房四宝 - 徽墨宣纸套装</h3>
+                                            <div class="product-price">¥ 580</div>
+                                            <div class="product-meta">
+                                                <span><i class="fas fa-star"></i> 4.7</span>
+                                                <span>销量: 64</span>
+                                            </div>
+                                            <p class="product-description">精选优质徽墨和宣纸，配以手工毛笔和砚台，是书法爱好者的理想选择。</p>
+                                            <div class="product-actions">
+                                                <button class="product-btn">收藏</button>
+                                                <button class="product-btn primary">点击购买</button>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="product-card">
+                                    <a href="子页面-1/购物/产品详情.html" target="_blank" rel="noopener noreferrer">
+                                        <div class="product-image">
+                                            <img src="https://images.unsplash.com/photo-1594736797933-d0e6e4f5a65a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                                alt="香道用品">
+                                        </div>
+                                        <div class="product-content">
+                                            <h3 class="product-title">传统香道文化 - 沉香檀香礼盒</h3>
+                                            <div class="product-price">¥ 890</div>
+                                            <div class="product-meta">
+                                                <span><i class="fas fa-star"></i> 4.6</span>
+                                                <span>销量: 42</span>
+                                            </div>
+                                            <p class="product-description">精选优质沉香和檀香原料，配以传统香道器具，体验东方香道文化的独特魅力。</p>
+                                            <div class="product-actions">
+                                                <button class="product-btn">收藏</button>
+                                                <button class="product-btn primary">点击购买</button>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="product-card">
+                                    <a href="子页面-1/购物/产品详情.html" target="_blank" rel="noopener noreferrer">
+                                        <div class="product-image">
+                                            <img src="https://images.unsplash.com/photo-1587332278433-97428c3e9a09?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                                alt="刺绣作品">
+                                        </div>
+                                        <div class="product-content">
+                                            <h3 class="product-title">苏绣精品 - 江南水乡图</h3>
+                                            <div class="product-price">¥ 2,150</div>
+                                            <div class="product-meta">
+                                                <span><i class="fas fa-star"></i> 4.9</span>
+                                                <span>销量: 28</span>
+                                            </div>
+                                            <p class="product-description">苏绣大师手工绣制，描绘江南水乡的优美景色，针法细腻，色彩丰富，极具收藏价值。</p>
+                                            <div class="product-actions">
+                                                <button class="product-btn">收藏</button>
+                                                <button class="product-btn primary">点击购买</button>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="product-card">
+                                    <a href="子页面-1/购物/产品详情.html" target="_blank" rel="noopener noreferrer">
+                                        <div class="product-image">
+                                            <img src="https://images.unsplash.com/photo-1611073311983-d9a8c7de6a1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                                alt="漆器">
+                                        </div>
+                                        <div class="product-content">
+                                            <h3 class="product-title">传统漆器 - 牡丹纹饰首饰盒</h3>
+                                            <div class="product-price">¥ 680</div>
+                                            <div class="product-meta">
+                                                <span><i class="fas fa-star"></i> 4.5</span>
+                                                <span>销量: 35</span>
+                                            </div>
+                                            <p class="product-description">采用传统大漆工艺制作，表面绘制精美的牡丹图案，既是实用品也是艺术品。</p>
+                                            <div class="product-actions">
+                                                <button class="product-btn">收藏</button>
+                                                <button class="product-btn primary">点击购买</button>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- 我的订单 -->
+                    <div class="store-content" id="ordersContent">
+                        <section class="orders-section">
+                            <h2 class="section-title">我的订单</h2>
+                            <table class="orders-table">
+                                <thead>
+                                    <tr>
+                                        <th>订单号</th>
+                                        <th>商品</th>
+                                        <th>金额</th>
+                                        <th>下单时间</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>DD20231015001</td>
+                                        <td>景德镇手工青花瓷茶具套装</td>
+                                        <td>¥ 1,280</td>
+                                        <td>2023-10-15</td>
+                                        <td><span class="order-status status-delivered">已送达</span></td>
+                                        <td>
+                                            <a href="子页面-1/购物/订单详情.html" target="_blank" rel="noopener noreferrer">
+                                                <button class="product-btn">查看详情</button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>DD20231012001</td>
+                                        <td>非遗剪纸艺术 - 福禄寿喜系列</td>
+                                        <td>¥ 360</td>
+                                        <td>2023-10-12</td>
+                                        <td><span class="order-status status-shipped">已发货</span></td>
+                                        <td>
+                                            <a href="子页面-1/购物/订单详情.html" target="_blank" rel="noopener noreferrer">
+                                                <button class="product-btn">查看物流</button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>DD20231008001</td>
+                                        <td>传统文房四宝 - 徽墨宣纸套装</td>
+                                        <td>¥ 580</td>
+                                        <td>2023-10-08</td>
+                                        <td><span class="order-status status-pending">待发货</span></td>
+                                        <td>
+                                            <button class="product-btn">取消订单</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>DD20231001001</td>
+                                        <td>传统香道文化 - 沉香檀香礼盒</td>
+                                        <td>¥ 890</td>
+                                        <td>2023-10-01</td>
+                                        <td><span class="order-status status-cancelled">已取消</span></td>
+                                        <td>
+                                            <button class="product-btn">重新购买</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+                    </div>
+
+                    <!-- 商品收藏 -->
+                    <div class="store-content" id="favoritesContent">
+                        <section class="favorites-section">
+                            <h2 class="section-title">商品收藏</h2>
+                            <div class="products-grid">
+                                <div class="product-card">
+                                    <a href="子页面-1/购物/产品详情.html" target="_blank" rel="noopener noreferrer">
+                                        <div class="product-image">
+                                            <img src="https://images.unsplash.com/photo-1587332278433-97428c3e9a09?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                                alt="传统茶具">
+                                        </div>
+                                        <div class="product-content">
+                                            <h3 class="product-title">景德镇手工青花瓷茶具套装</h3>
+                                            <div class="product-price">¥ 1,280</div>
+                                            <div class="product-meta">
+                                                <span><i class="fas fa-star"></i> 4.8</span>
+                                                <span>收藏时间: 2023-10-10</span>
+                                            </div>
+                                            <p class="product-description">采用传统青花瓷工艺，手工绘制山水图案，每件作品都是独一无二的艺术品。</p>
+                                            <div class="product-actions">
+                                                <button class="product-btn">取消收藏</button>
+                                                <button class="product-btn primary">点击购买</button>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="product-card">
+                                    <a href="子页面-1/购物/产品详情.html" target="_blank" rel="noopener noreferrer">
+                                        <div class="product-image">
+                                            <img src="https://images.unsplash.com/photo-1611073311983-d9a8c7de6a1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                                alt="文房四宝">
+                                        </div>
+                                        <div class="product-content">
+                                            <h3 class="product-title">传统文房四宝 - 徽墨宣纸套装</h3>
+                                            <div class="product-price">¥ 580</div>
+                                            <div class="product-meta">
+                                                <span><i class="fas fa-star"></i> 4.7</span>
+                                                <span>收藏时间: 2023-10-05</span>
+                                            </div>
+                                            <p class="product-description">精选优质徽墨和宣纸，配以手工毛笔和砚台，是书法爱好者的理想选择。</p>
+                                            <div class="product-actions">
+                                                <button class="product-btn">取消收藏</button>
+                                                <button class="product-btn primary">点击购买</button>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="product-card">
+                                    <a href="子页面-1/购物/产品详情.html" target="_blank" rel="noopener noreferrer">
+                                        <div class="product-image">
+                                            <img src="https://images.unsplash.com/photo-1587332278433-97428c3e9a09?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                                alt="刺绣作品">
+                                        </div>
+                                        <div class="product-content">
+                                            <h3 class="product-title">苏绣精品 - 江南水乡图</h3>
+                                            <div class="product-price">¥ 2,150</div>
+                                            <div class="product-meta">
+                                                <span><i class="fas fa-star"></i> 4.9</span>
+                                                <span>收藏时间: 2023-09-28</span>
+                                            </div>
+                                            <p class="product-description">苏绣大师手工绣制，描绘江南水乡的优美景色，针法细腻，色彩丰富，极具收藏价值。</p>
+                                            <div class="product-actions">
+                                                <button class="product-btn">取消收藏</button>
+                                                <button class="product-btn primary">点击购买</button>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </section>
                     </div>
                 </div>
             </li>
