@@ -566,3 +566,92 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+/**
+ * 页尾交互效果
+ * 为"我们一起回家吧"页尾添加动态交互
+ */
+function initFooterInteractions() {
+    // 探索卡片悬停效果
+    const exploreCards = document.querySelectorAll('.explore-card');
+    exploreCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px) scale(1.03)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+
+    // 探索分类功能
+    function exploreCategory(category) {
+        let categoryName = "";
+        switch(category) {
+            case 'history':
+                categoryName = "历史长廊";
+                break;
+            case 'culture':
+                categoryName = "非遗之美";
+                break;
+            case 'welfare':
+                categoryName = "公益温暖";
+                break;
+            case 'community':
+                categoryName = "同好社区";
+                break;
+        }
+        alert(`即将带您探索 ${categoryName}，请稍候...`);
+        // 实际应用中这里应该跳转到相应页面
+    }
+    
+    // 开启探索之旅
+    function startJourney() {
+        alert("欢迎开启探索之旅！我们将带您领略传统文化与公益的精彩世界。");
+        // 实际应用中这里可以跳转到引导页面或首页
+    }
+    
+    // 了解更多
+    function learnMore() {
+        alert("了解更多关于云间文苑的信息，请查看我们的介绍页面。");
+        // 实际应用中这里可以跳转到关于我们页面
+    }
+
+    // 绑定事件
+    document.querySelectorAll('.explore-card').forEach((card, index) => {
+        const categories = ['history', 'culture', 'welfare', 'community'];
+        card.addEventListener('click', function() {
+            exploreCategory(categories[index]);
+        });
+    });
+
+    const actionBtns = document.querySelectorAll('.action-btn');
+    if (actionBtns[0]) {
+        actionBtns[0].addEventListener('click', startJourney);
+    }
+    if (actionBtns[1]) {
+        actionBtns[1].addEventListener('click', learnMore);
+    }
+
+    // 添加装饰元素的动画效果
+    const decorations = document.querySelectorAll('.decoration');
+    decorations.forEach((decoration, index) => {
+        decoration.style.animation = `float ${3 + index * 0.5}s ease-in-out infinite alternate`;
+    });
+
+    // 添加浮动动画关键帧
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(var(--rotation, 0deg)); }
+            100% { transform: translateY(-20px) rotate(var(--rotation, 0deg)); }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // 为每个装饰元素设置不同的旋转角度
+    decorations[0].style.setProperty('--rotation', '-10deg');
+    decorations[1].style.setProperty('--rotation', '15deg');
+    decorations[2].style.setProperty('--rotation', '5deg');
+    decorations[3].style.setProperty('--rotation', '-8deg');
+}
