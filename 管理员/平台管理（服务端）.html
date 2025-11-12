@@ -1095,6 +1095,12 @@
                             <span>平台收益</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content="home-together">
+                            <i class="fas fa-home"></i>
+                            <span>一起回家</span>
+                        </a>
+                    </li>
                 </ul>
             </aside>
 
@@ -2040,6 +2046,123 @@
                         </tbody>
                     </table>
                 </div>
+
+                <!-- 一起回家内容 -->
+                <div class="content-section" id="home-together-content" style="display: none;">
+
+                    <table class="articles-table">
+                        <thead>
+                            <tr>
+                                <th>地区名称</th>
+                                <th>国家数量</th>
+                                <th>博物馆数量</th>
+                                <th>文物数量</th>
+                                <th>创建时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>亚洲</td>
+                                <td>48</td>
+                                <td>156</td>
+                                <td>2,456</td>
+                                <td>2023-10-01</td>
+                                <td>
+                                    <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                    <a href="一起回家.html">
+                                        <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                    </a>
+                                    <button class="action-btn"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>欧洲</td>
+                                <td>44</td>
+                                <td>342</td>
+                                <td>5,678</td>
+                                <td>2023-10-02</td>
+                                <td>
+                                    <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                    <a href="一起回家.html">
+                                        <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                    </a>
+                                    <button class="action-btn"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>非洲</td>
+                                <td>54</td>
+                                <td>89</td>
+                                <td>1,234</td>
+                                <td>2023-10-03</td>
+                                <td>
+                                    <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                    <a href="一起回家.html">
+                                        <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                    </a>
+                                    <button class="action-btn"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>北美洲</td>
+                                <td>23</td>
+                                <td>167</td>
+                                <td>3,456</td>
+                                <td>2023-10-04</td>
+                                <td>
+                                    <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                    <a href="一起回家.html">
+                                        <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                    </a>
+                                    <button class="action-btn"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>南美洲</td>
+                                <td>12</td>
+                                <td>78</td>
+                                <td>987</td>
+                                <td>2023-10-05</td>
+                                <td>
+                                    <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                    <a href="一起回家.html">
+                                        <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                    </a>
+                                    <button class="action-btn"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>大洋洲</td>
+                                <td>14</td>
+                                <td>45</td>
+                                <td>654</td>
+                                <td>2023-10-06</td>
+                                <td>
+                                    <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                    <a href="一起回家.html">
+                                        <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                    </a>
+                                    <button class="action-btn"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>南极洲</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>2023-10-07</td>
+                                <td>
+                                    <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                    <a href="一起回家.html">
+                                        <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                    </a>
+                                    <button class="action-btn"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </main>
         </div>
 
@@ -2701,6 +2824,30 @@
 
             // 初始化一个参数行
             addParamRow();
+
+            // ====================== 一起回家功能 ======================
+
+            // 为一起回家页面的操作按钮添加事件
+            document.addEventListener('DOMContentLoaded', function () {
+                // 为一起回家页面的查看按钮添加事件
+                const homeTogetherViewBtns = document.querySelectorAll('#home-together-content .action-btn');
+                homeTogetherViewBtns.forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        const row = this.closest('tr');
+                        const regionName = row.querySelector('td:first-child').textContent;
+
+                        if (this.querySelector('.fa-eye')) {
+                            alert(`查看${regionName}的详细信息`);
+                        } else if (this.querySelector('.fa-edit')) {
+                            alert(`编辑${regionName}的信息`);
+                        } else if (this.querySelector('.fa-trash')) {
+                            if (confirm(`确定要删除${regionName}吗？`)) {
+                                alert(`已删除${regionName}`);
+                            }
+                        }
+                    });
+                });
+            });
         });
     </script>
 </body>

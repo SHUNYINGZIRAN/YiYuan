@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文物管理系统 - 层级管理</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 20px 0 30px;
+            position: relative;
+        }
+        
+        .main-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 3rem;
+            color: #8c3c2c;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(140, 60, 44, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #8c6d46;
+            margin-bottom: 20px;
+        }
+        
+        .breadcrumb {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 30px;
+            padding: 15px 25px;
+            box-shadow: 0 2px 10px rgba(92, 76, 62, 0.1);
+        }
+        
+        .breadcrumb-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #8c6d46;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 15px;
+        }
+        
+        .breadcrumb-item:hover {
+            background: rgba(140, 109, 70, 0.1);
+        }
+        
+        .breadcrumb-item.active {
+            color: #8c3c2c;
+            font-weight: bold;
+        }
+        
+        .breadcrumb-separator {
+            color: #d6ccc2;
+        }
+        
+        .content-section {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: #8c3c2c;
+        }
+        
+        .add-btn {
+            padding: 10px 20px;
+            background: #8c6d46;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .add-btn:hover {
+            background: #745b3a;
+            transform: translateY(-2px);
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(92, 76, 62, 0.15);
+        }
+        
+        .card-icon {
+            font-size: 2rem;
+            color: #8c6d46;
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            font-weight: bold;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .card-desc {
+            font-size: 0.9rem;
+            color: #8c6d46;
+            margin-bottom: 15px;
+        }
+        
+        .card-count {
+            display: inline-block;
+            padding: 5px 12px;
+            background: rgba(140, 109, 70, 0.1);
+            color: #8c6d46;
+            border-radius: 15px;
+            font-size: 0.85rem;
+        }
+        
+        .card-actions {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .card:hover .card-actions {
+            opacity: 1;
+        }
+        
+        .action-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            color: #8c6d46;
+            border: 1px solid #d6ccc2;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            background: #8c6d46;
+            color: white;
+        }
+        
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #f8f4e9;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .modal-header {
+            padding: 20px 30px;
+            background: #8c6d46;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close-btn:hover {
+            transform: rotate(90deg);
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #5c4c3e;
+            font-weight: bold;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #d6ccc2;
+            border-radius: 8px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #8c6d46;
+            box-shadow: 0 0 0 2px rgba(140, 109, 70, 0.2);
+        }
+        
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .modal-footer {
+            padding: 20px 30px;
+            background: rgba(255, 255, 255, 0.5);
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: #8c6d46;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #745b3a;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #8c6d46;
+            border: 1px solid #8c6d46;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(140, 109, 70, 0.1);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .breadcrumb {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .breadcrumb-separator {
+                display: none;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-actions {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">文物管理系统</h1>
+            <p class="subtitle">地区 - 国家 - 博物馆 - 文物 层级管理</p>
+            
+            <div class="breadcrumb" id="breadcrumb">
+                <!-- 面包屑导航将通过JS动态生成 -->
+            </div>
+        </div>
+        
+        <div class="content-section">
+            <div class="section-header">
+                <h2 class="section-title" id="section-title">地区列表</h2>
+                <button class="add-btn" onclick="openAddModal()">
+                    <i class="fas fa-plus"></i>
+                    <span>添加地区</span>
+                </button>
+            </div>
+            
+            <div class="grid-container" id="content-grid">
+                <!-- 内容将通过JS动态生成 -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- 添加/编辑模态框 -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">添加地区</h3>
+                <button class="close-btn" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <form id="modal-form">
+                    <div class="form-group">
+                        <label class="form-label" for="item-name">名称</label>
+                        <input type="text" class="form-input" id="item-name" required>
+                    </div>
+                    
+                    <div class="form-group" id="description-group">
+                        <label class="form-label" for="item-description">描述</label>
+                        <textarea class="form-input form-textarea" id="item-description"></textarea>
+                    </div>
+                    
+                    <div class="form-group" id="image-group" style="display: none;">
+                        <label class="form-label" for="item-image">图片URL</label>
+                        <input type="text" class="form-input" id="item-image">
+                    </div>
+                    
+                    <!-- 文物特有字段 -->
+                    <div class="form-group" id="dynasty-group" style="display: none;">
+                        <label class="form-label" for="item-dynasty">朝代</label>
+                        <input type="text" class="form-input" id="item-dynasty">
+                    </div>
+                    
+                    <div class="form-group" id="material-group" style="display: none;">
+                        <label class="form-label" for="item-material">材质</label>
+                        <input type="text" class="form-input" id="item-material">
+                    </div>
+                    
+                    <div class="form-group" id="size-group" style="display: none;">
+                        <label class="form-label" for="item-size">尺寸</label>
+                        <input type="text" class="form-input" id="item-size">
+                    </div>
+                    
+                    <div class="form-group" id="category-group" style="display: none;">
+                        <label class="form-label" for="item-category">分类</label>
+                        <select class="form-input" id="item-category">
+                            <option value="ceramic">陶瓷</option>
+                            <option value="bronze">青铜</option>
+                            <option value="jade">玉器</option>
+                            <option value="painting">书画</option>
+                            <option value="sculpture">雕塑</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">取消</button>
+                <button class="btn btn-primary" onclick="saveItem()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 数据结构
+        let data = {
+            "亚洲": {
+                description: "世界上面积最大、人口最多的洲",
+                countries: {
+                    "日本": {
+                        description: "位于东亚的岛国",
+                        museums: {
+                            "东京国立博物馆": {
+                                description: "日本历史最悠久的博物馆",
+                                artifacts: [
+                                    {
+                                        name: "《女史箴图》",
+                                        dynasty: "唐代摹本",
+                                        material: "绢本设色",
+                                        size: "24.8cm × 348.2cm",
+                                        category: "painting",
+                                        image: "https://images.unsplash.com/photo-1541961018884-1c5b7b4fa8e3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                                        description: "《女史箴图》是顾恺之根据张华的《女史箴》一文所作，是中国绘画史上早期人物画的杰出代表。"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "欧洲": {
+                description: "世界第六大洲",
+                countries: {
+                    "英国": {
+                        description: "位于欧洲西北部的岛国",
+                        museums: {
+                            "大英博物馆": {
+                                description: "世界上规模最大、最著名的博物馆之一",
+                                artifacts: [
+                                    {
+                                        name: "敦煌壁画残片",
+                                        dynasty: "唐代",
+                                        material: "壁画",
+                                        size: "尺寸不一",
+                                        category: "painting",
+                                        image: "https://images.unsplash.com/photo-1587132135057-48ae4c8cd7e5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                                        description: "这些壁画残片来自敦煌莫高窟，描绘了佛教故事、飞天形象和各种装饰图案。"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        // 当前层级和选中的项目
+        let currentLevel = 'continents';
+        let currentContinent = '';
+        let currentCountry = '';
+        let currentMuseum = '';
+        let currentItemId = '';
+        let isEditing = false;
+
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            renderBreadcrumb();
+            renderContent();
+        });
+
+        // 渲染面包屑导航
+        function renderBreadcrumb() {
+            const breadcrumb = document.getElementById('breadcrumb');
+            let html = '<div class="breadcrumb-item" onclick="goToLevel(\'continents\')">地区列表</div>';
+            
+            if (currentLevel === 'countries' || currentLevel === 'museums' || currentLevel === 'artifacts') {
+                html += '<div class="breadcrumb-separator"><i class="fas fa-chevron-right"></i></div>';
+                html += `<div class="breadcrumb-item" onclick="goToLevel('countries')">${currentContinent}</div>`;
+            }
+            
+            if (currentLevel === 'museums' || currentLevel === 'artifacts') {
+                html += '<div class="breadcrumb-separator"><i class="fas fa-chevron-right"></i></div>';
+                html += `<div class="breadcrumb-item" onclick="goToLevel('museums')">${currentCountry}</div>`;
+            }
+            
+            if (currentLevel === 'artifacts') {
+                html += '<div class="breadcrumb-separator"><i class="fas fa-chevron-right"></i></div>';
+                html += `<div class="breadcrumb-item active">${currentMuseum}</div>`;
+            }
+            
+            breadcrumb.innerHTML = html;
+        }
+
+        // 渲染内容
+        function renderContent() {
+            const sectionTitle = document.getElementById('section-title');
+            const contentGrid = document.getElementById('content-grid');
+            let html = '';
+            
+            switch (currentLevel) {
+                case 'continents':
+                    sectionTitle.textContent = '地区列表';
+                    for (const [name, continent] of Object.entries(data)) {
+                        const countryCount = Object.keys(continent.countries).length;
+                        html += `
+                            <div class="card" onclick="selectContinent('${name}')">
+                                <div class="card-actions">
+                                    <button class="action-btn" onclick="event.stopPropagation(); editItem('${name}')">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="event.stopPropagation(); deleteItem('${name}')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                                <div class="card-icon">
+                                    <i class="fas fa-globe-asia"></i>
+                                </div>
+                                <h3 class="card-title">${name}</h3>
+                                <p class="card-desc">${continent.description}</p>
+                                <span class="card-count">${countryCount} 个国家</span>
+                            </div>
+                        `;
+                    }
+                    break;
+                    
+                case 'countries':
+                    sectionTitle.textContent = `${currentContinent} - 国家列表`;
+                    const continent = data[currentContinent];
+                    for (const [name, country] of Object.entries(continent.countries)) {
+                        const museumCount = Object.keys(country.museums).length;
+                        html += `
+                            <div class="card" onclick="selectCountry('${name}')">
+                                <div class="card-actions">
+                                    <button class="action-btn" onclick="event.stopPropagation(); editItem('${name}')">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="event.stopPropagation(); deleteItem('${name}')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                                <div class="card-icon">
+                                    <i class="fas fa-flag"></i>
+                                </div>
+                                <h3 class="card-title">${name}</h3>
+                                <p class="card-desc">${country.description}</p>
+                                <span class="card-count">${museumCount} 家博物馆</span>
+                            </div>
+                        `;
+                    }
+                    break;
+                    
+                case 'museums':
+                    sectionTitle.textContent = `${currentContinent} - ${currentCountry} - 博物馆列表`;
+                    const country = data[currentContinent].countries[currentCountry];
+                    for (const [name, museum] of Object.entries(country.museums)) {
+                        const artifactCount = museum.artifacts.length;
+                        html += `
+                            <div class="card" onclick="selectMuseum('${name}')">
+                                <div class="card-actions">
+                                    <button class="action-btn" onclick="event.stopPropagation(); editItem('${name}')">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="event.stopPropagation(); deleteItem('${name}')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                                <div class="card-icon">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                                <h3 class="card-title">${name}</h3>
+                                <p class="card-desc">${museum.description}</p>
+                                <span class="card-count">${artifactCount} 件文物</span>
+                            </div>
+                        `;
+                    }
+                    break;
+                    
+                case 'artifacts':
+                    sectionTitle.textContent = `${currentContinent} - ${currentCountry} - ${currentMuseum} - 文物列表`;
+                    const museum = data[currentContinent].countries[currentCountry].museums[currentMuseum];
+                    for (let i = 0; i < museum.artifacts.length; i++) {
+                        const artifact = museum.artifacts[i];
+                        html += `
+                            <div class="card" onclick="selectArtifact(${i})">
+                                <div class="card-actions">
+                                    <button class="action-btn" onclick="event.stopPropagation(); editItem(${i})">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="event.stopPropagation(); deleteItem(${i})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                                <div class="card-icon">
+                                    <i class="fas fa-history"></i>
+                                </div>
+                                <h3 class="card-title">${artifact.name}</h3>
+                                <p class="card-desc">${artifact.dynasty} · ${artifact.material}</p>
+                                <span class="card-count">${artifact.size}</span>
+                            </div>
+                        `;
+                    }
+                    break;
+            }
+            
+            contentGrid.innerHTML = html;
+        }
+
+        // 导航到不同层级
+        function goToLevel(level) {
+            switch (level) {
+                case 'continents':
+                    currentLevel = 'continents';
+                    currentContinent = '';
+                    currentCountry = '';
+                    currentMuseum = '';
+                    break;
+                case 'countries':
+                    currentLevel = 'countries';
+                    currentCountry = '';
+                    currentMuseum = '';
+                    break;
+                case 'museums':
+                    currentLevel = 'museums';
+                    currentMuseum = '';
+                    break;
+            }
+            
+            renderBreadcrumb();
+            renderContent();
+        }
+
+        // 选择地区
+        function selectContinent(continent) {
+            currentContinent = continent;
+            currentLevel = 'countries';
+            renderBreadcrumb();
+            renderContent();
+        }
+
+        // 选择国家
+        function selectCountry(country) {
+            currentCountry = country;
+            currentLevel = 'museums';
+            renderBreadcrumb();
+            renderContent();
+        }
+
+        // 选择博物馆
+        function selectMuseum(museum) {
+            currentMuseum = museum;
+            currentLevel = 'artifacts';
+            renderBreadcrumb();
+            renderContent();
+        }
+
+        // 选择文物
+        function selectArtifact(index) {
+            // 可以在这里实现文物详情查看功能
+            alert(`查看文物详情: ${data[currentContinent].countries[currentCountry].museums[currentMuseum].artifacts[index].name}`);
+        }
+
+        // 打开添加模态框
+        function openAddModal() {
+            const modal = document.getElementById('modal');
+            const modalTitle = document.getElementById('modal-title');
+            const form = document.getElementById('modal-form');
+            
+            isEditing = false;
+            currentItemId = '';
+            
+            // 根据当前层级设置模态框标题和字段
+            switch (currentLevel) {
+                case 'continents':
+                    modalTitle.textContent = '添加地区';
+                    break;
+                case 'countries':
+                    modalTitle.textContent = '添加国家';
+                    break;
+                case 'museums':
+                    modalTitle.textContent = '添加博物馆';
+                    break;
+                case 'artifacts':
+                    modalTitle.textContent = '添加文物';
+                    // 显示文物特有字段
+                    document.getElementById('image-group').style.display = 'block';
+                    document.getElementById('dynasty-group').style.display = 'block';
+                    document.getElementById('material-group').style.display = 'block';
+                    document.getElementById('size-group').style.display = 'block';
+                    document.getElementById('category-group').style.display = 'block';
+                    break;
+            }
+            
+            // 重置表单
+            form.reset();
+            modal.style.display = 'block';
+        }
+
+        // 打开编辑模态框
+        function editItem(id) {
+            const modal = document.getElementById('modal');
+            const modalTitle = document.getElementById('modal-title');
+            const form = document.getElementById('modal-form');
+            
+            isEditing = true;
+            currentItemId = id;
+            
+            // 根据当前层级设置模态框标题和字段
+            switch (currentLevel) {
+                case 'continents':
+                    modalTitle.textContent = '编辑地区';
+                    document.getElementById('item-name').value = id;
+                    document.getElementById('item-description').value = data[id].description;
+                    break;
+                case 'countries':
+                    modalTitle.textContent = '编辑国家';
+                    document.getElementById('item-name').value = id;
+                    document.getElementById('item-description').value = data[currentContinent].countries[id].description;
+                    break;
+                case 'museums':
+                    modalTitle.textContent = '编辑博物馆';
+                    document.getElementById('item-name').value = id;
+                    document.getElementById('item-description').value = data[currentContinent].countries[currentCountry].museums[id].description;
+                    break;
+                case 'artifacts':
+                    modalTitle.textContent = '编辑文物';
+                    const artifact = data[currentContinent].countries[currentCountry].museums[currentMuseum].artifacts[id];
+                    document.getElementById('item-name').value = artifact.name;
+                    document.getElementById('item-description').value = artifact.description;
+                    document.getElementById('item-image').value = artifact.image;
+                    document.getElementById('item-dynasty').value = artifact.dynasty;
+                    document.getElementById('item-material').value = artifact.material;
+                    document.getElementById('item-size').value = artifact.size;
+                    document.getElementById('item-category').value = artifact.category;
+                    // 显示文物特有字段
+                    document.getElementById('image-group').style.display = 'block';
+                    document.getElementById('dynasty-group').style.display = 'block';
+                    document.getElementById('material-group').style.display = 'block';
+                    document.getElementById('size-group').style.display = 'block';
+                    document.getElementById('category-group').style.display = 'block';
+                    break;
+            }
+            
+            modal.style.display = 'block';
+        }
+
+        // 保存项目
+        function saveItem() {
+            const name = document.getElementById('item-name').value;
+            const description = document.getElementById('item-description').value;
+            
+            if (!name) {
+                alert('请输入名称');
+                return;
+            }
+            
+            if (isEditing) {
+                // 编辑现有项目
+                switch (currentLevel) {
+                    case 'continents':
+                        if (currentItemId !== name) {
+                            // 如果名称改变了，需要重新创建对象
+                            const temp = data[currentItemId];
+                            delete data[currentItemId];
+                            data[name] = temp;
+                        }
+                        data[name].description = description;
+                        break;
+                    case 'countries':
+                        if (currentItemId !== name) {
+                            const temp = data[currentContinent].countries[currentItemId];
+                            delete data[currentContinent].countries[currentItemId];
+                            data[currentContinent].countries[name] = temp;
+                        }
+                        data[currentContinent].countries[name].description = description;
+                        break;
+                    case 'museums':
+                        if (currentItemId !== name) {
+                            const temp = data[currentContinent].countries[currentCountry].museums[currentItemId];
+                            delete data[currentContinent].countries[currentCountry].museums[currentItemId];
+                            data[currentContinent].countries[currentCountry].museums[name] = temp;
+                        }
+                        data[currentContinent].countries[currentCountry].museums[name].description = description;
+                        break;
+                    case 'artifacts':
+                        const artifact = data[currentContinent].countries[currentCountry].museums[currentMuseum].artifacts[currentItemId];
+                        artifact.name = name;
+                        artifact.description = description;
+                        artifact.image = document.getElementById('item-image').value;
+                        artifact.dynasty = document.getElementById('item-dynasty').value;
+                        artifact.material = document.getElementById('item-material').value;
+                        artifact.size = document.getElementById('item-size').value;
+                        artifact.category = document.getElementById('item-category').value;
+                        break;
+                }
+            } else {
+                // 添加新项目
+                switch (currentLevel) {
+                    case 'continents':
+                        data[name] = {
+                            description: description,
+                            countries: {}
+                        };
+                        break;
+                    case 'countries':
+                        if (!data[currentContinent].countries[name]) {
+                            data[currentContinent].countries[name] = {
+                                description: description,
+                                museums: {}
+                            };
+                        }
+                        break;
+                    case 'museums':
+                        if (!data[currentContinent].countries[currentCountry].museums[name]) {
+                            data[currentContinent].countries[currentCountry].museums[name] = {
+                                description: description,
+                                artifacts: []
+                            };
+                        }
+                        break;
+                    case 'artifacts':
+                        data[currentContinent].countries[currentCountry].museums[currentMuseum].artifacts.push({
+                            name: name,
+                            description: description,
+                            image: document.getElementById('item-image').value,
+                            dynasty: document.getElementById('item-dynasty').value,
+                            material: document.getElementById('item-material').value,
+                            size: document.getElementById('item-size').value,
+                            category: document.getElementById('item-category').value
+                        });
+                        break;
+                }
+            }
+            
+            closeModal();
+            renderContent();
+        }
+
+        // 删除项目
+        function deleteItem(id) {
+            if (!confirm('确定要删除此项吗？')) {
+                return;
+            }
+            
+            switch (currentLevel) {
+                case 'continents':
+                    delete data[id];
+                    if (currentContinent === id) {
+                        goToLevel('continents');
+                    }
+                    break;
+                case 'countries':
+                    delete data[currentContinent].countries[id];
+                    if (currentCountry === id) {
+                        goToLevel('countries');
+                    }
+                    break;
+                case 'museums':
+                    delete data[currentContinent].countries[currentCountry].museums[id];
+                    if (currentMuseum === id) {
+                        goToLevel('museums');
+                    }
+                    break;
+                case 'artifacts':
+                    data[currentContinent].countries[currentCountry].museums[currentMuseum].artifacts.splice(id, 1);
+                    break;
+            }
+            
+            renderContent();
+        }
+
+        // 关闭模态框
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.style.display = 'none';
+            
+            // 隐藏文物特有字段
+            document.getElementById('image-group').style.display = 'none';
+            document.getElementById('dynasty-group').style.display = 'none';
+            document.getElementById('material-group').style.display = 'none';
+            document.getElementById('size-group').style.display = 'none';
+            document.getElementById('category-group').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
