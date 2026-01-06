@@ -1341,22 +1341,16 @@
 
                 <!-- 商品管理内容 -->
                 <div class="content-section" id="products-content" style="display: none;">
-                    <div class="content-header">
-                        <div class="content-actions">
-                            <button class="header-btn" id="addProductBtn">
-                                <i class="fas fa-plus"></i> 添加商品
-                            </button>
-                            <!-- <button class="header-btn"> -->
-                            <!-- <i class="fas fa-download"></i> 导出 -->
-                            <!-- </button> -->
+                    <div class="review-filters" style="justify-content: space-between;">
+                        <div style="display: flex; gap: 15px;">
+                            <button class="filter-btn active">全部商品</button>
+                            <button class="filter-btn">在售商品</button>
+                            <button class="filter-btn">已售罄</button>
+                            <button class="filter-btn">已下架</button>
                         </div>
-                    </div>
-
-                    <div class="review-filters">
-                        <button class="filter-btn active">全部商品</button>
-                        <button class="filter-btn">在售商品</button>
-                        <button class="filter-btn">已售罄</button>
-                        <button class="filter-btn">已下架</button>
+                        <button class="header-btn" id="addProductBtn">
+                            <i class="fas fa-plus"></i> 添加商品
+                        </button>
                     </div>
 
                     <table class="articles-table">
