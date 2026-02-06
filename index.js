@@ -21,7 +21,14 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelector('.zong .wu').style.display = 'none';
 
         // 显示"我的"页面
-        document.querySelector('.zong .si').style.display = 'block';
+        const myContent = document.querySelector('.zong .si');
+        myContent.style.display = 'block';
+
+        // 滚动到页面顶部
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
 
         // 更新导航项样式
         navItems.forEach(i => i.classList.remove('active'));
