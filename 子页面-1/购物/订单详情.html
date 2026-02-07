@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>订单详情 - 云间文苑</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap">
     <style>
         * {
             margin: 0;
@@ -477,7 +479,7 @@
             <!-- 订单信息卡片 -->
             <div class="order-card">
                 <h2 class="section-title">订单信息</h2>
-                
+
                 <div class="order-info">
                     <div class="info-item">
                         <span class="info-label">订单号</span>
@@ -502,7 +504,8 @@
                 <div class="product-list">
                     <div class="product-item">
                         <div class="product-image">
-                            <img src="https://images.unsplash.com/photo-1587332278433-97428c3e9a09?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="传统茶具">
+                            <img src="https://images.unsplash.com/photo-1587332278433-97428c3e9a09?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                alt="传统茶具">
                         </div>
                         <div class="product-details">
                             <h4 class="product-name">景德镇手工青花瓷茶具套装</h4>
@@ -511,10 +514,11 @@
                         </div>
                         <div class="product-quantity">×1</div>
                     </div>
-                    
+
                     <div class="product-item">
                         <div class="product-image">
-                            <img src="https://images.unsplash.com/photo-1594736797933-d0e6e4f5a65a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="手工剪纸">
+                            <img src="https://images.unsplash.com/photo-1594736797933-d0e6e4f5a65a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                alt="手工剪纸">
                         </div>
                         <div class="product-details">
                             <h4 class="product-name">非遗剪纸艺术 - 福禄寿喜系列</h4>
@@ -551,7 +555,7 @@
             <!-- 物流信息卡片 -->
             <div class="order-card">
                 <h2 class="section-title">物流信息</h2>
-                
+
                 <div class="order-info">
                     <div class="info-item">
                         <span class="info-label">物流公司</span>
@@ -579,31 +583,31 @@
                         <div class="timeline-title">订单已提交</div>
                         <div class="timeline-desc">您的订单已成功提交，等待商家处理</div>
                     </div>
-                    
+
                     <div class="timeline-item completed">
                         <div class="timeline-time">2023-10-15 16:45</div>
                         <div class="timeline-title">商家已接单</div>
                         <div class="timeline-desc">商家已确认订单，正在准备商品</div>
                     </div>
-                    
+
                     <div class="timeline-item completed">
                         <div class="timeline-time">2023-10-16 09:20</div>
                         <div class="timeline-title">商品已发货</div>
                         <div class="timeline-desc">您的商品已由顺丰速运揽收</div>
                     </div>
-                    
+
                     <div class="timeline-item active">
                         <div class="timeline-time">2023-10-17 14:15</div>
                         <div class="timeline-title">运输中</div>
                         <div class="timeline-desc">快件已到达北京转运中心</div>
                     </div>
-                    
+
                     <div class="timeline-item">
                         <div class="timeline-time">预计 2023-10-18</div>
                         <div class="timeline-title">派送中</div>
                         <div class="timeline-desc">快递员正在派送，请保持电话畅通</div>
                     </div>
-                    
+
                     <div class="timeline-item">
                         <div class="timeline-time">预计 2023-10-18</div>
                         <div class="timeline-title">已签收</div>
@@ -662,6 +666,10 @@
                     document.getElementById('orderStatus').className = 'order-status status-delivered';
                     confirmBtn.disabled = true;
                     confirmBtn.innerHTML = '<i class="fas fa-check-circle"></i> 已确认收货';
+                    // 延迟0.8秒后跳转到商品评价页面
+                    setTimeout(function () {
+                        window.location.href = '商品评价.html';
+                    }, 800);
                 }
             });
 
@@ -669,7 +677,7 @@
             function updateShippingStatus() {
                 const timelineItems = document.querySelectorAll('.timeline-item');
                 const currentTime = new Date();
-                
+
                 // 模拟新的物流节点
                 if (Math.random() > 0.7) {
                     const newStatus = {
@@ -677,7 +685,7 @@
                         title: '运输中',
                         desc: '快件已到达目的地城市分拨中心'
                     };
-                    
+
                     // 在实际应用中，这里会从服务器获取新的物流信息
                     // 这里只是模拟添加一个新节点
                     const newItem = document.createElement('div');
@@ -687,11 +695,11 @@
                         <div class="timeline-title">${newStatus.title}</div>
                         <div class="timeline-desc">${newStatus.desc}</div>
                     `;
-                    
+
                     // 插入到时间轴中
                     const timeline = document.querySelector('.timeline');
                     timeline.insertBefore(newItem, timeline.children[3]);
-                    
+
                     // 移除之前的active状态
                     document.querySelectorAll('.timeline-item.active').forEach(item => {
                         if (item !== newItem) {
@@ -699,7 +707,7 @@
                             item.classList.add('completed');
                         }
                     });
-                    
+
                     // 显示更新提示
                     showNotification('物流状态已更新');
                 }
@@ -721,7 +729,7 @@
                     animation: slideIn 0.3s ease;
                 `;
                 notification.textContent = message;
-                
+
                 // 添加动画样式
                 const style = document.createElement('style');
                 style.textContent = `
@@ -735,9 +743,9 @@
                     }
                 `;
                 document.head.appendChild(style);
-                
+
                 document.body.appendChild(notification);
-                
+
                 // 3秒后自动移除
                 setTimeout(() => {
                     notification.style.animation = 'slideOut 0.3s ease';
@@ -752,4 +760,5 @@
         });
     </script>
 </body>
+
 </html>

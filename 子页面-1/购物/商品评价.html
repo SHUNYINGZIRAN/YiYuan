@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品评价 - 云间文苑</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image:
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 顶部导航栏 */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 2px solid #d6ccc2;
+        }
+
+        .logo {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.2rem;
+            color: #8c6d46;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            margin-left: 10px;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            padding: 8px 15px;
+            background: #8c6d46;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        .nav-btn:hover {
+            background: #745b3a;
+        }
+
+        /* 页面标题 */
+        .page-header {
+            text-align: center;
+            padding: 40px 0 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .page-header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8c6d46, transparent);
+        }
+
+        .page-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 3rem;
+            color: #8c3c2c;
+            margin-bottom: 15px;
+            letter-spacing: 5px;
+            text-shadow: 2px 2px 4px rgba(92, 76, 62, 0.2);
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #8c6d46;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* 商品信息卡片 */
+        .product-card {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .product-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        .product-info {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .product-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-details {
+            flex: 1;
+        }
+
+        .product-name {
+            font-size: 1.3rem;
+            color: #5c4c3e;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .product-spec {
+            font-size: 1rem;
+            color: #8c6d46;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 1.2rem;
+            color: #8c3c2c;
+            font-weight: bold;
+        }
+
+        /* 评价表单 */
+        .review-form {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .review-form::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #5c4c3e;
+        }
+
+        .rating-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 5px;
+        }
+
+        .star {
+            font-size: 1.8rem;
+            color: #d6ccc2;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .star.active {
+            color: #f5b642;
+        }
+
+        .rating-text {
+            font-size: 1rem;
+            color: #8c6d46;
+            font-weight: bold;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d6ccc2;
+            border-radius: 8px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            background-color: #fffef8;
+            color: #5c4c3e;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #8c6d46;
+            box-shadow: 0 0 0 2px rgba(140, 109, 70, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .upload-section {
+            border: 2px dashed #d6ccc2;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .upload-section:hover {
+            border-color: #8c6d46;
+        }
+
+        .upload-label {
+            display: block;
+            cursor: pointer;
+            color: #8c6d46;
+        }
+
+        .upload-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .upload-hint {
+            font-size: 0.9rem;
+            color: #8c6d46;
+            margin-top: 5px;
+        }
+
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .preview-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .preview-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-image {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
+
+        /* 评价列表 */
+        .reviews-container {
+            margin-bottom: 30px;
+        }
+
+        .review-card {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            margin-bottom: 20px;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .reviewer-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #8c6d46;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .reviewer-name {
+            font-weight: bold;
+            color: #5c4c3e;
+        }
+
+        .review-date {
+            font-size: 0.9rem;
+            color: #8c6d46;
+        }
+
+        .review-content {
+            color: #5c4c3e;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .review-images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .review-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 6px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .review-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .review-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #8c6d46;
+        }
+
+        .helpful-btn {
+            background: none;
+            border: none;
+            color: #8c6d46;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .helpful-btn:hover {
+            color: #8c3c2c;
+        }
+
+        .helpful-btn.active {
+            color: #8c3c2c;
+        }
+
+        /* 评价统计 */
+        .rating-summary {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .average-rating {
+            text-align: center;
+            background: #fffef8;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #d6ccc2;
+        }
+
+        .rating-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #8c3c2c;
+            line-height: 1;
+        }
+
+        .rating-stars {
+            margin: 10px 0;
+        }
+
+        .rating-count {
+            color: #8c6d46;
+            font-size: 0.9rem;
+        }
+
+        .rating-bars {
+            flex: 1;
+        }
+
+        .rating-bar-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .rating-label {
+            width: 60px;
+            color: #5c4c3e;
+        }
+
+        .rating-bar {
+            flex: 1;
+            height: 8px;
+            background-color: #e8e0d8;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .rating-fill {
+            height: 100%;
+            background-color: #f5b642;
+        }
+
+        .rating-percent {
+            width: 40px;
+            text-align: right;
+            color: #8c6d46;
+        }
+
+        /* 操作按钮 */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: flex-end;
+        }
+
+        .action-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+        }
+
+        .action-btn.primary {
+            background: #8c6d46;
+            color: white;
+        }
+
+        .action-btn.outline {
+            background: transparent;
+            color: #8c6d46;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(92, 76, 62, 0.2);
+        }
+
+        /* 页脚 */
+        .page-footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 50px;
+            color: #8c6d46;
+            font-size: 0.9rem;
+            border-top: 1px solid #d6ccc2;
+        }
+
+        /* 模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: #f8f4e9;
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 70vh;
+            border-radius: 8px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            color: #5c4c3e;
+            cursor: pointer;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .top-nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .product-info {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .product-image {
+                width: 150px;
+                height: 150px;
+            }
+
+            .rating-summary {
+                flex-direction: column;
+            }
+
+            .rating-bars {
+                width: 100%;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <div class="top-nav">
+            <div class="logo">
+                <i class="fas fa-mountain"></i>
+                <span>云间文苑</span>
+            </div>
+
+            <div class="user-actions">
+                <button class="nav-btn" id="backBtn">
+                    <i class="fas fa-arrow-left"></i> 返回订单
+                </button>
+            </div>
+        </div>
+
+        <!-- 页面标题 -->
+        <header class="page-header">
+            <h1 class="page-title">商品评价</h1>
+            <p class="page-subtitle">分享您的购买体验</p>
+        </header>
+
+        <!-- 商品信息 -->
+        <div class="product-card">
+            <h2 class="section-title">待评价商品</h2>
+            <div class="product-info">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1587332278433-97428c3e9a09?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="传统茶具">
+                </div>
+                <div class="product-details">
+                    <h3 class="product-name">景德镇手工青花瓷茶具套装</h3>
+                    <p class="product-spec">青花瓷 | 6件套</p>
+                    <p class="product-price">¥ 1,280</p>
+                    <p class="product-spec">订单号: DD20231015001 | 购买时间: 2023-10-15</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 评价表单 -->
+        <div class="review-form">
+            <h2 class="section-title">提交评价</h2>
+            
+            <div class="form-group">
+                <label class="form-label">商品评分</label>
+                <div class="rating-container">
+                    <div class="star-rating" id="starRating">
+                        <i class="fas fa-star star" data-rating="1"></i>
+                        <i class="fas fa-star star" data-rating="2"></i>
+                        <i class="fas fa-star star" data-rating="3"></i>
+                        <i class="fas fa-star star" data-rating="4"></i>
+                        <i class="fas fa-star star" data-rating="5"></i>
+                    </div>
+                    <span class="rating-text" id="ratingText">请选择评分</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="reviewTitle">评价标题</label>
+                <input type="text" id="reviewTitle" class="form-input" placeholder="请输入评价标题（可选）">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="reviewContent">评价内容</label>
+                <textarea id="reviewContent" class="form-textarea" placeholder="请分享您的使用体验，商品质量如何？是否推荐购买？"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">上传图片（最多6张）</label>
+                <div class="upload-section">
+                    <label class="upload-label" for="imageUpload">
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <p>点击或拖拽上传图片</p>
+                        <p class="upload-hint">支持 JPG、PNG 格式，每张不超过5MB</p>
+                    </label>
+                    <input type="file" id="imageUpload" accept="image/*" multiple style="display: none;">
+                </div>
+                <div class="image-preview" id="imagePreview"></div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="action-btn outline" id="cancelBtn">
+                    <i class="fas fa-times"></i> 取消评价
+                </button>
+                <button class="action-btn primary" id="submitReviewBtn">
+                    <i class="fas fa-paper-plane"></i> 提交评价
+                </button>
+            </div>
+        </div>
+
+        <!-- 评价统计 -->
+        <div class="product-card">
+            <h2 class="section-title">评价统计</h2>
+            <div class="rating-summary">
+                <div class="average-rating">
+                    <div class="rating-number">4.8</div>
+                    <div class="rating-stars">
+                        <i class="fas fa-star" style="color: #f5b642;"></i>
+                        <i class="fas fa-star" style="color: #f5b642;"></i>
+                        <i class="fas fa-star" style="color: #f5b642;"></i>
+                        <i class="fas fa-star" style="color: #f5b642;"></i>
+                        <i class="fas fa-star" style="color: #f5b642;"></i>
+                    </div>
+                    <div class="rating-count">128 条评价</div>
+                </div>
+                
+                <div class="rating-bars">
+                    <div class="rating-bar-item">
+                        <span class="rating-label">5星</span>
+                        <div class="rating-bar">
+                            <div class="rating-fill" style="width: 85%;"></div>
+                        </div>
+                        <span class="rating-percent">85%</span>
+                    </div>
+                    <div class="rating-bar-item">
+                        <span class="rating-label">4星</span>
+                        <div class="rating-bar">
+                            <div class="rating-fill" style="width: 10%;"></div>
+                        </div>
+                        <span class="rating-percent">10%</span>
+                    </div>
+                    <div class="rating-bar-item">
+                        <span class="rating-label">3星</span>
+                        <div class="rating-bar">
+                            <div class="rating-fill" style="width: 3%;"></div>
+                        </div>
+                        <span class="rating-percent">3%</span>
+                    </div>
+                    <div class="rating-bar-item">
+                        <span class="rating-label">2星</span>
+                        <div class="rating-bar">
+                            <div class="rating-fill" style="width: 1%;"></div>
+                        </div>
+                        <span class="rating-percent">1%</span>
+                    </div>
+                    <div class="rating-bar-item">
+                        <span class="rating-label">1星</span>
+                        <div class="rating-bar">
+                            <div class="rating-fill" style="width: 1%;"></div>
+                        </div>
+                        <span class="rating-percent">1%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 评价列表 -->
+        <div class="reviews-container">
+            <h2 class="section-title">用户评价 (128)</h2>
+            
+            <!-- 评价示例1 -->
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar">李</div>
+                        <div>
+                            <div class="reviewer-name">李悠然</div>
+                            <div class="review-date">2023-10-10</div>
+                        </div>
+                    </div>
+                    <div class="star-rating">
+                        <i class="fas fa-star" style="color: #f5b642;"></i>
+                        <i class="fas fa-star" style="color: #f5b642;"></i>
+                        <i class="fas fa-star" style="color: #f5b642;"></i>
+                        <i class="fas fa-star" style="color: #f5b642;"></i>
+                        <i class="fas fa-star" style="color: #f5b642;"></i>
+                    </div>
+                </div>
+                <h4>传统工艺的完美呈现</h4>
+                <div class="review-content">
+                    这套青花瓷茶具真的太美了！每一件都体现了景德镇传统工艺的精湛技艺。釉色均匀，图案清晰，使用起来手感舒适。包装也非常精致，作为礼物送人非常合适。
+                </div>
+                <div class="review-images">
+                    <div class="review-image">
+                        <img src="https://images.unsplash.com/photo-1587332278433-97428c3e9a09?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="茶具细节">
+                    </div>
+                    <div class="review-image">
+                        <img src="https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="茶具使用">
+                    </div>
+                </div>
+                <div class="review-footer">
+                    <button class="helpful-btn">
+                        <i class="fas fa-thumbs-up"></i> 有用 (42)
+                    </button>
+                    <span>已购同款</span>
+                </div>
+            </div>
+            
+            <!-- 评价示例2 -->
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar">王</div>
+                        <div>
+                            <div class="reviewer-name">王明远</div>
+                            <div class="review-date">2023-09-28</div>
+                        </div>
+                    </div>
+                    <div class="star-rating">
+                        <i class="fas fa-star" style="color: #f5b642;"></i>
+                        <i class="fas fa-star" style="color: #f5b642;"></i>
+                        <i class="fas fa-star" style="color: #f5b642;"></i>
+                        <i class="fas fa-star" style="color: #f5b642;"></i>
+                        <i class="far fa-star" style="color: #f5b642;"></i>
+                    </div>
+                </div>
+                <h4>品质优良，细节可提升</h4>
+                <div class="review-content">
+                    整体品质很好，青花图案非常漂亮。但有一个茶杯底部稍微有些不平整，放置时有点摇晃。客服响应很快，表示可以更换，但我觉得不影响使用就算了。希望品控能更严格一些。
+                </div>
+                <div class="review-footer">
+                    <button class="helpful-btn active">
+                        <i class="fas fa-thumbs-up"></i> 有用 (18)
+                    </button>
+                    <span>已购同款</span>
+                </div>
+            </div>
+            
+            <!-- 评价示例3 -->
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar">张</div>
+                        <div>
+                            <div class="reviewer-name">张雅韵</div>
+                            <div class="review-date">2023-09-15</div>
+                        </div>
+                    </div>
+                    <div class="star-rating">
+                        <i class="fas fa-star" style="color: #f5b642;"></i>
+                        <i class="fas fa-star" style="color: #f5b642;"></i>
+                        <i class="fas fa-star" style="color: #f5b642;"></i>
+                        <i class="fas fa-star" style="color: #f5b642;"></i>
+                        <i class="fas fa-star" style="color: #f5b642;"></i>
+                    </div>
+                </div>
+                <h4>超出预期的精美</h4>
+                <div class="review-content">
+                    买来作为结婚礼物送给朋友的，他们非常喜欢。包装非常精致，每一件茶具都独立包装，运输过程中完全没有损坏。青花瓷的色泽温润，手感细腻，朋友说使用起来茶汤味道都更好了。强烈推荐！
+                </div>
+                <div class="review-images">
+                    <div class="review-image">
+                        <img src="https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="包装">
+                    </div>
+                </div>
+                <div class="review-footer">
+                    <button class="helpful-btn">
+                        <i class="fas fa-thumbs-up"></i> 有用 (56)
+                    </button>
+                    <span>赠送礼物</span>
+                </div>
+            </div>
+        </div>
+
+        <footer class="page-footer">
+            <p>© 2023 云间文苑 | 传承匠心，品味传统工艺之美</p>
+        </footer>
+    </div>
+
+    <!-- 图片预览模态框 -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <img class="modal-image" id="modalImage" src="" alt="预览图片">
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 返回按钮
+            const backBtn = document.getElementById('backBtn');
+            backBtn.addEventListener('click', function () {
+                alert('返回订单详情页面');
+                // 实际应用中这里会跳转到订单页面
+            });
+
+            // 星级评分
+            const stars = document.querySelectorAll('.star');
+            const ratingText = document.getElementById('ratingText');
+            let selectedRating = 0;
+            
+            stars.forEach(star => {
+                star.addEventListener('mouseover', function() {
+                    const rating = this.getAttribute('data-rating');
+                    highlightStars(rating);
+                    updateRatingText(rating);
+                });
+                
+                star.addEventListener('click', function() {
+                    selectedRating = this.getAttribute('data-rating');
+                    highlightStars(selectedRating);
+                    updateRatingText(selectedRating, true);
+                });
+            });
+            
+            document.getElementById('starRating').addEventListener('mouseleave', function() {
+                if (selectedRating > 0) {
+                    highlightStars(selectedRating);
+                    updateRatingText(selectedRating, true);
+                } else {
+                    resetStars();
+                    ratingText.textContent = '请选择评分';
+                }
+            });
+            
+            function highlightStars(rating) {
+                stars.forEach(star => {
+                    if (star.getAttribute('data-rating') <= rating) {
+                        star.classList.add('active');
+                    } else {
+                        star.classList.remove('active');
+                    }
+                });
+            }
+            
+            function resetStars() {
+                stars.forEach(star => {
+                    star.classList.remove('active');
+                });
+            }
+            
+            function updateRatingText(rating, selected = false) {
+                const ratings = {
+                    1: selected ? '很差' : '1星 - 很差',
+                    2: selected ? '一般' : '2星 - 一般',
+                    3: selected ? '满意' : '3星 - 满意',
+                    4: selected ? '很好' : '4星 - 很好',
+                    5: selected ? '完美' : '5星 - 完美'
+                };
+                ratingText.textContent = ratings[rating];
+            }
+
+            // 图片上传预览
+            const imageUpload = document.getElementById('imageUpload');
+            const imagePreview = document.getElementById('imagePreview');
+            const uploadedImages = [];
+            
+            imageUpload.addEventListener('change', function(e) {
+                const files = Array.from(e.target.files);
+                
+                // 限制最多6张图片
+                if (uploadedImages.length + files.length > 6) {
+                    alert('最多只能上传6张图片');
+                    return;
+                }
+                
+                files.forEach(file => {
+                    if (!file.type.match('image.*')) {
+                        alert('请上传图片文件');
+                        return;
+                    }
+                    
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('图片大小不能超过5MB');
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const imageData = {
+                            id: Date.now(),
+                            url: e.target.result
+                        };
+                        uploadedImages.push(imageData);
+                        renderPreviewImages();
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+            
+            function renderPreviewImages() {
+                imagePreview.innerHTML = '';
+                uploadedImages.forEach(image => {
+                    const previewDiv = document.createElement('div');
+                    previewDiv.className = 'preview-image';
+                    previewDiv.innerHTML = `
+                        <img src="${image.url}" alt="预览图片">
+                        <div class="remove-image" data-id="${image.id}">×</div>
+                    `;
+                    imagePreview.appendChild(previewDiv);
+                });
+                
+                // 绑定移除图片事件
+                document.querySelectorAll('.remove-image').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = parseInt(this.getAttribute('data-id'));
+                        const index = uploadedImages.findIndex(img => img.id === id);
+                        if (index !== -1) {
+                            uploadedImages.splice(index, 1);
+                            renderPreviewImages();
+                        }
+                    });
+                });
+                
+                // 绑定点击预览事件
+                document.querySelectorAll('.preview-image img').forEach(img => {
+                    img.addEventListener('click', function() {
+                        openImageModal(this.src);
+                    });
+                });
+            }
+            
+            // 图片预览模态框
+            const imageModal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const closeModal = document.getElementById('closeModal');
+            
+            function openImageModal(src) {
+                modalImage.src = src;
+                imageModal.style.display = 'flex';
+            }
+            
+            closeModal.addEventListener('click', function() {
+                imageModal.style.display = 'none';
+            });
+            
+            imageModal.addEventListener('click', function(e) {
+                if (e.target === imageModal) {
+                    imageModal.style.display = 'none';
+                }
+            });
+            
+            // 评价列表中的图片点击预览
+            document.querySelectorAll('.review-image').forEach(item => {
+                item.addEventListener('click', function() {
+                    const imgSrc = this.querySelector('img').src;
+                    openImageModal(imgSrc);
+                });
+            });
+            
+            // 有用按钮
+            document.querySelectorAll('.helpful-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (!this.classList.contains('active')) {
+                        this.classList.add('active');
+                        const currentText = this.innerHTML;
+                        const match = currentText.match(/\((\d+)\)/);
+                        if (match) {
+                            const count = parseInt(match[1]) + 1;
+                            this.innerHTML = `<i class="fas fa-thumbs-up"></i> 有用 (${count})`;
+                        }
+                    }
+                });
+            });
+            
+            // 取消评价按钮
+            const cancelBtn = document.getElementById('cancelBtn');
+            cancelBtn.addEventListener('click', function() {
+                if (confirm('确定要取消评价吗？已填写的内容将不会被保存。')) {
+                    // 清空表单
+                    selectedRating = 0;
+                    resetStars();
+                    ratingText.textContent = '请选择评分';
+                    document.getElementById('reviewTitle').value = '';
+                    document.getElementById('reviewContent').value = '';
+                    uploadedImages.length = 0;
+                    renderPreviewImages();
+                    alert('评价已取消');
+                }
+            });
+            
+            // 提交评价按钮
+            const submitReviewBtn = document.getElementById('submitReviewBtn');
+            submitReviewBtn.addEventListener('click', function() {
+                if (selectedRating === 0) {
+                    alert('请选择商品评分');
+                    return;
+                }
+                
+                const reviewContent = document.getElementById('reviewContent').value.trim();
+                if (!reviewContent) {
+                    alert('请填写评价内容');
+                    return;
+                }
+                
+                const reviewTitle = document.getElementById('reviewTitle').value.trim();
+                const reviewData = {
+                    rating: selectedRating,
+                    title: reviewTitle,
+                    content: reviewContent,
+                    images: uploadedImages.map(img => img.url)
+                };
+                
+                // 在实际应用中，这里会提交到服务器
+                console.log('提交评价数据:', reviewData);
+                
+                alert('评价提交成功！感谢您的分享。');
+                
+                // 清空表单
+                selectedRating = 0;
+                resetStars();
+                ratingText.textContent = '请选择评分';
+                document.getElementById('reviewTitle').value = '';
+                document.getElementById('reviewContent').value = '';
+                uploadedImages.length = 0;
+                renderPreviewImages();
+                
+                // 模拟添加新评价到列表顶部
+                const reviewsContainer = document.querySelector('.reviews-container');
+                const reviewCard = document.createElement('div');
+                reviewCard.className = 'review-card';
+                reviewCard.innerHTML = `
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">您</div>
+                            <div>
+                                <div class="reviewer-name">您</div>
+                                <div class="review-date">刚刚</div>
+                            </div>
+                        </div>
+                        <div class="star-rating">
+                            ${'<i class="fas fa-star" style="color: #f5b642;"></i>'.repeat(selectedRating)}
+                            ${'<i class="far fa-star" style="color: #f5b642;"></i>'.repeat(5-selectedRating)}
+                        </div>
+                    </div>
+                    ${reviewTitle ? `<h4>${reviewTitle}</h4>` : ''}
+                    <div class="review-content">${reviewContent}</div>
+                    ${uploadedImages.length > 0 ? `
+                    <div class="review-images">
+                        ${uploadedImages.map(img => `<div class="review-image"><img src="${img.url}" alt="评价图片"></div>`).join('')}
+                    </div>` : ''}
+                    <div class="review-footer">
+                        <button class="helpful-btn">
+                            <i class="fas fa-thumbs-up"></i> 有用 (0)
+                        </button>
+                        <span>已购同款</span>
+                    </div>
+                `;
+                
+                // 插入到评价列表顶部（在标题之后）
+                const firstReview = reviewsContainer.querySelector('.review-card');
+                if (firstReview) {
+                    reviewsContainer.insertBefore(reviewCard, firstReview);
+                } else {
+                    reviewsContainer.appendChild(reviewCard);
+                }
+                
+                // 绑定新评价中的事件
+                reviewCard.querySelector('.helpful-btn').addEventListener('click', function() {
+                    if (!this.classList.contains('active')) {
+                        this.classList.add('active');
+                        const currentText = this.innerHTML;
+                        const match = currentText.match(/\((\d+)\)/);
+                        if (match) {
+                            const count = parseInt(match[1]) + 1;
+                            this.innerHTML = `<i class="fas fa-thumbs-up"></i> 有用 (${count})`;
+                        }
+                    }
+                });
+                
+                reviewCard.querySelectorAll('.review-image').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const imgSrc = this.querySelector('img').src;
+                        openImageModal(imgSrc);
+                    });
+                });
+                
+                // 更新评价统计
+                const ratingCount = document.querySelector('.rating-count');
+                const currentCount = parseInt(ratingCount.textContent);
+                ratingCount.textContent = `${currentCount + 1} 条评价`;
+            });
+        });
+    </script>
+</body>
+</html>
