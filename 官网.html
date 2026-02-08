@@ -1,0 +1,2372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>历史长河 - 云间文苑</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap">
+    <link rel="stylesheet" href="/YiYuan/官网.css">
+    <script src="/YiYuan/官网.js"></script>
+    <script>
+        // 删除文章功能
+        function deleteArticle(button, event) {
+            // 获取事件对象
+            event = event || window.event;
+            // 阻止事件冒泡和默认行为
+            event.preventDefault();
+            event.stopPropagation();
+
+            // 获取文章标题
+            const articleCard = button.closest('.article-card');
+            const articleTitle = articleCard.querySelector('.article-title').textContent;
+
+            // 确认删除
+            if (confirm(`确定要删除"${articleTitle}"吗？`)) {
+                // 获取文章卡片的父元素（a标签）
+                const articleLink = articleCard.closest('a');
+                // 获取文章网格容器
+                const articlesGrid = articleLink.parentElement;
+
+                // 删除文章
+                articlesGrid.removeChild(articleLink);
+
+                // 提示删除成功
+                alert(`文章"${articleTitle}"已删除`);
+            }
+        }
+    </script>
+    <script>
+        /**
+         * 历史名人轮播效果
+         * 实现从右向左匀速轮播效果
+         */
+        document.addEventListener('DOMContentLoaded', function () {
+            // 获取轮播容器和卡片
+            const containers = document.querySelectorAll('.figures-container');
+
+            containers.forEach(container => {
+                // 获取所有卡片及其父元素（a标签）
+                const cardLinks = Array.from(container.querySelectorAll('a'));
+                if (!cardLinks.length) return;
+
+                // 创建一个内部容器来包裹所有卡片
+                const innerContainer = document.createElement('div');
+                innerContainer.className = 'carousel-inner';
+
+                // 将所有卡片移动到内部容器
+                cardLinks.forEach(link => {
+                    container.removeChild(link);
+                    innerContainer.appendChild(link);
+                });
+
+                // 将内部容器添加到主容器
+                container.appendChild(innerContainer);
+
+                // 修改容器样式以支持轮播，保持高度自适应
+                container.style.display = 'block';
+                container.style.overflow = 'hidden';
+                container.style.position = 'relative';
+                container.style.width = '100%';
+
+                // 修改内部容器样式
+                innerContainer.style.display = 'flex';
+                innerContainer.style.position = 'relative';
+                innerContainer.style.width = 'max-content';
+
+                // 计算每个卡片的宽度和外边距
+                const cardWidth = 250; // 根据原始的minmax设置
+                const cardMargin = 25; // 根据原始的gap设置
+                const totalCardWidth = cardWidth + cardMargin;
+
+                // 设置卡片样式
+                cardLinks.forEach(link => {
+                    link.style.flex = '0 0 auto';
+                    link.style.width = `${cardWidth}px`;
+                    link.style.marginRight = `${cardMargin}px`;
+
+                    // 保持卡片内部样式不变
+                    const card = link.querySelector('.figure-card');
+                    if (card) {
+                        card.style.width = '100%';
+                        card.style.margin = '0';
+                    }
+                });
+
+                // 克隆卡片以实现无缝轮播
+                const cloneLinks = cardLinks.map(link => {
+                    const clone = link.cloneNode(true);
+                    innerContainer.appendChild(clone);
+                    return clone;
+                });
+
+                // 设置动画参数
+                let position = 0;
+                const speed = 0.5; // 每帧移动的像素数，可以调整速度
+                let animationId = null;
+
+                // 动画函数
+                function animate() {
+                    position -= speed;
+
+                    // 当第一组卡片完全移出视野时，重置位置
+                    const resetPosition = -(cardLinks.length * totalCardWidth);
+                    if (position <= resetPosition) {
+                        position = 0;
+                    }
+
+                    // 应用位置
+                    innerContainer.style.transform = `translateX(${position}px)`;
+
+                    // 继续动画
+                    animationId = requestAnimationFrame(animate);
+                }
+
+                // 当鼠标悬停在容器上时暂停动画
+                container.addEventListener('mouseenter', function () {
+                    if (animationId) {
+                        cancelAnimationFrame(animationId);
+                        animationId = null;
+                    }
+                });
+
+                // 当鼠标离开容器时恢复动画
+                container.addEventListener('mouseleave', function () {
+                    if (!animationId) {
+                        animationId = requestAnimationFrame(animate);
+                    }
+                });
+
+                // 启动动画
+                animationId = requestAnimationFrame(animate);
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <div class="top-nav">
+            <div class="logo">
+                <i class="fas fa-mountain"></i>
+                <span>云间文苑</span>
+            </div>
+
+            <div class="user-actions">
+                <div class="search-box">
+                    <input type="text" placeholder="搜索...">
+                    <button class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主导航 -->
+        <nav class="main-nav">
+            <a href="#" class="nav-item active">历史</a>
+            <a href="#" class="nav-item">非遗</a>
+            <a href="#" class="nav-item">公益</a>
+            <a href="#" class="nav-item" id="myProfileNav">我的</a>
+            <a href="#" class="nav-item" id="editProfileNav" style="display: none;">编辑资料</a>
+        </nav>
+
+        <ul class="zong">
+            <li class="yi">
+                <!-- 页面标题 -->
+                <header class="page-header">
+                    <h1 class="page-title">历史长河</h1>
+                    <p class="page-subtitle">以史为鉴，可知兴替。探索中华五千年文明，感受历史厚重与智慧</p>
+                </header>
+
+                <!-- 时间线 -->
+                <section class="content-section">
+                    <h2 class="section-title">中华历史脉络</h2>
+                    <a href="子页面-1/历史-子页面.html" target="_blank" rel="noopener noreferrer">
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-content">
+                                    <div class="timeline-year">约公元前2070年</div>
+                                    <h3 class="timeline-title">夏朝建立</h3>
+                                    <p class="timeline-desc">中国史书中记载的第一个世袭制朝代，标志着中国从原始社会进入奴隶社会，禹传位于启，开创"家天下"的局面。</p>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-content">
+                                    <div class="timeline-year">公元前221年</div>
+                                    <h3 class="timeline-title">秦朝统一</h3>
+                                    <p class="timeline-desc">秦始皇嬴政统一六国，建立中国历史上第一个大一统王朝，推行书同文、车同轨，统一度量衡，修筑万里长城。</p>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-content">
+                                    <div class="timeline-year">公元618年</div>
+                                    <h3 class="timeline-title">唐朝盛世</h3>
+                                    <p class="timeline-desc">李渊建立唐朝，其后太宗李世民开创"贞观之治"，玄宗时期达到"开元盛世"，成为当时世界上最强盛的国家之一。</p>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-content">
+                                    <div class="timeline-year">1368年</div>
+                                    <h3 class="timeline-title">明朝建立</h3>
+                                    <p class="timeline-desc">朱元璋推翻元朝统治，建立明朝，恢复汉人统治。明成祖时期郑和七下西洋，展现了中国强大的航海技术。</p>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-content">
+                                    <div class="timeline-year">1912年</div>
+                                    <h3 class="timeline-title">中华民国成立</h3>
+                                    <p class="timeline-desc">辛亥革命成功，推翻清朝统治，结束了两千多年的封建帝制，孙中山就任中华民国临时大总统。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </section>
+
+                <!-- 精选文章 -->
+                <section class="content-section">
+                    <h2 class="section-title">历史文章精选</h2>
+                    <div class="articles-grid">
+                        <a href="子页面-1/文章/历史-文章.html" target="_blank" rel="noopener noreferrer">
+                            <div class="article-card">
+                                <div class="article-image">
+                                    <img src="https://images.unsplash.com/photo-1547981609-4b6bfc67c272?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                        alt="丝绸之路">
+                                </div>
+                                <div class="article-content">
+                                    <h3 class="article-title">丝绸之路：东西方文明交流的桥梁</h3>
+                                    <p class="article-desc">丝绸之路不仅是古代贸易路线，更是文化、技术和思想交流的重要通道，对世界文明发展产生了深远影响。</p>
+                                    <div class="article-meta">
+                                        <span><i class="far fa-eye"></i> 1286</span>
+                                        <span><i class="far fa-calendar"></i> 2023-10-15</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+
+                        <a href="子页面-1/文章/历史-文章.html" target="_blank" rel="noopener noreferrer">
+                            <div class="article-card">
+                                <div class="article-image">
+                                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                        alt="科举制度">
+                                </div>
+                                <div class="article-content">
+                                    <h3 class="article-title">科举制度：中国古代的选才之道</h3>
+                                    <p class="article-desc">始于隋唐，盛于宋明的科举制度，是中国古代选拔官员的重要方式，对教育和社会流动产生了深远影响。</p>
+                                    <div class="article-meta">
+                                        <span><i class="far fa-eye"></i> 985</span>
+                                        <span><i class="far fa-calendar"></i> 2023-10-10</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+
+                        <a href="子页面-1/文章/历史-文章.html" target="_blank" rel="noopener noreferrer">
+                            <div class="article-card">
+                                <div class="article-image">
+                                    <img src="https://images.unsplash.com/photo-1577896851231-70ef188d5431?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                        alt="长城">
+                                </div>
+                                <div class="article-content">
+                                    <h3 class="article-title">万里长城：中华民族的精神象征</h3>
+                                    <p class="article-desc">从春秋战国到明朝，长城的修筑历时两千多年，不仅是军事防御工程，更是中华民族智慧和坚韧的象征。</p>
+                                    <div class="article-meta">
+                                        <span><i class="far fa-eye"></i> 1562</span>
+                                        <span><i class="far fa-calendar"></i> 2023-10-05</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- 历史名言 -->
+                <div class="quotes-section">
+                    <p class="quote">以铜为镜，可以正衣冠；以古为镜，可以知兴替；以人为镜，可以明得失。</p>
+                    <p class="quote-author">—— 唐太宗李世民</p>
+                </div>
+
+                <!-- 历史人物 -->
+                <section class="content-section">
+                    <h2 class="section-title">历史名人</h2>
+                    <div class="figures-container">
+                        <a href="子页面-1/文章/历史-文章.html" target="_blank" rel="noopener noreferrer">
+                            <div class="figure-card">
+                                <div class="figure-image">
+                                    <img src="https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                        alt="孔子">
+                                </div>
+                                <h3 class="figure-name">孔子</h3>
+                                <p class="figure-dynasty">春秋时期</p>
+                                <p class="figure-desc">儒家学派创始人，中国古代著名思想家、教育家，被尊为"至圣先师"。</p>
+                            </div>
+                        </a>
+
+                        <a href="子页面-1/文章/历史-文章.html" target="_blank" rel="noopener noreferrer">
+                            <div class="figure-card">
+                                <div class="figure-image">
+                                    <img src="https://images.unsplash.com/photo-1542665175-eef22647d1cc?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                        alt="秦始皇">
+                                </div>
+                                <h3 class="figure-name">秦始皇</h3>
+                                <p class="figure-dynasty">秦朝</p>
+                                <p class="figure-desc">中国第一位皇帝，完成统一大业，建立中央集权制度，对中国历史影响深远。</p>
+                            </div>
+                        </a>
+
+                        <a href="子页面-1/文章/历史-文章.html" target="_blank" rel="noopener noreferrer">
+                            <div class="figure-card">
+                                <div class="figure-image">
+                                    <img src="https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                        alt="李白">
+                                </div>
+                                <h3 class="figure-name">李白</h3>
+                                <p class="figure-dynasty">唐朝</p>
+                                <p class="figure-desc">唐代著名诗人，被誉为"诗仙"，其诗作豪放奔放，想象丰富，影响深远。</p>
+                            </div>
+                        </a>
+
+                        <a href="子页面-1/文章/历史-文章.html" target="_blank" rel="noopener noreferrer">
+                            <div class="figure-card">
+                                <div class="figure-image">
+                                    <img src="https://images.unsplash.com/photo-1519895602024-ebd33b7d4925?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                        alt="郑和">
+                                </div>
+                                <h3 class="figure-name">郑和</h3>
+                                <p class="figure-dynasty">明朝</p>
+                                <p class="figure-desc">明代著名航海家，七下西洋，开辟海上丝绸之路，促进中外文化交流。</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+            </li>
+            <li class="er">
+                <!-- 页面标题 -->
+                <header class="page-header">
+                    <h1 class="page-title">非遗传承</h1>
+                    <p class="page-subtitle">守护民族记忆，传承文化基因，让非物质文化遗产焕发新时代光彩</p>
+                </header>
+
+                <!-- 非遗分类 -->
+                <section class="content-section">
+                    <h2 class="section-title">非遗分类</h2>
+                    <div class="category-grid">
+                        <a href="子页面-1/非遗-子页面.html?category=traditional-craft" target="_blank"
+                            rel="noopener noreferrer">
+                            <div class="category-card">
+                                <div class="category-icon">
+                                    <i class="fas fa-utensils"></i>
+                                </div>
+                                <h3 class="category-name">传统技艺</h3>
+                                <p class="category-desc">陶瓷、织锦、雕刻、漆器等传统手工艺技艺，体现匠人精神与文化传承。</p>
+                            </div>
+                        </a>
+
+                        <a href="子页面-1/非遗-子页面.html?category=performing-arts" target="_blank" rel="noopener noreferrer">
+                            <div class="category-card">
+                                <div class="category-icon">
+                                    <i class="fas fa-music"></i>
+                                </div>
+                                <h3 class="category-name">表演艺术</h3>
+                                <p class="category-desc">戏曲、舞蹈、音乐、曲艺等表演形式，展现中华民族的艺术魅力。</p>
+                            </div>
+                        </a>
+
+                        <a href="子页面-1/非遗-子页面.html?category=folk-literature" target="_blank" rel="noopener noreferrer">
+                            <div class="category-card">
+                                <div class="category-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <h3 class="category-name">民间文学</h3>
+                                <p class="category-desc">神话、传说、歌谣、谚语等口头传统，承载民族记忆与智慧。</p>
+                            </div>
+                        </a>
+
+                        <a href="子页面-1/非遗-子页面.html?category=folk-customs" target="_blank" rel="noopener noreferrer">
+                            <div class="category-card">
+                                <div class="category-icon">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <h3 class="category-name">民俗活动</h3>
+                                <p class="category-desc">节庆、礼仪、习俗等民间传统，体现民族生活方式与价值观。</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- 非遗项目 -->
+                <section class="content-section">
+                    <h2 class="section-title">非遗项目精选</h2>
+                    <div class="projects-grid">
+                        <a href="子页面-1/文章/非遗-文章.html" target="_blank" rel="noopener noreferrer">
+                            <div class="project-card">
+                                <div class="project-image">
+                                    <img src="https://images.unsplash.com/photo-1547981609-4b6bfc67c272?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                        alt="龙泉青瓷">
+                                </div>
+                                <div class="project-content">
+                                    <h3 class="project-title">龙泉青瓷烧制技艺</h3>
+                                    <p class="project-desc">浙江龙泉青瓷传统烧制技艺是一种具有制作性、技能性和艺术性的传统手工艺，至今已有1700余年的历史。</p>
+                                    <div class="project-meta">
+                                        <span><i class="fas fa-map-marker-alt"></i> 浙江龙泉</span>
+                                        <span><i class="far fa-calendar"></i> 2006年列入</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+
+                        <a href="子页面-1/文章/非遗-文章.html" target="_blank" rel="noopener noreferrer">
+                            <div class="project-card">
+                                <div class="project-image">
+                                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                        alt="昆曲">
+                                </div>
+                                <div class="project-content">
+                                    <h3 class="project-title">昆曲</h3>
+                                    <p class="project-desc">昆曲是中国最古老的剧种之一，也是中国传统文化艺术中的珍品，被誉为"百戏之祖"。</p>
+                                    <div class="project-meta">
+                                        <span><i class="fas fa-map-marker-alt"></i> 江苏昆山</span>
+                                        <span><i class="far fa-calendar"></i> 2001年列入</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+
+                        <a href="子页面-1/文章/非遗-文章.html" target="_blank" rel="noopener noreferrer">
+                            <div class="project-card">
+                                <div class="project-image">
+                                    <img src="https://images.unsplash.com/photo-1577896851231-70ef188d5431?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                        alt="剪纸">
+                                </div>
+                                <div class="project-content">
+                                    <h3 class="project-title">中国剪纸</h3>
+                                    <p class="project-desc">剪纸是一种镂空艺术，其在视觉上给人以透空的感觉和艺术享受，载体可以是纸张、金银箔、树皮、树叶、布、皮、革等片状材料。
+                                    </p>
+                                    <div class="project-meta">
+                                        <span><i class="fas fa-map-marker-alt"></i> 多地共有</span>
+                                        <span><i class="far fa-calendar"></i> 2006年列入</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- 非遗传承人 -->
+                <section class="content-section">
+                    <h2 class="section-title">非遗传承人</h2>
+                    <div class="masters-container figures-container">
+                        <a href="子页面-1/文章/非遗-文章.html" target="_blank" rel="noopener noreferrer">
+                            <div class="master-card">
+                                <div class="master-image">
+                                    <img src="https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                        alt="徐朝兴">
+                                </div>
+                                <h3 class="master-name">徐朝兴</h3>
+                                <p class="master-skill">龙泉青瓷传承人</p>
+                                <p class="master-desc">中国工艺美术大师，国家级非物质文化遗产项目龙泉青瓷代表性传承人，从事青瓷艺术60余年。</p>
+                            </div>
+                        </a>
+
+                        <a href="子页面-1/文章/非遗-文章.html" target="_blank" rel="noopener noreferrer">
+                            <div class="master-card">
+                                <div class="master-image">
+                                    <img src="https://images.unsplash.com/photo-1542665175-eef22647d1cc?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                        alt="王芳">
+                                </div>
+                                <h3 class="master-name">王芳</h3>
+                                <p class="master-skill">昆曲表演艺术家</p>
+                                <p class="master-desc">国家一级演员，国家级非物质文化遗产项目昆曲代表性传承人，工闺门旦、正旦。</p>
+                            </div>
+                        </a>
+
+                        <a href="子页面-1/文章/非遗-文章.html" target="_blank" rel="noopener noreferrer">
+                            <div class="master-card">
+                                <div class="master-image">
+                                    <img src="https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                        alt="库淑兰">
+                                </div>
+                                <h3 class="master-name">库淑兰</h3>
+                                <p class="master-skill">剪纸艺术大师</p>
+                                <p class="master-desc">中国民间剪纸艺术杰出的代表人物之一，被联合国教科文组织授予"民间工艺美术大师"称号。</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- 非遗活动 -->
+                <section class="content-section">
+                    <h2 class="section-title">非遗活动</h2>
+                    <div class="events-container">
+                        <div class="event-card">
+                            <div class="event-header">
+                                <div class="event-date">
+                                    <div class="event-day">25</div>
+                                    <div class="event-month">十月</div>
+                                </div>
+                                <div>
+                                    <h3 class="event-title">非遗文化周开幕式</h3>
+                                    <p class="event-location"><i class="fas fa-map-marker-alt"></i> 国家大剧院</p>
+                                </div>
+                            </div>
+                            <div class="event-content">
+                                <p>一年一度的非遗文化周即将开幕，将有来自全国各地的非遗传承人展示他们的精湛技艺，包括传统手工艺现场制作、非遗表演等。</p>
+                            </div>
+                            <div class="event-actions">
+                                <button class="event-btn primary" onclick="alert('请登录后操作')">立即报名</button>
+                                <a href="子页面-1/文章/非遗-文章.html" target="_blank" rel="noopener noreferrer">
+                                    <button class="event-btn outline">了解更多</button>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="event-card">
+                            <div class="event-header">
+                                <div class="event-date">
+                                    <div class="event-day">12</div>
+                                    <div class="event-month">十一月</div>
+                                </div>
+                                <div>
+                                    <h3 class="event-title">传统工艺大师课</h3>
+                                    <p class="event-location"><i class="fas fa-map-marker-alt"></i> 传统文化馆</p>
+                                </div>
+                            </div>
+                            <div class="event-content">
+                                <p>由国家级非遗传承人亲自授课，学习传统剪纸、刺绣、陶艺等手工艺，感受传统技艺的魅力，亲手制作属于自己的非遗作品。</p>
+                            </div>
+                            <div class="event-actions">
+                                <button class="event-btn primary" onclick="alert('请登录后操作')">立即报名</button>
+                                <a href="子页面-1/文章/非遗-文章.html" target="_blank" rel="noopener noreferrer">
+                                    <button class="event-btn outline">了解更多</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 非遗名言 -->
+                <div class="quotes-section">
+                    <p class="quote">非物质文化遗产是一个民族古老的生命记忆和活态的文化基因，是民族文化认同的重要标志。</p>
+                    <p class="quote-author">—— 中国非遗保护理念</p>
+                </div>
+            </li>
+            <li class="san">
+                <!-- 页面标题 -->
+                <header class="page-header">
+                    <h1 class="page-title">公益社区</h1>
+                    <p class="page-subtitle">汇聚爱心力量，传递温暖希望，让每一份善意都能照亮世界</p>
+                </header>
+
+                <!-- 公益类型 -->
+                <section class="content-section">
+                    <h2 class="section-title">公益类型</h2>
+                    <div class="cause-grid">
+                        <!-- 自然保护 -->
+                        <div class="cause-card">
+                            <div class="cause-image">
+                                <img src="https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                                    alt="自然保护">
+                                <div class="cause-overlay">
+                                    <h3 class="cause-name">自然保护</h3>
+                                    <div class="cause-stats">
+                                        <span><i class="fas fa-users"></i> 5,280+志愿者</span>
+                                        <span><i class="fas fa-project-diagram"></i> 127个项目</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cause-content">
+                                <p class="cause-desc">致力于保护自然环境、野生动物和生态系统，推动可持续发展，守护我们共同的地球家园。</p>
+                                <div class="cause-tags">
+                                    <span class="cause-tag">环境保护</span>
+                                    <span class="cause-tag">动物保护</span>
+                                    <span class="cause-tag">生态平衡</span>
+                                </div>
+                                <div class="cause-actions">
+                                    <a href="子页面-1/公益-子页面.html" target="_blank" rel="noopener noreferrer">
+                                        <button class="cause-btn outline">了解更多</button>
+                                    </a>
+                                    <a href="子页面-1/报名活动.html" target="_blank" rel="noopener noreferrer">
+                                        <button class="cause-btn primary">参与公益</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 自然灾害 -->
+                        <div class="cause-card">
+                            <div class="cause-image">
+                                <img src="https://images.unsplash.com/photo-1593113630400-ea4288922497?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                                    alt="自然灾害救助">
+                                <div class="cause-overlay">
+                                    <h3 class="cause-name">自然灾害救助</h3>
+                                    <div class="cause-stats">
+                                        <span><i class="fas fa-users"></i> 3,450+志愿者</span>
+                                        <span><i class="fas fa-project-diagram"></i> 86个项目</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cause-content">
+                                <p class="cause-desc">为受灾地区提供紧急救援和灾后重建支持，帮助受灾群众度过难关，重建家园。</p>
+                                <div class="cause-tags">
+                                    <span class="cause-tag">紧急救援</span>
+                                    <span class="cause-tag">灾后重建</span>
+                                    <span class="cause-tag">物资援助</span>
+                                </div>
+                                <div class="cause-actions">
+                                    <a href="子页面-1/公益-子页面.html" target="_blank" rel="noopener noreferrer">
+                                        <button class="cause-btn outline">了解更多</button>
+                                    </a>
+                                    <a href="子页面-1/报名活动.html" target="_blank" rel="noopener noreferrer">
+                                        <button class="cause-btn primary">参与公益</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 老人关怀 -->
+                        <div class="cause-card">
+                            <div class="cause-image">
+                                <img src="https://images.unsplash.com/photo-1577896851787-33d18a56dffd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                                    alt="老人关怀">
+                                <div class="cause-overlay">
+                                    <h3 class="cause-name">老人关怀</h3>
+                                    <div class="cause-stats">
+                                        <span><i class="fas fa-users"></i> 4,120+志愿者</span>
+                                        <span><i class="fas fa-project-diagram"></i> 73个项目</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cause-content">
+                                <p class="cause-desc">关注老年人生活质量和精神需求，提供生活照料、健康关怀和精神慰藉，让老人安享晚年。</p>
+                                <div class="cause-tags">
+                                    <span class="cause-tag">老年服务</span>
+                                    <span class="cause-tag">陪伴关怀</span>
+                                    <span class="cause-tag">健康支持</span>
+                                </div>
+                                <div class="cause-actions">
+                                    <a href="子页面-1/公益-子页面.html" target="_blank" rel="noopener noreferrer">
+                                        <button class="cause-btn outline">了解更多</button>
+                                    </a>
+                                    <a href="子页面-1/报名活动.html" target="_blank" rel="noopener noreferrer">
+                                        <button class="cause-btn primary">参与公益</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 儿童教育 -->
+                        <div class="cause-card">
+                            <div class="cause-image">
+                                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                                    alt="儿童教育">
+                                <div class="cause-overlay">
+                                    <h3 class="cause-name">儿童教育</h3>
+                                    <div class="cause-stats">
+                                        <span><i class="fas fa-users"></i> 6,350+志愿者</span>
+                                        <span><i class="fas fa-project-diagram"></i> 142个项目</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cause-content">
+                                <p class="cause-desc">为偏远地区和贫困儿童提供教育支持，改善学习环境，让每个孩子都有接受良好教育的机会。</p>
+                                <div class="cause-tags">
+                                    <span class="cause-tag">教育支持</span>
+                                    <span class="cause-tag">助学计划</span>
+                                    <span class="cause-tag">儿童发展</span>
+                                </div>
+                                <div class="cause-actions">
+                                    <a href="子页面-1/公益-子页面.html" target="_blank" rel="noopener noreferrer">
+                                        <button class="cause-btn outline">了解更多</button>
+                                    </a>
+                                    <a href="子页面-1/报名活动.html" target="_blank" rel="noopener noreferrer">
+                                        <button class="cause-btn primary">参与公益</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 医疗卫生 -->
+                        <div class="cause-card">
+                            <div class="cause-image">
+                                <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                                    alt="医疗卫生">
+                                <div class="cause-overlay">
+                                    <h3 class="cause-name">医疗卫生</h3>
+                                    <div class="cause-stats">
+                                        <span><i class="fas fa-users"></i> 2,870+志愿者</span>
+                                        <span><i class="fas fa-project-diagram"></i> 68个项目</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cause-content">
+                                <p class="cause-desc">提供医疗援助、健康教育和疾病预防服务，改善医疗条件，促进公共卫生事业发展。</p>
+                                <div class="cause-tags">
+                                    <span class="cause-tag">医疗援助</span>
+                                    <span class="cause-tag">健康教育</span>
+                                    <span class="cause-tag">疾病预防</span>
+                                </div>
+                                <div class="cause-actions">
+                                    <a href="子页面-1/公益-子页面.html" target="_blank" rel="noopener noreferrer">
+                                        <button class="cause-btn outline">了解更多</button>
+                                    </a>
+                                    <a href="子页面-1/报名活动.html" target="_blank" rel="noopener noreferrer">
+                                        <button class="cause-btn primary">参与公益</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 社区发展 -->
+                        <div class="cause-card">
+                            <div class="cause-image">
+                                <img src="https://images.unsplash.com/photo-1577896851787-33d18a56dffd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                                    alt="社区发展">
+                                <div class="cause-overlay">
+                                    <h3 class="cause-name">社区发展</h3>
+                                    <div class="cause-stats">
+                                        <span><i class="fas fa-users"></i> 3,980+志愿者</span>
+                                        <span><i class="fas fa-project-diagram"></i> 94个项目</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cause-content">
+                                <p class="cause-desc">支持社区建设和可持续发展，改善基础设施，提升社区凝聚力，促进社区和谐发展。</p>
+                                <div class="cause-tags">
+                                    <span class="cause-tag">社区建设</span>
+                                    <span class="cause-tag">基础设施</span>
+                                    <span class="cause-tag">可持续发展</span>
+                                </div>
+                                <div class="cause-actions">
+                                    <a href="子页面-1/公益-子页面.html" target="_blank" rel="noopener noreferrer">
+                                        <button class="cause-btn outline">了解更多</button>
+                                    </a>
+                                    <a href="子页面-1/报名活动.html" target="_blank" rel="noopener noreferrer">
+                                        <button class="cause-btn primary">参与公益</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 公益数据 -->
+                <section class="content-section">
+                    <h2 class="section-title">公益影响力</h2>
+                    <div class="stats-container">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-hand-holding-heart"></i>
+                            </div>
+                            <div class="stat-number">25,680+</div>
+                            <div class="stat-label">志愿者加入</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-project-diagram"></i>
+                            </div>
+                            <div class="stat-number">590</div>
+                            <div class="stat-label">公益项目</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-number">120,000+</div>
+                            <div class="stat-label">受益人群</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-donate"></i>
+                            </div>
+                            <div class="stat-number">￥8.5M</div>
+                            <div class="stat-label">捐赠金额</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 近期活动 -->
+                <section class="events-section">
+                    <h2 class="section-title">近期公益活动</h2>
+                    <div class="events-grid">
+                        <div class="event-card">
+                            <div class="event-date">
+                                <i class="far fa-calendar-alt"></i> 2023年10月28日
+                            </div>
+                            <h3 class="event-title">河流清洁日志愿者招募</h3>
+                            <p class="event-desc">加入我们，一起清理城市河道，保护水资源，还河流以清澈。提供工具和培训，无需经验。</p>
+                            <a href="javascript:void(0)" class="event-link" onclick="alert('请登录后操作')">
+                                查看详情 <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+
+                        <div class="event-card">
+                            <div class="event-date">
+                                <i class="far fa-calendar-alt"></i> 2023年11月5日
+                            </div>
+                            <h3 class="event-title">山区支教志愿者培训</h3>
+                            <p class="event-desc">为即将前往山区支教的志愿者提供教学方法和心理准备培训，帮助您更好地服务山区儿童。</p>
+                            <a href="javascript:void(0)" class="event-link" onclick="alert('请登录后操作')">
+                                查看详情 <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+
+                        <div class="event-card">
+                            <div class="event-date">
+                                <i class="far fa-calendar-alt"></i> 2023年11月12日
+                            </div>
+                            <h3 class="event-title">冬季温暖包募集活动</h3>
+                            <p class="event-desc">为偏远地区儿童募集冬季衣物和学习用品，帮助孩子们度过温暖冬天。接受物资和现金捐赠。</p>
+                            <a href="javascript:void(0)" class="event-link" onclick="alert('请登录后操作')">
+                                查看详情 <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 公益名言 -->
+                <div class="quotes-section">
+                    <p class="quote">公益不是一个人做了很多，而是很多人都做了一点点。每一份微小的善意，都能汇聚成改变世界的力量。</p>
+                    <p class="quote-author">—— 公益理念</p>
+                </div>
+            </li>
+            <li class="si">
+                <!-- 个人主页内容 -->
+                <div class="profile-container">
+                    <!-- 侧边栏 -->
+                    <div class="sidebar">
+                        <div class="profile-card">
+                            <div class="avatar">
+                                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                    alt="用户头像">
+                            </div>
+                            <h2 class="user-name">文心居士</h2>
+                            <p class="user-title">传统文化传承者</p>
+                            <p class="user-bio">以文会友，以友辅仁。传承中华文化，分享生活智慧。</p>
+
+                            <div class="stats">
+                                <div class="stat-item">
+                                    <div class="stat-number">42</div>
+                                    <div class="stat-label">文章</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">128</div>
+                                    <div class="stat-label">粉丝</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">86</div>
+                                    <div class="stat-label">收藏</div>
+                                </div>
+                            </div>
+
+                            <div class="profile-actions">
+                                <button class="profile-btn primary" id="editProfileBtn"
+                                    onclick="handleEditProfile()">编辑资料</button>
+                                <script>
+                                    function handleEditProfile() {
+                                        // 未登录状态下只显示提示
+                                        alert('登录后即可操作');
+                                    }
+                                </script>
+                                <button class="profile-btn outline" id="logoutBtn">立即登录</button>
+                            </div>
+                        </div>
+
+                        <!-- <div class="quick-links"> -->
+                        <!-- <h3 class="links-title">快捷入口</h3> -->
+                        <!-- <a href="#" class="link-item" onclick="showContent('main-content-two')"> -->
+                        <!-- <i class="fas fa-plus-circle"></i> -->
+                        <!-- <span>创作中心</span> -->
+                        <!-- </a> -->
+                        <!-- <a href="#" class="link-item" onclick="showContent('main-content-three')"> -->
+                        <!-- <i class="fas fa-heart"></i> -->
+                        <!-- <span>我的收藏</span> -->
+                        <!-- </a> -->
+                        <!-- <a href="#" class="link-item" onclick="showContent('main-content-four')"> -->
+                        <!-- <i class="fas fa-file-alt"></i> -->
+                        <!-- <span>文章管理</span> -->
+                        <!-- </a> -->
+                        <!-- <a href="#" class="link-item" onclick="showContent('main-content-five')"> -->
+                        <!-- <i class="fas fa-comments"></i> -->
+                        <!-- <span>消息通知</span> -->
+                        <!-- </a> -->
+                        <!-- <a href="#" class="link-item" onclick="showContent('main-content-six')"> -->
+                        <!-- <i class="fas fa-cog"></i> -->
+                        <!-- <span>账号设置</span> -->
+                        <!-- </a> -->
+                        <!-- <a href="#" class="link-item" onclick="showContent('main-content-seven')"> -->
+                        <!-- <i class="fas fa-shield-alt"></i> -->
+                        <!-- <span>隐私设置</span> -->
+                        <!-- </a> -->
+                        <!-- </div> -->
+                        <script>
+                            function showContent(contentId) {
+                                // 获取要显示的内容区域
+                                const targetContent = document.querySelector('.' + contentId);
+                                const mainContentOne = document.querySelector('.main-content-one');
+
+                                // 隐藏所有内容区域
+                                document.querySelectorAll('.main-content-one, .main-content-two, .main-content-three, .main-content-four, .main-content-five, .main-content-six, .main-content-seven').forEach(el => {
+                                    el.style.display = 'none';
+                                });
+
+                                // 如果是main-content-one，直接显示
+                                if (contentId === 'main-content-one') {
+                                    mainContentOne.style.display = 'block';
+                                    return;
+                                }
+
+                                // 显示选中的内容区域，保持原始样式
+                                targetContent.style.display = 'block';
+
+                                // 将目标内容移动到main-content-one的位置
+                                const mainContentOneParent = mainContentOne.parentNode;
+
+                                // 将目标内容移动到main-content-one的前面
+                                mainContentOneParent.insertBefore(targetContent, mainContentOne);
+
+                                // 隐藏main-content-one
+                                mainContentOne.style.display = 'none';
+                            }
+
+                            // 恢复原始布局
+                            document.getElementById('myProfileNav').addEventListener('click', function (e) {
+                                e.preventDefault();
+
+                                // 隐藏所有内容区域
+                                document.querySelectorAll('.main-content-one, .main-content-two, .main-content-three, .main-content-four, .main-content-five, .main-content-six, .main-content-seven').forEach(el => {
+                                    el.style.display = 'none';
+                                });
+
+                                // 显示main-content-one
+                                document.querySelector('.main-content-one').style.display = 'block';
+
+                                // 将所有内容区域恢复到原始位置
+                                const mainContentOne = document.querySelector('.main-content-one');
+                                const mainContentOneParent = mainContentOne.parentNode;
+
+                                // 将main-content-two到main-content-seven恢复到main-content-one之后
+                                const mainContentTwo = document.querySelector('.main-content-two');
+                                if (mainContentTwo && mainContentTwo.parentNode !== mainContentOneParent) {
+                                    mainContentOneParent.insertBefore(mainContentTwo, mainContentOne.nextSibling);
+                                }
+
+                                const mainContentThree = document.querySelector('.main-content-three');
+                                if (mainContentThree && mainContentThree.parentNode !== mainContentOneParent) {
+                                    mainContentOneParent.insertBefore(mainContentThree, mainContentOne.nextSibling);
+                                }
+
+                                const mainContentFour = document.querySelector('.main-content-four');
+                                if (mainContentFour && mainContentFour.parentNode !== mainContentOneParent) {
+                                    mainContentOneParent.insertBefore(mainContentFour, mainContentOne.nextSibling);
+                                }
+
+                                const mainContentFive = document.querySelector('.main-content-five');
+                                if (mainContentFive && mainContentFive.parentNode !== mainContentOneParent) {
+                                    mainContentOneParent.insertBefore(mainContentFive, mainContentOne.nextSibling);
+                                }
+
+                                const mainContentSix = document.querySelector('.main-content-six');
+                                if (mainContentSix && mainContentSix.parentNode !== mainContentOneParent) {
+                                    mainContentOneParent.insertBefore(mainContentSix, mainContentOne.nextSibling);
+                                }
+
+                                const mainContentSeven = document.querySelector('.main-content-seven');
+                                if (mainContentSeven && mainContentSeven.parentNode !== mainContentOneParent) {
+                                    mainContentOneParent.insertBefore(mainContentSeven, mainContentOne.nextSibling);
+                                }
+                            });
+                        </script>
+                    </div>
+
+                    <!-- 主内容区域 -->
+                    <div class="main-content-one">
+                        <!-- 我的文章 -->
+                        <section class="content-section"
+                            onclick="window.open('管理员/其他/文章管理.html', '_blank', 'noopener,noreferrer')"
+                            style="cursor: pointer;">
+                            <h2 class="section-title">我的文章</h2>
+                            <div class="articles-grid">
+                                <!-- <a href="子页面-1/文章/历史-文章.html" target="_blank" rel="noopener noreferrer" -->
+                                <!-- onclick="event.stopPropagation()"> -->
+                                <!-- <div class="article-card"> -->
+                                <!-- <div class="article-image"> -->
+                                <!-- <img src="https://images.unsplash.com/photo-1547981609-4b6bfc67c272?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" -->
+                                <!-- alt="文章封面"> -->
+                                <!-- </div> -->
+                                <!-- <div class="article-content"> -->
+                                <!-- <h3 class="article-title">中国传统茶文化的历史演变与哲学思想</h3> -->
+                                <!-- <div class="article-meta"> -->
+                                <!-- <span><i class="far fa-eye"></i> 1.2k</span> -->
+                                <!-- <span><i class="far fa-calendar"></i> 2023-10-15</span> -->
+                                <!-- </div> -->
+                                <!-- <div class="article-actions"> -->
+                                <!-- <button class="article-btn" -->
+                                <!-- onclick="event.stopPropagation(); window.open('子页面-1/文章撰写 - 音频.html', '_blank', 'noopener,noreferrer')">编辑</button> -->
+                                <!-- <button class="article-btn" -->
+                                <!-- onclick="deleteArticle(this, event)">删除</button> -->
+                                <!-- <button class="article-btn" -->
+                                <!-- onclick="event.stopPropagation(); window.open('管理员/其他/数据统计.html', '_blank', 'noopener,noreferrer')">统计</button> -->
+                                <!-- </div> -->
+                                <!-- </div> -->
+                                <!-- </div> -->
+                                <!-- </a> -->
+
+                                <!-- <a href="子页面-1/文章/非遗-文章.html" target="_blank" rel="noopener noreferrer" -->
+                                <!-- onclick="event.stopPropagation()"> -->
+                                <!-- <div class="article-card"> -->
+                                <!-- <div class="article-image"> -->
+                                <!-- <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" -->
+                                <!-- alt="文章封面"> -->
+                                <!-- </div> -->
+                                <!-- <div class="article-content"> -->
+                                <!-- <h3 class="article-title">非物质文化遗产保护与传承的现代意义</h3> -->
+                                <!-- <div class="article-meta"> -->
+                                <!-- <span><i class="far fa-eye"></i> 2.4k</span> -->
+                                <!-- <span><i class="far fa-calendar"></i> 2023-09-28</span> -->
+                                <!-- </div> -->
+                                <!-- <div class="article-actions"> -->
+                                <!-- <button class="article-btn" -->
+                                <!-- onclick="event.stopPropagation(); window.open('子页面-1/文章撰写 - 音频.html', '_blank', 'noopener,noreferrer')">编辑</button> -->
+                                <!-- <button class="article-btn" -->
+                                <!-- onclick="deleteArticle(this, event)">删除</button> -->
+                                <!-- <button class="article-btn" -->
+                                <!-- onclick="event.stopPropagation(); window.open('管理员/其他/数据统计.html', '_blank', 'noopener,noreferrer')">统计</button> -->
+                                <!-- </div> -->
+                                <!-- </div> -->
+                                <!-- </div> -->
+                                <!-- </a> -->
+
+                                <!-- <a href="子页面-1/文章/历史-文章.html" target="_blank" rel="noopener noreferrer" -->
+                                <!-- onclick="event.stopPropagation()"> -->
+                                <!-- <div class="article-card"> -->
+                                <!-- <div class="article-image"> -->
+                                <!-- <img src="https://images.unsplash.com/photo-1577896851231-70ef188d5431?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" -->
+                                <!-- alt="文章封面"> -->
+                                <!-- </div> -->
+                                <!-- <div class="article-content"> -->
+                                <!-- <h3 class="article-title">中国传统节日中的文化符号与象征意义</h3> -->
+                                <!-- <div class="article-meta"> -->
+                                <!-- <span><i class="far fa-eye"></i> 3.1k</span> -->
+                                <!-- <span><i class="far fa-calendar"></i> 2023-09-10</span> -->
+                                <!-- </div> -->
+                                <!-- <div class="article-actions"> -->
+                                <!-- <button class="article-btn" -->
+                                <!-- onclick="event.stopPropagation(); window.open('子页面-1/文章撰写 - 音频.html', '_blank', 'noopener,noreferrer')">编辑</button> -->
+                                <!-- <button class="article-btn" -->
+                                <!-- onclick="deleteArticle(this, event)">删除</button> -->
+                                <!-- <button class="article-btn" -->
+                                <!-- onclick="event.stopPropagation(); window.open('管理员/其他/数据统计.html', '_blank', 'noopener,noreferrer')">统计</button> -->
+                                <!-- </div> -->
+                                <!-- </div> -->
+                                <!-- </div> -->
+                                <!-- </a> -->
+                            </div>
+                        </section>
+
+                        <!-- 创作中心 -->
+                        <section class="content-section">
+                            <h2 class="section-title">创作中心</h2>
+                            <div class="create-options">
+                                <!-- <a href="管理员/其他/创作中心.html" target="_blank" rel="noopener noreferrer"> -->
+                                <!-- <div class="create-card"> -->
+                                <!-- <div class="create-icon"> -->
+                                <!-- <i class="fas fa-edit"></i> -->
+                                <!-- </div> -->
+                                <!-- <h3 class="create-title">写文章</h3> -->
+                                <!-- <p class="create-desc">分享您的知识和见解，创作高质量的文章内容</p> -->
+                                <!-- </div> -->
+                                <!-- </a> -->
+
+                                <!-- <a href="子页面-1/公益-随心发.html" target="_blank" rel="noopener noreferrer"> -->
+                                <!-- <div class="create-card"> -->
+                                <!-- <div class="create-icon"> -->
+                                <!-- <i class="fas fa-camera"></i> -->
+                                <!-- </div> -->
+                                <!-- <h3 class="create-title">发图片</h3> -->
+                                <!-- <p class="create-desc">上传精美图片，用视觉语言讲述故事</p> -->
+                                <!-- </div> -->
+                                <!-- </a> -->
+
+                                <!-- <a href="子页面-1/公益-随心发.html" target="_blank" rel="noopener noreferrer"> -->
+                                <!-- <div class="create-card"> -->
+                                <!-- <div class="create-icon"> -->
+                                <!-- <i class="fas fa-video"></i> -->
+                                <!-- </div> -->
+                                <!-- <h3 class="create-title">传视频</h3> -->
+                                <!-- <p class="create-desc">通过视频内容更生动地展示和分享</p> -->
+                                <!-- </div> -->
+                                <!-- </a> -->
+
+                                <!-- <a href="子页面-1/公益-随心发.html" target="_blank" rel="noopener noreferrer"> -->
+                                <!-- <div class="create-card"> -->
+                                <!-- <div class="create-icon"> -->
+                                <!-- <i class="fas fa-microphone"></i> -->
+                                <!-- </div> -->
+                                <!-- <h3 class="create-title">录语音</h3> -->
+                                <!-- <p class="create-desc">用声音传递情感，创作音频内容</p> -->
+                                <!-- </div> -->
+                                <!-- </a> -->
+                            </div>
+                        </section>
+
+                        <!-- 我的收藏 -->
+                        <section class="content-section"
+                            onclick="window.open('管理员/其他/收藏.html', '_blank', 'noopener,noreferrer')"
+                            style="cursor: pointer;">
+                            <h2 class="section-title">我的收藏</h2>
+                            <div class="favorites-grid">
+                                <!-- <a href="子页面-1/文章/历史-文章.html" target="_blank" rel="noopener noreferrer" -->
+                                <!-- onclick="event.stopPropagation()"> -->
+                                <!-- <div class="favorite-card"> -->
+                                <!-- <div class="favorite-type"> -->
+                                <!-- <i class="fas fa-book"></i> 文章 -->
+                                <!-- </div> -->
+                                <!-- <h3 class="favorite-title">中国书法艺术的精神内涵</h3> -->
+                                <!-- <p class="favorite-desc">探讨书法艺术中蕴含的哲学思想和审美价值</p> -->
+                                <!-- </div> -->
+                                <!-- </a> -->
+
+                                <!-- <a href="子页面-1/文章/历史-文章.html" target="_blank" rel="noopener noreferrer" -->
+                                <!-- onclick="event.stopPropagation()"> -->
+                                <!-- <div class="favorite-card"> -->
+                                <!-- <div class="favorite-type"> -->
+                                <!-- <i class="fas fa-images"></i> 图集 -->
+                                <!-- </div> -->
+                                <!-- <h3 class="favorite-title">传统建筑之美</h3> -->
+                                <!-- <p class="favorite-desc">收录中国古代建筑的精美图片和解析</p> -->
+                                <!-- </div> -->
+                                <!-- </a> -->
+
+                                <!-- <a href="子页面-1/文章/非遗-文章.html" target="_blank" rel="noopener noreferrer" -->
+                                <!-- onclick="event.stopPropagation()"> -->
+                                <!-- <div class="favorite-card"> -->
+                                <!-- <div class="favorite-type"> -->
+                                <!-- <i class="fas fa-video"></i> 视频 -->
+                                <!-- </div> -->
+                                <!-- <h3 class="favorite-title">非遗技艺展示</h3> -->
+                                <!-- <p class="favorite-desc">传统手工艺人的技艺传承纪录片</p> -->
+                                <!-- </div> -->
+                                <!-- </a> -->
+
+                                <!-- <a href="子页面-1/文章/非遗-文章.html" target="_blank" rel="noopener noreferrer" -->
+                                <!-- onclick="event.stopPropagation()"> -->
+                                <!-- <div class="favorite-card"> -->
+                                <!-- <div class="favorite-type"> -->
+                                <!-- <i class="fas fa-link"></i> 链接 -->
+                                <!-- </div> -->
+                                <!-- <h3 class="favorite-title">文化保护组织</h3> -->
+                                <!-- <p class="favorite-desc">国内外重要的文化遗产保护机构汇总</p> -->
+                                <!-- </div> -->
+                                <!-- </a> -->
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <!-- 主内容区域 - 创作中心 -->
+                <div class="main-content-two">
+                    <section class="content-section">
+                        <h2 class="section-title">创作中心</h2>
+
+                        <div class="creation-grid">
+                            <!-- 历史类目 -->
+                            <div class="creation-card" data-category="history">
+                                <div class="creation-image">
+                                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e" alt="中国历史">
+                                </div>
+                                <div class="creation-content">
+                                    <h3 class="creation-title">中国历史</h3>
+                                    <p class="creation-desc">创作关于中国五千年历史文化的文章，包括各朝代历史、重要事件、历史人物等内容。</p>
+
+                                    <div class="creation-stats">
+                                        <div class="creation-stat">
+                                            <span class="creation-number">3</span>
+                                            <span class="creation-label">待审核</span>
+                                        </div>
+                                        <div class="creation-stat">
+                                            <span class="creation-number">12</span>
+                                            <span class="creation-label">已发布</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="creation-actions">
+                                        <a href="子页面-1/文章撰写 - 音频.html" class="creation-btn" id="historyBtn">创作文章</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 非遗类目 -->
+                            <div class="creation-card" data-category="ich">
+                                <div class="creation-image">
+                                    <img src="https://images.unsplash.com/photo-1547981609-4b6bfc67c272" alt="非物质文化遗产">
+                                </div>
+                                <div class="creation-content">
+                                    <h3 class="creation-title">非物质文化遗产</h3>
+                                    <p class="creation-desc">创作非物质文化遗产相关文章，确保每种非遗类目只有一篇文章，维护内容质量与独特性。</p>
+
+                                    <div class="creation-stats">
+                                        <div class="creation-stat">
+                                            <span class="creation-number">1</span>
+                                            <span class="creation-label">待审核</span>
+                                        </div>
+                                        <div class="creation-stat">
+                                            <span class="creation-number">8</span>
+                                            <span class="creation-label">已发布</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="creation-actions">
+                                        <a href="子页面-1/文章撰写.html" class="creation-btn" id="ichBtn">创作文章</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 公益类目 -->
+                            <div class="creation-card" data-category="welfare">
+                                <div class="creation-image">
+                                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3" alt="公益">
+                                </div>
+                                <div class="creation-content">
+                                    <h3 class="creation-title">公益</h3>
+                                    <p class="creation-desc">创作公益相关文章，包括慈善活动、社会责任、志愿者服务等内容，传播正能量。</p>
+
+                                    <div class="creation-stats">
+                                        <div class="creation-stat">
+                                            <span class="creation-number">2</span>
+                                            <span class="creation-label">待审核</span>
+                                        </div>
+                                        <div class="creation-stat">
+                                            <span class="creation-number">5</span>
+                                            <span class="creation-label">已发布</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="creation-actions">
+                                        <a href="子页面-1/文章撰写 - 音频.html" class="creation-btn" id="welfareBtn">创作文章</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- 主内容区域 - 我的收藏 -->
+                <div class="main-content-three">
+                    <section class="content-section">
+                        <h2 class="section-title">我的收藏</h2>
+
+                        <div class="favorites-header">
+                            <div class="favorites-search">
+                                <i class="fas fa-search"></i>
+                                <input type="text" placeholder="搜索收藏内容...">
+                            </div>
+
+                            <div class="favorites-filter">
+                                <button class="filter-btn active">全部</button>
+                                <button class="filter-btn">历史</button>
+                                <button class="filter-btn">非遗</button>
+                                <button class="filter-btn">公益</button>
+                                <button class="filter-btn">分享</button>
+                            </div>
+                        </div>
+
+                        <div class="favorites-grid">
+                            <!-- 收藏项目1 -->
+                            <div class="favorite-card">
+                                <div class="favorite-image">
+                                    <img src="https://images.unsplash.com/photo-1547981609-4b6bfc67c272" alt="故宫历史">
+                                    <div class="favorite-type">历史</div>
+                                </div>
+                                <div class="favorite-content">
+                                    <h3 class="favorite-title">紫禁城的建筑美学与历史变迁</h3>
+                                    <p class="favorite-desc">紫禁城作为明清两代的皇家宫殿，不仅是中国古代建筑艺术的巅峰之作，更是中华文明的重要象征。</p>
+                                    <div class="favorite-meta">
+                                        <span class="favorite-date">收藏于: 2023-10-15</span>
+                                        <div class="favorite-actions">
+                                            <button class="favorite-action-btn" title="查看">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="favorite-action-btn" title="取消收藏">
+                                                <i class="fas fa-bookmark"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 收藏项目2 -->
+                            <div class="favorite-card">
+                                <div class="favorite-image">
+                                    <img src="https://images.unsplash.com/photo-1585616780627-3a9c1062f6fe" alt="兵马俑">
+                                    <div class="favorite-type">考古</div>
+                                </div>
+                                <div class="favorite-content">
+                                    <h3 class="favorite-title">秦始皇陵兵马俑的发现与保护</h3>
+                                    <p class="favorite-desc">1974年，陕西农民打井时偶然发现了震惊世界的秦始皇陵兵马俑。本文详细记录了这一伟大考古发现的历程。</p>
+                                    <div class="favorite-meta">
+                                        <span class="favorite-date">收藏于: 2023-10-10</span>
+                                        <div class="favorite-actions">
+                                            <button class="favorite-action-btn" title="查看">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="favorite-action-btn" title="取消收藏">
+                                                <i class="fas fa-bookmark"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 收藏项目3 -->
+                            <div class="favorite-card">
+                                <div class="favorite-image">
+                                    <img src="https://images.unsplash.com/photo-1542662565-7e4b66bae529" alt="敦煌壁画">
+                                    <div class="favorite-type">艺术</div>
+                                </div>
+                                <div class="favorite-content">
+                                    <h3 class="favorite-title">敦煌壁画中的佛教艺术与丝路文化</h3>
+                                    <p class="favorite-desc">敦煌莫高窟是世界现存规模最宏大、保存最完好的佛教艺术宝库。这篇文章分析了敦煌壁画的艺术特色。</p>
+                                    <div class="favorite-meta">
+                                        <span class="favorite-date">收藏于: 2023-10-05</span>
+                                        <div class="favorite-actions">
+                                            <button class="favorite-action-btn" title="查看">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="favorite-action-btn" title="取消收藏">
+                                                <i class="fas fa-bookmark"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 收藏项目4 -->
+                            <div class="favorite-card">
+                                <div class="favorite-image">
+                                    <img src="https://images.unsplash.com/photo-1530645294466-245dbb4b1f1d" alt="宋词">
+                                    <div class="favorite-type">文学</div>
+                                </div>
+                                <div class="favorite-content">
+                                    <h3 class="favorite-title">宋词的艺术成就与情感表达</h3>
+                                    <p class="favorite-desc">宋词是中国古代文学瑰宝，以其精炼的语言、优美的韵律和深刻的情感表达著称。</p>
+                                    <div class="favorite-meta">
+                                        <span class="favorite-date">收藏于: 2023-10-01</span>
+                                        <div class="favorite-actions">
+                                            <button class="favorite-action-btn" title="查看">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="favorite-action-btn" title="取消收藏">
+                                                <i class="fas fa-bookmark"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 收藏项目5 -->
+                            <div class="favorite-card">
+                                <div class="favorite-image">
+                                    <img src="https://images.unsplash.com/photo-1532776471387-6d5a13c84f33" alt="茶文化">
+                                    <div class="favorite-type">文化</div>
+                                </div>
+                                <div class="favorite-content">
+                                    <h3 class="favorite-title">中国茶文化的源流与发展</h3>
+                                    <p class="favorite-desc">从神农尝百草到陆羽《茶经》，从宫廷贡品到百姓日常，中国茶文化有着数千年的发展历史。</p>
+                                    <div class="favorite-meta">
+                                        <span class="favorite-date">收藏于: 2023-09-28</span>
+                                        <div class="favorite-actions">
+                                            <button class="favorite-action-btn" title="查看">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="favorite-action-btn" title="取消收藏">
+                                                <i class="fas fa-bookmark"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 收藏项目6 -->
+                            <div class="favorite-card">
+                                <div class="favorite-image">
+                                    <img src="https://images.unsplash.com/photo-1584362910334-7e6b5c596e3c" alt="书法">
+                                    <div class="favorite-type">艺术</div>
+                                </div>
+                                <div class="favorite-content">
+                                    <h3 class="favorite-title">中国书法艺术的精神内涵与美学价值</h3>
+                                    <p class="favorite-desc">书法是中华民族独有的艺术形式，超越了单纯的写字技巧，成为一种表达情感、修养心性的艺术。</p>
+                                    <div class="favorite-meta">
+                                        <span class="favorite-date">收藏于: 2023-09-25</span>
+                                        <div class="favorite-actions">
+                                            <button class="favorite-action-btn" title="查看">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="favorite-action-btn" title="取消收藏">
+                                                <i class="fas fa-bookmark"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- 主内容区域 - 文章管理 -->
+                <div class="main-content-four">
+                    <section class="content-section">
+                        <h2 class="section-title">文章管理</h2>
+
+                        <div class="article-management-header">
+                            <div class="article-search">
+                                <i class="fas fa-search"></i>
+                                <input type="text" placeholder="搜索文章...">
+                            </div>
+
+                            <div class="article-filter">
+                                <button class="filter-btn active">全部</button>
+                                <button class="filter-btn">已发布</button>
+                                <button class="filter-btn">审核中</button>
+                                <button class="filter-btn">草稿</button>
+                            </div>
+
+                            <button class="create-btn">
+                                <i class="fas fa-plus"></i>
+                                <span>新建文章</span>
+                            </button>
+                        </div>
+
+                        <div class="article-list">
+                            <!-- 文章项1 -->
+                            <div class="article-item">
+                                <div class="article-header">
+                                    <h3 class="article-title">紫禁城的建筑美学与历史变迁</h3>
+                                    <div class="article-status status-published">已发布</div>
+                                </div>
+                                <div class="article-content">
+                                    <div class="article-thumb">
+                                        <img src="https://images.unsplash.com/photo-1547981609-4b6bfc67c272"
+                                            alt="文章缩略图">
+                                    </div>
+                                    <p class="article-desc">
+                                        紫禁城作为明清两代的皇家宫殿，不仅是中国古代建筑艺术的巅峰之作，更是中华文明的重要象征。这篇文章深入探讨了紫禁城的建筑布局、设计哲学以及六百年来的历史变迁。
+                                    </p>
+                                </div>
+                                <div class="article-meta">
+                                    <div class="article-info">
+                                        <span><i class="far fa-eye"></i> 1.2k</span>
+                                        <span><i class="far fa-heart"></i> 326</span>
+                                        <span><i class="far fa-calendar"></i> 2023-10-15</span>
+                                    </div>
+                                    <div class="article-actions">
+                                        <button class="article-action-btn">
+                                            <i class="fas fa-edit"></i> 编辑
+                                        </button>
+                                        <button class="article-action-btn btn-delete">
+                                            <i class="fas fa-trash-alt"></i> 删除
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 文章项2 -->
+                            <div class="article-item">
+                                <div class="article-header">
+                                    <h3 class="article-title">秦始皇陵兵马俑的发现与保护</h3>
+                                    <div class="article-status status-published">已发布</div>
+                                </div>
+                                <div class="article-content">
+                                    <div class="article-thumb">
+                                        <img src="https://images.unsplash.com/photo-1585616780627-3a9c1062f6fe"
+                                            alt="文章缩略图">
+                                    </div>
+                                    <p class="article-desc">
+                                        1974年，陕西农民打井时偶然发现了震惊世界的秦始皇陵兵马俑。本文详细记录了这一伟大考古发现的历程，以及数十年来文物保护工作者为保护这些珍贵文物所付出的努力。
+                                    </p>
+                                </div>
+                                <div class="article-meta">
+                                    <div class="article-info">
+                                        <span><i class="far fa-eye"></i> 985</span>
+                                        <span><i class="far fa-heart"></i> 245</span>
+                                        <span><i class="far fa-calendar"></i> 2023-10-10</span>
+                                    </div>
+                                    <div class="article-actions">
+                                        <button class="article-action-btn">
+                                            <i class="fas fa-edit"></i> 编辑
+                                        </button>
+                                        <button class="article-action-btn btn-delete">
+                                            <i class="fas fa-trash-alt"></i> 删除
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 文章项3 -->
+                            <div class="article-item">
+                                <div class="article-header">
+                                    <h3 class="article-title">敦煌壁画中的佛教艺术与丝路文化</h3>
+                                    <div class="article-status status-pending">审核中</div>
+                                </div>
+                                <div class="article-content">
+                                    <div class="article-thumb">
+                                        <img src="https://images.unsplash.com/photo-1542662565-7e4b66bae529"
+                                            alt="文章缩略图">
+                                    </div>
+                                    <p class="article-desc">
+                                        敦煌莫高窟是世界现存规模最宏大、保存最完好的佛教艺术宝库。这篇文章分析了敦煌壁画的艺术特色、表现手法，以及其中反映的东西方文化交流与融合的历史痕迹。
+                                    </p>
+                                </div>
+                                <div class="article-meta">
+                                    <div class="article-info">
+                                        <span><i class="far fa-clock"></i> 审核中</span>
+                                        <span><i class="far fa-calendar"></i> 2023-10-05</span>
+                                    </div>
+                                    <div class="article-actions">
+                                        <button class="article-action-btn">
+                                            <i class="fas fa-edit"></i> 编辑
+                                        </button>
+                                        <button class="article-action-btn btn-delete">
+                                            <i class="fas fa-trash-alt"></i> 删除
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 文章项4 -->
+                            <div class="article-item">
+                                <div class="article-header">
+                                    <h3 class="article-title">宋词的艺术成就与情感表达</h3>
+                                    <div class="article-status status-draft">草稿</div>
+                                </div>
+                                <div class="article-content">
+                                    <div class="article-thumb">
+                                        <img src="https://images.unsplash.com/photo-1530645294466-245dbb4b1f1d"
+                                            alt="文章缩略图">
+                                    </div>
+                                    <p class="article-desc">
+                                        宋词是中国古代文学瑰宝，以其精炼的语言、优美的韵律和深刻的情感表达著称。本文从艺术手法、题材内容和情感世界三个方面，探讨宋词的独特魅力和文学价值。
+                                    </p>
+                                </div>
+                                <div class="article-meta">
+                                    <div class="article-info">
+                                        <span><i class="far fa-save"></i> 草稿</span>
+                                        <span><i class="far fa-calendar"></i> 2023-10-01</span>
+                                    </div>
+                                    <div class="article-actions">
+                                        <button class="article-action-btn">
+                                            <i class="fas fa-edit"></i> 编辑
+                                        </button>
+                                        <button class="article-action-btn btn-delete">
+                                            <i class="fas fa-trash-alt"></i> 删除
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- 主内容区域 - 消息通知 -->
+                <div class="main-content-five">
+                    <section class="content-section">
+                        <h2 class="section-title">消息通知</h2>
+
+                        <div class="notifications-header">
+                            <div class="notifications-filter">
+                                <button class="filter-btn active">全部</button>
+                                <button class="filter-btn">未读</button>
+                                <button class="filter-btn">评论</button>
+                                <button class="filter-btn">点赞</button>
+                                <button class="filter-btn">关注</button>
+                            </div>
+
+                            <div class="notifications-actions">
+                                <button class="action-btn">
+                                    <i class="fas fa-check"></i>
+                                    <span>标记所有为已读</span>
+                                </button>
+                                <button class="action-btn">
+                                    <i class="fas fa-trash-alt"></i>
+                                    <span>清空通知</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="notifications-list">
+                            <!-- 通知项1 -->
+                            <div class="notification-item unread">
+                                <div class="notification-icon">
+                                    <i class="fas fa-comment"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <div class="notification-title">
+                                        <span>新的评论</span>
+                                        <span class="notification-badge badge-comment">评论</span>
+                                    </div>
+                                    <p class="notification-text">用户 <strong>文墨客</strong> 在您的文章
+                                        <strong>"紫禁城的建筑美学与历史变迁"</strong>
+                                        下发表了评论："这篇文章写得非常深入，让我对故宫有了新的认识！"
+                                    </p>
+                                    <div class="notification-meta">
+                                        <div class="notification-time">
+                                            <i class="far fa-clock"></i>
+                                            <span>2小时前</span>
+                                        </div>
+                                        <div class="notification-actions">
+                                            <button class="notification-btn">
+                                                <i class="fas fa-reply"></i>
+                                                <span>回复</span>
+                                            </button>
+                                            <button class="notification-btn">
+                                                <i class="fas fa-check"></i>
+                                                <span>标记已读</span>
+                                            </button>
+                                            <button class="notification-btn">
+                                                <i class="fas fa-trash-alt"></i>
+                                                <span>删除</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 通知项2 -->
+                            <div class="notification-item unread">
+                                <div class="notification-icon">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <div class="notification-title">
+                                        <span>新的点赞</span>
+                                        <span class="notification-badge badge-like">点赞</span>
+                                    </div>
+                                    <p class="notification-text"><strong>墨香居士</strong> 等 12 人点赞了您的文章
+                                        <strong>"秦始皇陵兵马俑的发现与保护"</strong>
+                                    </p>
+                                    <div class="notification-meta">
+                                        <div class="notification-time">
+                                            <i class="far fa-clock"></i>
+                                            <span>5小时前</span>
+                                        </div>
+                                        <div class="notification-actions">
+                                            <button class="notification-btn">
+                                                <i class="fas fa-check"></i>
+                                                <span>标记已读</span>
+                                            </button>
+                                            <button class="notification-btn">
+                                                <i class="fas fa-trash-alt"></i>
+                                                <span>删除</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 通知项3 -->
+                            <div class="notification-item">
+                                <div class="notification-icon">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <div class="notification-title">
+                                        <span>新的关注</span>
+                                        <span class="notification-badge badge-follow">关注</span>
+                                    </div>
+                                    <p class="notification-text"><strong>书香门第</strong> 开始关注您</p>
+                                    <div class="notification-meta">
+                                        <div class="notification-time">
+                                            <i class="far fa-clock"></i>
+                                            <span>昨天</span>
+                                        </div>
+                                        <div class="notification-actions">
+                                            <button class="notification-btn">
+                                                <i class="fas fa-user"></i>
+                                                <span>回关</span>
+                                            </button>
+                                            <button class="notification-btn">
+                                                <i class="fas fa-trash-alt"></i>
+                                                <span>删除</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 通知项4 -->
+                            <div class="notification-item">
+                                <div class="notification-icon">
+                                    <i class="fas fa-share-alt"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <div class="notification-title">
+                                        <span>文章被分享</span>
+                                        <span class="notification-badge badge-system">分享</span>
+                                    </div>
+                                    <p class="notification-text">您的文章 <strong>"敦煌壁画中的佛教艺术与丝路文化"</strong> 被
+                                        <strong>文心传承</strong> 分享到社区
+                                    </p>
+                                    <div class="notification-meta">
+                                        <div class="notification-time">
+                                            <i class="far fa-clock"></i>
+                                            <span>2天前</span>
+                                        </div>
+                                        <div class="notification-actions">
+                                            <button class="notification-btn">
+                                                <i class="fas fa-eye"></i>
+                                                <span>查看</span>
+                                            </button>
+                                            <button class="notification-btn">
+                                                <i class="fas fa-trash-alt"></i>
+                                                <span>删除</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 通知项5 -->
+                            <div class="notification-item">
+                                <div class="notification-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <div class="notification-title">
+                                        <span>文章审核通过</span>
+                                        <span class="notification-badge badge-system">系统</span>
+                                    </div>
+                                    <p class="notification-text">您的文章 <strong>"宋词的艺术成就与情感表达"</strong> 已通过审核并发布</p>
+                                    <div class="notification-meta">
+                                        <div class="notification-time">
+                                            <i class="far fa-clock"></i>
+                                            <span>3天前</span>
+                                        </div>
+                                        <div class="notification-actions">
+                                            <button class="notification-btn">
+                                                <i class="fas fa-eye"></i>
+                                                <span>查看</span>
+                                            </button>
+                                            <button class="notification-btn">
+                                                <i class="fas fa-trash-alt"></i>
+                                                <span>删除</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pagination">
+                            <button class="page-btn">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="page-btn active">1</button>
+                            <button class="page-btn">2</button>
+                            <button class="page-btn">3</button>
+                            <button class="page-btn">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </section>
+                </div>
+                <!-- 主内容区域 - 账号设置 -->
+                <div class="main-content-six">
+                    <section class="content-section">
+                        <h2 class="section-title">账号设置</h2>
+
+                        <div class="settings-grid">
+                            <!-- 安全设置 -->
+                            <div class="setting-group">
+                                <div class="setting-header">
+                                    <div class="setting-icon">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                    <h3 class="setting-title">安全设置</h3>
+                                </div>
+                                <div class="setting-content">
+                                    <div class="form-group">
+                                        <label class="form-label" for="current-password">当前密码</label>
+                                        <input type="password" id="current-password" class="form-input"
+                                            placeholder="请输入当前密码">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="new-password">新密码</label>
+                                        <input type="password" id="new-password" class="form-input"
+                                            placeholder="请输入新密码">
+                                        <p class="form-hint">密码长度至少8位，包含字母和数字</p>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="confirm-password">确认新密码</label>
+                                        <input type="password" id="confirm-password" class="form-input"
+                                            placeholder="请再次输入新密码">
+                                    </div>
+
+                                    <button class="btn primary">更新密码</button>
+                                </div>
+                            </div>
+
+                            <!-- 登录设置 -->
+                            <div class="setting-group">
+                                <div class="setting-header">
+                                    <div class="setting-icon">
+                                        <i class="fas fa-sign-in-alt"></i>
+                                    </div>
+                                    <h3 class="setting-title">登录设置</h3>
+                                </div>
+                                <div class="setting-content">
+                                    <div class="toggle-label">
+                                        <div class="toggle-text">
+                                            <strong>双重验证</strong>
+                                            <p class="toggle-desc">启用后，登录时需要验证手机或邮箱</p>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+
+                                    <div class="toggle-label">
+                                        <div class="toggle-text">
+                                            <strong>登录通知</strong>
+                                            <p class="toggle-desc">当有新设备登录时发送通知</p>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+
+                                    <div class="toggle-label">
+                                        <div class="toggle-text">
+                                            <strong>会话管理</strong>
+                                            <p class="toggle-desc">显示所有活跃的登录会话</p>
+                                        </div>
+                                        <button class="btn outline">查看会话</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 通知设置 -->
+                            <div class="setting-group">
+                                <div class="setting-header">
+                                    <div class="setting-icon">
+                                        <i class="fas fa-bell"></i>
+                                    </div>
+                                    <h3 class="setting-title">通知设置</h3>
+                                </div>
+                                <div class="setting-content">
+                                    <div class="toggle-label">
+                                        <div class="toggle-text">
+                                            <strong>文章评论通知</strong>
+                                            <p class="toggle-desc">有人评论我的文章时通知我</p>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+
+                                    <div class="toggle-label">
+                                        <div class="toggle-text">
+                                            <strong>私信通知</strong>
+                                            <p class="toggle-desc">收到私信时通知我</p>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+
+                                    <div class="toggle-label">
+                                        <div class="toggle-text">
+                                            <strong>系统通知</strong>
+                                            <p class="toggle-desc">接收系统公告和更新通知</p>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+
+                                    <div class="toggle-label">
+                                        <div class="toggle-text">
+                                            <strong>邮件通知</strong>
+                                            <p class="toggle-desc">通过电子邮件接收重要通知</p>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 隐私设置 -->
+                            <div class="setting-group">
+                                <div class="setting-header">
+                                    <div class="setting-icon">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                    <h3 class="setting-title">隐私设置</h3>
+                                </div>
+                                <div class="setting-content">
+                                    <div class="toggle-label">
+                                        <div class="toggle-text">
+                                            <strong>个人资料可见性</strong>
+                                            <p class="toggle-desc">谁可以查看我的个人资料</p>
+                                        </div>
+                                        <select class="form-input" style="width: auto;">
+                                            <option>所有人</option>
+                                            <option>仅关注我的人</option>
+                                            <option>仅自己</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="toggle-label">
+                                        <div class="toggle-text">
+                                            <strong>文章可见性</strong>
+                                            <p class="toggle-desc">默认谁可以查看我的文章</p>
+                                        </div>
+                                        <select class="form-input" style="width: auto;">
+                                            <option>所有人</option>
+                                            <option>仅关注我的人</option>
+                                            <option>仅自己</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="toggle-label">
+                                        <div class="toggle-text">
+                                            <strong>在线状态</strong>
+                                            <p class="toggle-desc">是否向其他人显示我的在线状态</p>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+
+                                    <div class="toggle-label">
+                                        <div class="toggle-text">
+                                            <strong>个性化推荐</strong>
+                                            <p class="toggle-desc">根据我的活动推荐相关内容</p>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 账号操作 -->
+                            <div class="setting-group">
+                                <div class="setting-header">
+                                    <div class="setting-icon">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                    <h3 class="setting-title">账号操作</h3>
+                                </div>
+                                <div class="setting-content">
+                                    <div class="form-group">
+                                        <p>导出我的数据</p>
+                                        <p class="form-hint">下载您的所有数据和内容存档</p>
+                                        <button class="btn outline">导出数据</button>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <p>停用账号</p>
+                                        <p class="form-hint">您的账号将暂时停用，可以随时恢复</p>
+                                        <button class="btn outline">停用账号</button>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <p>删除账号</p>
+                                        <p class="form-hint">永久删除账号和所有相关内容，此操作不可逆</p>
+                                        <button class="btn outline"
+                                            style="color: #e74c3c; border-color: #e74c3c;">删除账号</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- 主内容区域 - 隐私设置 -->
+                <div class="main-content-seven">
+                    <section class="content-section">
+                        <h2 class="section-title">隐私设置</h2>
+
+                        <div class="privacy-settings">
+                            <!-- 内容可见性设置 -->
+                            <div class="privacy-group">
+                                <div class="privacy-header">
+                                    <div class="privacy-icon">
+                                        <i class="fas fa-eye"></i>
+                                    </div>
+                                    <h3 class="privacy-title">内容可见性</h3>
+                                </div>
+                                <div class="privacy-content">
+                                    <div class="privacy-item">
+                                        <div class="privacy-label">
+                                            <span class="privacy-name">个人资料可见性</span>
+                                            <select class="select-control">
+                                                <option>所有人</option>
+                                                <option>仅关注我的人</option>
+                                                <option>仅自己</option>
+                                            </select>
+                                        </div>
+                                        <p class="privacy-desc">控制谁可以查看您的个人资料信息，包括头像、简介和统计数据</p>
+                                    </div>
+
+                                    <div class="privacy-item">
+                                        <div class="privacy-label">
+                                            <span class="privacy-name">文章可见性</span>
+                                            <select class="select-control">
+                                                <option>所有人</option>
+                                                <option>仅关注我的人</option>
+                                                <option>仅自己</option>
+                                            </select>
+                                        </div>
+                                        <p class="privacy-desc">设置新发布文章的默认可见范围，您仍可以在发布每篇文章时单独调整</p>
+                                    </div>
+
+                                    <div class="privacy-item">
+                                        <div class="privacy-label">
+                                            <span class="privacy-name">收藏可见性</span>
+                                            <select class="select-control">
+                                                <option>所有人</option>
+                                                <option>仅关注我的人</option>
+                                                <option>仅自己</option>
+                                            </select>
+                                        </div>
+                                        <p class="privacy-desc">控制谁可以查看您收藏的文章和内容</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 互动隐私设置 -->
+                            <div class="privacy-group">
+                                <div class="privacy-header">
+                                    <div class="privacy-icon">
+                                        <i class="fas fa-comments"></i>
+                                    </div>
+                                    <h3 class="privacy-title">互动隐私</h3>
+                                </div>
+                                <div class="privacy-content">
+                                    <div class="privacy-item">
+                                        <div class="privacy-label">
+                                            <span class="privacy-name">允许评论</span>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                        <p class="privacy-desc">允许其他用户在您的文章下发表评论</p>
+                                    </div>
+
+                                    <div class="privacy-item">
+                                        <div class="privacy-label">
+                                            <span class="privacy-name">允许私信</span>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                        <p class="privacy-desc">允许其他用户向您发送私信</p>
+                                    </div>
+
+                                    <div class="privacy-item">
+                                        <div class="privacy-label">
+                                            <span class="privacy-name">允许关注</span>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                        <p class="privacy-desc">允许其他用户关注您，接收您的最新动态</p>
+                                    </div>
+
+                                    <div class="privacy-item">
+                                        <div class="privacy-label">
+                                            <span class="privacy-name">允许@提及</span>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                        <p class="privacy-desc">允许其他用户在内容和评论中@提及您</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 数据隐私设置 -->
+                            <div class="privacy-group">
+                                <div class="privacy-header">
+                                    <div class="privacy-icon">
+                                        <i class="fas fa-database"></i>
+                                    </div>
+                                    <h3 class="privacy-title">数据隐私</h3>
+                                </div>
+                                <div class="privacy-content">
+                                    <div class="privacy-item">
+                                        <div class="privacy-label">
+                                            <span class="privacy-name">个性化推荐</span>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                        <p class="privacy-desc">允许我们根据您的活动推荐相关内容和用户，提升使用体验</p>
+                                    </div>
+
+                                    <div class="privacy-item">
+                                        <div class="privacy-label">
+                                            <span class="privacy-name">搜索可见性</span>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                        <p class="privacy-desc">允许您的个人资料和内容出现在搜索引擎结果中</p>
+                                    </div>
+
+                                    <div class="privacy-item">
+                                        <div class="privacy-label">
+                                            <span class="privacy-name">活动状态显示</span>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                        <p class="privacy-desc">向其他用户显示您最近的活动状态（在线/离线）</p>
+                                    </div>
+
+                                    <div class="privacy-item">
+                                        <div class="privacy-label">
+                                            <span class="privacy-name">数据收集同意</span>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                        <p class="privacy-desc">允许我们收集匿名使用数据以改进产品和服务</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 高级隐私设置 -->
+                            <div class="privacy-group">
+                                <div class="privacy-header">
+                                    <div class="privacy-icon">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                    <h3 class="privacy-title">高级隐私</h3>
+                                </div>
+                                <div class="privacy-content">
+                                    <div class="privacy-item">
+                                        <div class="privacy-label">
+                                            <span class="privacy-name">隐藏关注列表</span>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox">
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                        <p class="privacy-desc">隐藏您关注的用户列表，其他人将无法查看您关注了谁</p>
+                                    </div>
+
+                                    <div class="privacy-item">
+                                        <div class="privacy-label">
+                                            <span class="privacy-name">隐藏粉丝列表</span>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox">
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                        <p class="privacy-desc">隐藏您的粉丝列表，其他人将无法查看谁关注了您</p>
+                                    </div>
+
+                                    <div class="privacy-item">
+                                        <div class="privacy-label">
+                                            <span class="privacy-name">隐藏点赞历史</span>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox">
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                        <p class="privacy-desc">隐藏您点赞过的内容，其他人将无法查看您的点赞历史</p>
+                                    </div>
+
+                                    <div class="privacy-item">
+                                        <div class="privacy-label">
+                                            <span class="privacy-name">隐藏阅读历史</span>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox">
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                        <p class="privacy-desc">隐藏您的文章阅读历史，保护您的浏览隐私</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="privacy-actions">
+                            <button class="privacy-btn outline">恢复默认</button>
+                            <button class="privacy-btn primary">保存设置</button>
+                        </div>
+                    </section>
+                </div>
+            </li>
+            <li class="wu">
+                <!-- 编辑资料提示信息 -->
+                <div class="edit-profile-notice"
+                    style="display: flex; justify-content: center; align-items: center; height: 400px; text-align: center;">
+                    <div class="notice-content">
+                        <i class="fas fa-info-circle" style="font-size: 48px; color: #666; margin-bottom: 20px;"></i>
+                        <h2 style="color: #333; margin-bottom: 10px;">编辑资料</h2>
+                        <p style="color: #666; font-size: 16px;">登录后即可操作</p>
+                    </div>
+                </div>
+
+
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        // 退出登录功能
+        document.addEventListener('DOMContentLoaded', function () {
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    // 设置登录状态标记
+                    sessionStorage.setItem('isLoggedOut', 'true');
+                    sessionStorage.setItem('previousPage', 'index');
+
+                    // 跳转到登录页面
+                    window.location.href = '登录and注册/登录页面.html';
+                });
+            }
+        });
+
+        // 页面状态管理 - 处理浏览器返回按钮
+        window.addEventListener('pageshow', function (event) {
+            // 检查是否是从登录页面返回
+            const isLoggedOut = sessionStorage.getItem('isLoggedOut');
+            const previousPage = sessionStorage.getItem('previousPage');
+
+            if (isLoggedOut === 'true' && previousPage === 'index') {
+                // 如果用户已退出登录且从index页面来的，跳转到未登录状态页面
+                sessionStorage.removeItem('isLoggedOut');
+                sessionStorage.removeItem('previousPage');
+                window.location.href = '官网.html';
+            }
+        });
+
+        // 监听浏览器前进后退按钮
+        window.addEventListener('popstate', function (event) {
+            const isLoggedOut = sessionStorage.getItem('isLoggedOut');
+
+            if (isLoggedOut === 'true') {
+                // 如果用户已退出登录，重定向到官网页面（未登录状态）
+                window.location.href = '官网.html';
+            }
+        });
+    </script>
+
+    <!-- 页尾 -->
+    <footer class="footer">
+        <div class="decoration decoration-1">家</div>
+        <div class="decoration decoration-2">归</div>
+        <div class="decoration decoration-3">心</div>
+        <div class="decoration decoration-4">暖</div>
+
+        <div class="footer-content">
+            <h2 class="footer-title">我们一起回家吧</h2>
+            <p class="footer-subtitle">探索传统文化与公益的温暖世界，发现属于你的精神家园</p>
+
+            <div class="explore-options">
+                <div class="explore-card">
+                    <div class="card-icon">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <h3 class="card-title">历史长廊</h3>
+                    <p class="card-desc">穿越千年时光，感受华夏文明的厚重与智慧</p>
+                </div>
+
+                <div class="explore-card">
+                    <div class="card-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="card-title">非遗之美</h3>
+                    <p class="card-desc">发现传统技艺的魅力，感受匠心精神的传承</p>
+                </div>
+
+                <div class="explore-card">
+                    <div class="card-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h3 class="card-title">公益温暖</h3>
+                    <p class="card-desc">参与爱心行动，让善意如阳光般温暖人心</p>
+                </div>
+
+                <div class="explore-card">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="card-title">社区交流</h3>
+                    <p class="card-desc">结识志同道合的朋友，分享彼此的见解与感悟</p>
+                </div>
+            </div>
+
+            <div class="footer-actions">
+                <a href="我们一起回家吧/选择博物馆.html" target="_blank" rel="noopener noreferrer">
+                    <button class="action-btn">
+                        <i class="fas fa-compass"></i>
+                        <span>开启探索之旅</span>
+                    </button>
+                </a>
+                <button class="action-btn outline">
+                    <i class="fas fa-book-open"></i>
+                    <span>了解更多</span>
+                </button>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-links">
+                    <a href="#" class="footer-link">关于我们</a>
+                    <a href="#" class="footer-link">联系方式</a>
+                    <a href="#" class="footer-link">隐私政策</a>
+                    <a href="#" class="footer-link">使用条款</a>
+                </div>
+
+                <div class="social-links">
+                    <a href="#" class="social-link">
+                        <i class="fab fa-weixin"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-weibo"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+
+                <div class="copyright">
+                    © 2023 云间文苑 | 文化传承，知识共享
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
