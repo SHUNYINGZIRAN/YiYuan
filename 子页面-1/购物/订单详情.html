@@ -39,6 +39,12 @@
             z-index: -1;
         }
 
+        a,
+        a * {
+            color: inherit;
+            text-decoration: none;
+        }
+
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -461,11 +467,13 @@
                 <span>云间文苑</span>
             </div>
 
-            <div class="user-actions">
-                <button class="nav-btn" id="backBtn">
-                    <i class="fas fa-arrow-left"></i> 返回商店
-                </button>
-            </div>
+            <a href="../../index.html">
+                <div class="user-actions">
+                    <button class="nav-btn" id="backBtn">
+                        <i class="fas fa-arrow-left"></i> 返回首页
+                    </button>
+                </div>
+            </a>
         </div>
 
         <!-- 页面标题 -->
