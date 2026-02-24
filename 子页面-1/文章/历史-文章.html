@@ -336,6 +336,32 @@
             color: #c53d2d;
         }
 
+        /* AI 总结卡片样式 */
+        .ai-summary-card {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+            border: 1px solid #d6ccc2;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .ai-summary-card h3 {
+            font-family: 'Ma Shan Zheng', cursive;
+            color: #8c3c2c;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+            border-bottom: 1px solid #d6ccc2;
+            padding-bottom: 10px;
+        }
+
+        .summary-content {
+            line-height: 1.8;
+            color: #5c4c3e;
+            font-size: 1.05rem;
+        }
+
         .comments-section {
             background: rgba(255, 253, 245, 0.9);
             padding: 30px;
@@ -611,6 +637,21 @@
                 <i class="fas fa-share-alt"></i>
                 <span>分享</span>
             </div>
+
+            <!-- 新增 AI 总结按钮 -->
+            <div class="interaction-btn" id="ai-btn">
+                <i class="fas fa-robot"></i>
+                <span>AI总结</span>
+            </div>
+        </div>
+
+        <!-- AI 总结卡片（初始隐藏） -->
+        <div class="ai-summary-card" id="aiSummaryCard" style="display: none;">
+            <h3>AI 智能总结</h3>
+            <div id="summaryContent" class="summary-content"></div>
+            <div style="margin-top: 15px; font-size: 0.9rem; color: #8c6d46; text-align: right;">
+                <i class="fas fa-microchip"></i> 基于页面内容实时分析
+            </div>
         </div>
 
         <div class="comments-section">
@@ -672,6 +713,9 @@
             const likeBtn = document.getElementById('like-btn');
             const bookmarkBtn = document.getElementById('bookmark-btn');
             const shareBtn = document.getElementById('share-btn');
+            const aiBtn = document.getElementById('ai-btn');
+            const aiCard = document.getElementById('aiSummaryCard');
+            const summaryContent = document.getElementById('summaryContent');
 
             likeBtn.addEventListener('click', function () {
                 this.classList.toggle('active');
@@ -697,6 +741,66 @@
                 alert('感谢您的分享！分享功能将打开分享菜单。');
                 // 实际应用中这里会实现具体的分享功能
             });
+
+            // AI 总结按钮点击事件：切换卡片显示/隐藏，并更新总结内容
+            aiBtn.addEventListener('click', function () {
+                this.classList.toggle('active');
+                if (aiCard.style.display === 'none') {
+                    // 生成最新总结并显示卡片
+                    updateAISummary();
+                    aiCard.style.display = 'block';
+                } else {
+                    aiCard.style.display = 'none';
+                }
+            });
+
+            // 生成 AI 总结内容的函数
+            function updateAISummary() {
+                // 获取文章摘要（取前200字）
+                const articleParagraphs = document.querySelectorAll('.text-content .text p');
+                let articleText = '';
+                articleParagraphs.forEach(p => {
+                    articleText += p.textContent + ' ';
+                });
+                articleText = articleText.trim();
+                const articleSummary = articleText.length > 200 ? articleText.substring(0, 200) + '…' : articleText;
+
+                // 获取图片信息（去重后的图片主题）
+                const images = document.querySelectorAll('.gallery-img');
+                const altSet = new Set();
+                images.forEach(img => {
+                    if (img.alt) altSet.add(img.alt);
+                });
+                const uniqueAlts = Array.from(altSet);
+                const imageCount = images.length;
+                let imageInfo = `共 ${imageCount} 张历史影像`;
+                if (uniqueAlts.length > 0) {
+                    imageInfo += `，包含：${uniqueAlts.slice(0, 4).join('、')}` + (uniqueAlts.length > 4 ? '等' : '');
+                }
+
+                // 获取视频信息
+                const iframe = document.querySelector('.video-wrapper iframe');
+                const videoTitle = iframe ? iframe.getAttribute('title') || '历史纪录片' : '历史纪录片';
+
+                // 获取音频信息
+                const audio = document.querySelector('audio');
+                const audioInfo = audio ? '包含古风音乐欣赏' : '';
+
+                // 获取互动数据
+                const likeCount = document.querySelector('#like-btn .count').textContent;
+                const bookmarkCount = document.querySelector('#bookmark-btn .count').textContent;
+
+                // 构建总结文本
+                const summary = `
+                    📖 文章摘要：${articleSummary}<br><br>
+                    🖼️ 图片资料：${imageInfo}<br><br>
+                    🎥 视频内容：《${videoTitle}》<br><br>
+                    🎵 音频资源：${audioInfo || '无音频内容'}<br><br>
+                    ❤️ 读者互动：获得 ${likeCount} 人喜欢，${bookmarkCount} 人收藏。
+                `;
+
+                summaryContent.innerHTML = summary;
+            }
 
             // 评论提交功能
             const commentForm = document.querySelector('.comment-form');

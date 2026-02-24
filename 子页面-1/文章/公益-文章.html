@@ -261,6 +261,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             border: 1px solid transparent;
+            min-width: 100px;
         }
         
         .interaction-btn:hover {
@@ -283,7 +284,44 @@
         .interaction-btn.active i {
             color: #e74c3c;
         }
-        
+
+        /* AI 总结卡片样式 */
+        .ai-summary-card {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .ai-summary-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .ai-summary-card h3 {
+            font-family: 'Ma Shan Zheng', cursive;
+            color: #5c4c3e;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        .summary-content {
+            line-height: 1.8;
+            color: #5c4c3e;
+            font-size: 1.05rem;
+        }
+
         .comments-section {
             margin-top: 50px;
         }
@@ -500,18 +538,32 @@
         <div class="interaction-buttons">
             <div class="interaction-btn" id="likeBtn">
                 <i class="fas fa-heart"></i>
-                <span>喜欢 (326)</span>
+                <span>喜欢</span>
             </div>
             <div class="interaction-btn" id="favoriteBtn">
                 <i class="fas fa-star"></i>
-                <span>收藏 (158)</span>
+                <span>收藏</span>
             </div>
             <div class="interaction-btn" id="shareBtn">
                 <i class="fas fa-share-alt"></i>
-                <span>转发 (89)</span>
+                <span>分享</span>
+            </div>
+            <!-- AI 总结按钮 -->
+            <div class="interaction-btn" id="aiBtn">
+                <i class="fas fa-robot"></i>
+                <span>AI总结</span>
             </div>
         </div>
-        
+
+        <!-- AI 总结卡片（初始隐藏） -->
+        <div class="ai-summary-card" id="aiSummaryCard" style="display: none;">
+            <h3>AI 智能总结</h3>
+            <div id="summaryContent" class="summary-content"></div>
+            <div style="margin-top: 15px; font-size: 0.9rem; color: #8c6d46; text-align: right;">
+                <i class="fas fa-microchip"></i> 基于页面内容实时分析
+            </div>
+        </div>
+
         <section class="content-section comments-section">
             <h3 class="section-title">读者评论</h3>
             <div class="comment-list">
@@ -572,40 +624,78 @@
         document.addEventListener('DOMContentLoaded', function() {
             // 喜欢功能
             const likeBtn = document.getElementById('likeBtn');
+            const aiBtn = document.getElementById('aiBtn');
+            const aiCard = document.getElementById('aiSummaryCard');
+            const summaryContent = document.getElementById('summaryContent');
+
             likeBtn.addEventListener('click', function() {
                 this.classList.toggle('active');
-                const span = this.querySelector('span');
-                let count = parseInt(span.textContent.match(/\d+/)[0]);
-                if (this.classList.contains('active')) {
-                    span.textContent = `喜欢 (${count + 1})`;
-                } else {
-                    span.textContent = `喜欢 (${count - 1})`;
-                }
             });
-            
+
             // 收藏功能
             const favoriteBtn = document.getElementById('favoriteBtn');
             favoriteBtn.addEventListener('click', function() {
                 this.classList.toggle('active');
-                const span = this.querySelector('span');
-                let count = parseInt(span.textContent.match(/\d+/)[0]);
-                if (this.classList.contains('active')) {
-                    span.textContent = `收藏 (${count + 1})`;
-                } else {
-                    span.textContent = `收藏 (${count - 1})`;
-                }
             });
-            
+
             // 转发功能
             const shareBtn = document.getElementById('shareBtn');
             shareBtn.addEventListener('click', function() {
-                const span = this.querySelector('span');
-                let count = parseInt(span.textContent.match(/\d+/)[0]);
-                span.textContent = `转发 (${count + 1})`;
-                
                 alert('感谢您的分享！公益因传播而更有力量。');
             });
-            
+
+            // AI 总结按钮点击事件：切换卡片显示/隐藏，并更新总结内容
+            aiBtn.addEventListener('click', function() {
+                this.classList.toggle('active');
+                if (aiCard.style.display === 'none') {
+                    // 生成最新总结并显示卡片
+                    updateAISummary();
+                    aiCard.style.display = 'block';
+                } else {
+                    aiCard.style.display = 'none';
+                }
+            });
+
+            // 生成 AI 总结内容的函数
+            function updateAISummary() {
+                // 获取文章摘要（取前200字）
+                const articleParagraphs = document.querySelectorAll('.text-content p');
+                let articleText = '';
+                articleParagraphs.forEach(p => {
+                    articleText += p.textContent + ' ';
+                });
+                articleText = articleText.trim();
+                const articleSummary = articleText.length > 200 ? articleText.substring(0, 200) + '…' : articleText;
+
+                // 获取图片信息
+                const images = document.querySelectorAll('.media-item img');
+                const altSet = new Set();
+                images.forEach(img => {
+                    if (img.alt) altSet.add(img.alt);
+                });
+                const uniqueAlts = Array.from(altSet);
+                const imageCount = images.length;
+                let imageInfo = `共 ${imageCount} 张图片`;
+                if (uniqueAlts.length > 0) {
+                    imageInfo += `，包含：${uniqueAlts.join('、')}`;
+                }
+
+                // 获取互动数据
+                const likeCount = document.getElementById('likeBtn').classList.contains('active') ? '已喜欢' : '未喜欢';
+                const favoriteCount = document.getElementById('favoriteBtn').classList.contains('active') ? '已收藏' : '未收藏';
+
+                // 构建总结文本
+                const summary = `
+                    📖 文章摘要：${articleSummary}<br><br>
+                    🖼️ 图片资料：${imageInfo}<br><br>
+                    🎥 视频内容：公益慈善宣传视频<br><br>
+                    🎵 音频资源：《仁爱之心》主题音乐<br><br>
+                    ❤️ 读者互动：${likeCount}，${favoriteCount}
+                `;
+
+                summaryContent.innerHTML = summary;
+            }
+
             // 音频播放功能
             const playBtn = document.getElementById('playBtn');
             const progressBar = document.getElementById('progressBar');

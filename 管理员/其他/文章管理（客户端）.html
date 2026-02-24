@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -418,81 +419,28 @@
             color: #8c6d46;
         }
 
-        /* 用户管理样式 - 修改为卡片式布局 */
-        .user-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px;
+        /* 用户管理样式 */
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
             margin-top: 20px;
         }
 
-        .user-card {
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
-            border: 1px solid #d6ccc2;
-            transition: all 0.3s ease;
+        .user-table th {
+            background: #f1e9dd;
+            padding: 15px;
+            text-align: left;
+            color: #8c6d46;
+            font-weight: bold;
         }
 
-        .user-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(92, 76, 62, 0.15);
-        }
-
-        .user-card-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
+        .user-table td {
+            padding: 15px;
             border-bottom: 1px solid #e9e1d5;
         }
 
-        .user-card-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: #c4a77d;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-weight: bold;
-            font-size: 1.2rem;
-            margin-right: 15px;
-        }
-
-        .user-card-info h3 {
-            color: #5c4c3e;
-            margin-bottom: 5px;
-        }
-
-        .user-card-info p {
-            color: #8c6d46;
-            font-size: 0.9rem;
-        }
-
-        .user-card-details {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .user-detail-item {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .user-detail-label {
-            font-size: 0.8rem;
-            color: #8c6d46;
-            margin-bottom: 3px;
-        }
-
-        .user-detail-value {
-            font-weight: bold;
-            color: #5c4c3e;
+        .user-table tr:hover {
+            background: #f9f5eb;
         }
 
         .user-role-badge {
@@ -533,15 +481,6 @@
         .status-inactive {
             background: #e8d8d8;
             color: #8c4c4c;
-        }
-
-        .user-card-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #e9e1d5;
         }
 
         /* 数据统计样式 */
@@ -740,14 +679,6 @@
             }
 
             .charts-container {
-                grid-template-columns: 1fr;
-            }
-
-            .user-cards {
-                grid-template-columns: 1fr;
-            }
-
-            .user-card-details {
                 grid-template-columns: 1fr;
             }
         }
@@ -1011,7 +942,7 @@
                     </div>
                 </div>
 
-                <!-- 用户管理 - 修改为卡片式布局 -->
+                <!-- 用户管理 -->
                 <div class="content-section" id="user-management">
                     <div class="content-header">
                         <h1 class="page-title">用户管理</h1>
@@ -1021,164 +952,100 @@
                         </button>
                     </div>
 
-                    <div class="user-cards">
-                        <!-- 用户卡片 -->
-                        <div class="user-card">
-                            <div class="user-card-header">
-                                <div class="user-card-avatar">张</div>
-                                <div class="user-card-info">
-                                    <h3>张文化</h3>
-                                    <p>zhangwenhua@example.com</p>
-                                </div>
-                            </div>
-                            <div class="user-card-details">
-                                <div class="user-detail-item">
-                                    <span class="user-detail-label">角色</span>
-                                    <span class="user-detail-value"><span class="user-role-badge role-editor">编辑</span></span>
-                                </div>
-                                <div class="user-detail-item">
-                                    <span class="user-detail-label">注册时间</span>
-                                    <span class="user-detail-value">2023-05-12</span>
-                                </div>
-                                <div class="user-detail-item">
-                                    <span class="user-detail-label">状态</span>
-                                    <span class="user-detail-value"><span class="user-status status-active">活跃</span></span>
-                                </div>
-                                <div class="user-detail-item">
-                                    <span class="user-detail-label">文章数</span>
-                                    <span class="user-detail-value">42</span>
-                                </div>
-                            </div>
-                            <div class="user-card-actions">
-                                <div class="action-btn" onclick="editUser(1)">
-                                    <i class="fas fa-edit"></i>
-                                </div>
-                                <div class="action-btn" onclick="resetPassword(1)">
-                                    <i class="fas fa-key"></i>
-                                </div>
-                                <div class="action-btn" onclick="deleteUser(1)">
-                                    <i class="fas fa-trash-alt"></i>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="user-card">
-                            <div class="user-card-header">
-                                <div class="user-card-avatar">李</div>
-                                <div class="user-card-info">
-                                    <h3>李历史</h3>
-                                    <p>lilishi@example.com</p>
-                                </div>
-                            </div>
-                            <div class="user-card-details">
-                                <div class="user-detail-item">
-                                    <span class="user-detail-label">角色</span>
-                                    <span class="user-detail-value"><span class="user-role-badge role-user">普通用户</span></span>
-                                </div>
-                                <div class="user-detail-item">
-                                    <span class="user-detail-label">注册时间</span>
-                                    <span class="user-detail-value">2023-08-23</span>
-                                </div>
-                                <div class="user-detail-item">
-                                    <span class="user-detail-label">状态</span>
-                                    <span class="user-detail-value"><span class="user-status status-active">活跃</span></span>
-                                </div>
-                                <div class="user-detail-item">
-                                    <span class="user-detail-label">文章数</span>
-                                    <span class="user-detail-value">18</span>
-                                </div>
-                            </div>
-                            <div class="user-card-actions">
-                                <div class="action-btn" onclick="editUser(2)">
-                                    <i class="fas fa-edit"></i>
-                                </div>
-                                <div class="action-btn" onclick="resetPassword(2)">
-                                    <i class="fas fa-key"></i>
-                                </div>
-                                <div class="action-btn" onclick="deleteUser(2)">
-                                    <i class="fas fa-trash-alt"></i>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="user-card">
-                            <div class="user-card-header">
-                                <div class="user-card-avatar">王</div>
-                                <div class="user-card-info">
-                                    <h3>王艺匠</h3>
-                                    <p>wangyijiang@example.com</p>
-                                </div>
-                            </div>
-                            <div class="user-card-details">
-                                <div class="user-detail-item">
-                                    <span class="user-detail-label">角色</span>
-                                    <span class="user-detail-value"><span class="user-role-badge role-admin">管理员</span></span>
-                                </div>
-                                <div class="user-detail-item">
-                                    <span class="user-detail-label">注册时间</span>
-                                    <span class="user-detail-value">2023-01-15</span>
-                                </div>
-                                <div class="user-detail-item">
-                                    <span class="user-detail-label">状态</span>
-                                    <span class="user-detail-value"><span class="user-status status-active">活跃</span></span>
-                                </div>
-                                <div class="user-detail-item">
-                                    <span class="user-detail-label">文章数</span>
-                                    <span class="user-detail-value">127</span>
-                                </div>
-                            </div>
-                            <div class="user-card-actions">
-                                <div class="action-btn" onclick="editUser(3)">
-                                    <i class="fas fa-edit"></i>
-                                </div>
-                                <div class="action-btn" onclick="resetPassword(3)">
-                                    <i class="fas fa-key"></i>
-                                </div>
-                                <div class="action-btn" onclick="deleteUser(3)">
-                                    <i class="fas fa-trash-alt"></i>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="user-card">
-                            <div class="user-card-header">
-                                <div class="user-card-avatar">赵</div>
-                                <div class="user-card-info">
-                                    <h3>赵公益</h3>
-                                    <p>zhaogongyi@example.com</p>
-                                </div>
-                            </div>
-                            <div class="user-card-details">
-                                <div class="user-detail-item">
-                                    <span class="user-detail-label">角色</span>
-                                    <span class="user-detail-value"><span class="user-role-badge role-user">普通用户</span></span>
-                                </div>
-                                <div class="user-detail-item">
-                                    <span class="user-detail-label">注册时间</span>
-                                    <span class="user-detail-value">2023-09-30</span>
-                                </div>
-                                <div class="user-detail-item">
-                                    <span class="user-detail-label">状态</span>
-                                    <span class="user-detail-value"><span class="user-status status-inactive">未激活</span></span>
-                                </div>
-                                <div class="user-detail-item">
-                                    <span class="user-detail-label">文章数</span>
-                                    <span class="user-detail-value">0</span>
-                                </div>
-                            </div>
-                            <div class="user-card-actions">
-                                <div class="action-btn" onclick="editUser(4)">
-                                    <i class="fas fa-edit"></i>
-                                </div>
-                                <div class="action-btn" onclick="resetPassword(4)">
-                                    <i class="fas fa-key"></i>
-                                </div>
-                                <div class="action-btn" onclick="deleteUser(4)">
-                                    <i class="fas fa-trash-alt"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <table class="user-table">
+                        <thead>
+                            <tr>
+                                <th>用户名</th>
+                                <th>邮箱</th>
+                                <th>角色</th>
+                                <th>注册时间</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>张文化</td>
+                                <td>zhangwenhua@example.com</td>
+                                <td><span class="user-role-badge role-editor">编辑</span></td>
+                                <td>2023-05-12</td>
+                                <td><span class="user-status status-active">活跃</span></td>
+                                <td>
+                                    <div class="article-actions">
+                                        <div class="action-btn" onclick="editUser(1)">
+                                            <i class="fas fa-edit"></i>
+                                        </div>
+                                        <div class="action-btn" onclick="resetPassword(1)">
+                                            <i class="fas fa-key"></i>
+                                        </div>
+                                        <div class="action-btn" onclick="deleteUser(1)">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>李历史</td>
+                                <td>lilishi@example.com</td>
+                                <td><span class="user-role-badge role-user">普通用户</span></td>
+                                <td>2023-08-23</td>
+                                <td><span class="user-status status-active">活跃</span></td>
+                                <td>
+                                    <div class="article-actions">
+                                        <div class="action-btn" onclick="editUser(2)">
+                                            <i class="fas fa-edit"></i>
+                                        </div>
+                                        <div class="action-btn" onclick="resetPassword(2)">
+                                            <i class="fas fa-key"></i>
+                                        </div>
+                                        <div class="action-btn" onclick="deleteUser(2)">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>王艺匠</td>
+                                <td>wangyijiang@example.com</td>
+                                <td><span class="user-role-badge role-admin">管理员</span></td>
+                                <td>2023-01-15</td>
+                                <td><span class="user-status status-active">活跃</span></td>
+                                <td>
+                                    <div class="article-actions">
+                                        <div class="action-btn" onclick="editUser(3)">
+                                            <i class="fas fa-edit"></i>
+                                        </div>
+                                        <div class="action-btn" onclick="resetPassword(3)">
+                                            <i class="fas fa-key"></i>
+                                        </div>
+                                        <div class="action-btn" onclick="deleteUser(3)">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>赵公益</td>
+                                <td>zhaogongyi@example.com</td>
+                                <td><span class="user-role-badge role-user">普通用户</span></td>
+                                <td>2023-09-30</td>
+                                <td><span class="user-status status-inactive">未激活</span></td>
+                                <td>
+                                    <div class="article-actions">
+                                        <div class="action-btn" onclick="editUser(4)">
+                                            <i class="fas fa-edit"></i>
+                                        </div>
+                                        <div class="action-btn" onclick="resetPassword(4)">
+                                            <i class="fas fa-key"></i>
+                                        </div>
+                                        <div class="action-btn" onclick="deleteUser(4)">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
                 <!-- 数据统计 -->
@@ -1614,4 +1481,5 @@
         });
     </script>
 </body>
+
 </html>

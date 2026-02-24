@@ -8,6 +8,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap">
+    <!-- 导入 Three.js 和 OrbitControls -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+            }
+        }
+    </script>
     <style>
         * {
             margin: 0;
@@ -167,11 +176,9 @@
 
         .main-image {
             width: 100%;
-            height: 400px;
-            border-radius: 12px;
+            height: 300px;
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
-            margin-bottom: 15px;
             border: 1px solid #d6ccc2;
         }
 
@@ -179,6 +186,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: opacity 0.3s ease;
         }
 
         .thumbnail-gallery {
@@ -206,6 +214,102 @@
             object-fit: cover;
         }
 
+        /* 自动轮播指示器 */
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #d6ccc2;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+            background: #8c6d46;
+            transform: scale(1.2);
+        }
+
+        /* 视频容器样式 */
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+        }
+
+        .video-placeholder {
+            text-align: center;
+            color: #8b7355;
+        }
+
+        .video-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            opacity: 0.7;
+        }
+
+        .video-placeholder p {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* 3D预览卡片 */
+        .preview-3d-card {
+            margin-top: 20px;
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+        }
+
+        /* 产品图片预览卡片 - 无上边距 */
+        .product-gallery .preview-3d-card:first-child {
+            margin-top: 0;
+        }
+
+        .preview-3d-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .preview-3d-card h3 {
+            font-family: 'Ma Shan Zheng', cursive;
+            color: #8c3c2c;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        #canvas-container {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f1e9dd;
+        }
+
         /* 产品信息区域 */
         .product-info {
             flex: 1;
@@ -230,6 +334,11 @@
             height: 6px;
             background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
             border-radius: 12px 12px 0 0;
+        }
+
+        /* 填充卡片样式 - 无底部外边距 */
+        .filler-card {
+            margin-bottom: 0;
         }
 
         .product-title {
@@ -435,6 +544,15 @@
             display: block;
         }
 
+        /* 标签页内容间距优化 - 组与组之间间距与第一组到分割线一致 */
+        .tab-content p {
+            margin-bottom: 18px;
+        }
+
+        .tab-content p:last-child {
+            margin-bottom: 0;
+        }
+
         /* 评价区域 */
         .reviews-summary {
             display: flex;
@@ -541,6 +659,26 @@
             line-height: 1.6;
         }
 
+        /* 填充卡片内的图标布局 */
+        .heritage-icons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .heritage-icons div i {
+            color: #8c6d46;
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .heritage-icons div span {
+            display: block;
+            font-size: 0.95rem;
+            color: #5c4c3e;
+        }
+
         /* 页脚 */
         .page-footer {
             text-align: center;
@@ -561,8 +699,18 @@
                 max-width: 100%;
             }
 
+            .preview-3d-card {
+                margin: 10px 0;
+            }
+
             .reviews-summary {
                 flex-direction: column;
+            }
+
+            /* 移动端时填充卡片高度自动（取消动态高度） */
+            .filler-card {
+                height: auto !important;
+                margin-bottom: 30px;
             }
         }
 
@@ -584,48 +732,6 @@
                 flex: 1;
                 text-align: center;
             }
-        }
-
-        /* 视频展示区域样式 */
-        .video-section {
-            margin-top: 30px;
-        }
-
-        .video-title {
-            font-size: 1.2rem;
-            color: #8b7355;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
-        .video-container {
-            position: relative;
-            width: 100%;
-            height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
-            border: 1px solid #d6ccc2;
-        }
-
-        .video-placeholder {
-            text-align: center;
-            color: #8b7355;
-        }
-
-        .video-placeholder i {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            opacity: 0.7;
-        }
-
-        .video-placeholder p {
-            font-size: 1rem;
-            font-weight: 500;
         }
     </style>
 </head>
@@ -660,37 +766,24 @@
         <div class="product-container">
             <div class="product-detail">
                 <!-- 产品图片区域 -->
-                <div class="product-gallery">
-                    <div class="main-image">
-                        <img src="https://images.unsplash.com/photo-1587332278433-97428c3e9a09?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
-                            alt="景德镇手工青花瓷茶具套装" id="mainImage">
-                    </div>
-                    <div class="thumbnail-gallery">
-                        <div class="thumbnail active"
-                            data-image="https://images.unsplash.com/photo-1587332278433-97428c3e9a09?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80">
-                            <img src="https://images.unsplash.com/photo-1587332278433-97428c3e9a09?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
-                                alt="茶具正面">
+                <div class="product-gallery" id="productGallery">
+                    <div class="preview-3d-card">
+                        <h3>产品图片预览</h3>
+                        <div class="main-image">
+                            <img src="https://images.unsplash.com/photo-1587332278433-97428c3e9a09?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
+                                alt="景德镇手工青花瓷茶具套装" id="mainImage">
                         </div>
-                        <div class="thumbnail"
-                            data-image="https://images.unsplash.com/photo-1594736797933-d0e6e4f5a65a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80">
-                            <img src="https://images.unsplash.com/photo-1594736797933-d0e6e4f5a65a?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
-                                alt="茶具细节">
-                        </div>
-                        <div class="thumbnail"
-                            data-image="https://images.unsplash.com/photo-1611073311983-d9a8c7de6a1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80">
-                            <img src="https://images.unsplash.com/photo-1611073311983-d9a8c7de6a1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
-                                alt="茶具套装">
-                        </div>
-                        <div class="thumbnail"
-                            data-image="https://images.unsplash.com/photo-1547981609-4b6bfc67c272?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80">
-                            <img src="https://images.unsplash.com/photo-1547981609-4b6bfc67c272?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
-                                alt="使用场景">
+                        <div class="carousel-indicators">
+                            <div class="indicator active" data-index="0"></div>
+                            <div class="indicator" data-index="1"></div>
+                            <div class="indicator" data-index="2"></div>
+                            <div class="indicator" data-index="3"></div>
                         </div>
                     </div>
 
                     <!-- 视频展示区域 -->
-                    <div class="video-section">
-                        <h3 class="video-title">工艺展示视频</h3>
+                    <div class="preview-3d-card">
+                        <h3>工艺展示视频</h3>
                         <div class="video-container">
                             <div class="video-placeholder">
                                 <i class="fas fa-play-circle"></i>
@@ -698,11 +791,21 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- 新增 3D 数字化预览窗口 -->
+                    <div class="preview-3d-card">
+                        <h3>产品数字化预览</h3>
+                        <div id="canvas-container"></div>
+                        <p style="text-align: center; margin-top: 10px; color: #8c6d46; font-size: 0.9rem;">
+                            <i class="fas fa-mouse-pointer"></i> 鼠标拖动360°旋转
+                        </p>
+                    </div>
                 </div>
 
                 <!-- 产品信息区域 -->
-                <div class="product-info">
-                    <div class="product-card">
+                <div class="product-info" id="productInfo">
+                    <!-- 第一个卡片：产品基本信息 -->
+                    <div class="product-card" id="mainProductCard">
                         <h1 class="product-title">景德镇手工青花瓷茶具套装</h1>
                         <p class="product-subtitle">非遗传承 · 手工绘制 · 匠心之作</p>
 
@@ -787,6 +890,26 @@
                             <button class="action-btn primary" id="buyNowBtn">
                                 <i class="fas fa-bolt"></i> 立即购买
                             </button>
+                        </div>
+                    </div>
+
+                    <!-- 填充卡片：动态高度，填补空白 -->
+                    <div class="product-card filler-card" id="fillerCard">
+                        <h3 style="font-family: 'Ma Shan Zheng', cursive; color: #8c3c2c; margin-bottom: 15px; font-size: 1.5rem;">云间文苑 · 匠心精神</h3>
+                        <p>每一件器物，都承载着匠人的温度与时光的痕迹。我们相信，好的器物能与使用者产生共鸣，在日复一日的陪伴中，沉淀出生活的诗意。</p>
+                        <div class="heritage-icons">
+                            <div>
+                                <i class="fas fa-feather-alt"></i>
+                                <span>手作温度</span>
+                            </div>
+                            <div>
+                                <i class="fas fa-history"></i>
+                                <span>百年传承</span>
+                            </div>
+                            <div>
+                                <i class="fas fa-heart"></i>
+                                <span>以心传心</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -969,20 +1092,71 @@
                 // 实际应用中这里会跳转到商店页面
             });
 
-            // 缩略图点击事件
-            const thumbnails = document.querySelectorAll('.thumbnail');
+            // 图片轮播功能
             const mainImage = document.getElementById('mainImage');
+            const indicators = document.querySelectorAll('.indicator');
+            const images = [
+                'https://images.unsplash.com/photo-1587332278433-97428c3e9a09?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+                'https://images.unsplash.com/photo-1594736797933-d0e6e4f5a65a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+                'https://images.unsplash.com/photo-1611073311983-d9a8c7de6a1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+                'https://images.unsplash.com/photo-1547981609-4b6bfc67c272?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80'
+            ];
 
-            thumbnails.forEach(thumbnail => {
-                thumbnail.addEventListener('click', function () {
-                    const imageUrl = this.getAttribute('data-image');
-                    mainImage.src = imageUrl;
+            let currentIndex = 0;
+            let autoPlayInterval;
 
-                    // 更新激活状态
-                    thumbnails.forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
+            // 切换图片
+            function switchImage(index) {
+                currentIndex = index;
+                mainImage.style.opacity = 0;
+
+                setTimeout(() => {
+                    mainImage.src = images[currentIndex];
+                    mainImage.style.opacity = 1;
+                }, 200);
+
+                // 更新指示器状态
+                indicators.forEach((ind, i) => {
+                    if (i === currentIndex) {
+                        ind.classList.add('active');
+                    } else {
+                        ind.classList.remove('active');
+                    }
+                });
+            }
+
+            // 启动自动轮播
+            function startAutoPlay() {
+                autoPlayInterval = setInterval(() => {
+                    let nextIndex = (currentIndex + 1) % images.length;
+                    switchImage(nextIndex);
+                }, 3000); // 每3秒切换一次
+            }
+
+            // 停止自动轮播
+            function stopAutoPlay() {
+                clearInterval(autoPlayInterval);
+            }
+
+            // 指示器点击事件
+            indicators.forEach(indicator => {
+                indicator.addEventListener('click', function () {
+                    stopAutoPlay();
+                    const index = parseInt(this.getAttribute('data-index'));
+                    switchImage(index);
+                    startAutoPlay();
                 });
             });
+
+            // 鼠标悬停时停止轮播
+            mainImage.addEventListener('mouseenter', stopAutoPlay);
+            mainImage.addEventListener('mouseleave', startAutoPlay);
+
+            // 启动轮播
+            startAutoPlay();
+
+            // 添加图片切换动画样式
+            mainImage.style.transition = 'opacity 0.3s ease';
 
             // 数量选择器
             const decreaseBtn = document.getElementById('decreaseQty');
@@ -1041,8 +1215,10 @@
 
                 // 更新购物车数量
                 const cartCount = document.querySelector('.cart-count');
-                const currentCount = parseInt(cartCount.textContent);
-                cartCount.textContent = currentCount + quantity;
+                if (cartCount) {
+                    const currentCount = parseInt(cartCount.textContent);
+                    cartCount.textContent = currentCount + quantity;
+                }
             });
 
             // 立即购买按钮
@@ -1052,7 +1228,204 @@
                 alert(`立即购买 ${quantity} 件商品`);
                 // 实际应用中这里会跳转到结算页面
             });
+
+            // ===== 新增：动态高度填充卡片，实现左右底部对齐 =====
+            function adjustFillerHeight() {
+                const gallery = document.getElementById('productGallery');
+                const info = document.getElementById('productInfo');
+                const filler = document.getElementById('fillerCard');
+                if (!gallery || !info || !filler) return;
+
+                // 在移动端（flex-direction: column）时不调整高度
+                if (window.innerWidth <= 992) {
+                    filler.style.height = 'auto';
+                    return;
+                }
+
+                // 获取左侧总高度
+                const leftHeight = gallery.offsetHeight;
+
+                // 获取右侧除填充卡片外所有内容的高度（即第一个卡片的高度）
+                const mainCard = document.getElementById('mainProductCard');
+                // 注意：右侧可能有 margin-bottom，需要计算实际占用的总高度（包括 margin）
+                // 但因为我们只关心 offsetHeight，它包含 padding 和 border，不包含 margin
+                // 右侧 product-info 内所有卡片上下 margin 会影响整体高度，我们需要考虑 margin
+                // 简单方法：计算 product-info 内所有子元素（除了 filler）的 offsetHeight + margin-bottom 之和
+                const children = info.children;
+                let otherHeight = 0;
+                for (let i = 0; i < children.length; i++) {
+                    const child = children[i];
+                    if (child === filler) continue;
+                    const style = window.getComputedStyle(child);
+                    const marginBottom = parseInt(style.marginBottom) || 0;
+                    otherHeight += child.offsetHeight + marginBottom;
+                }
+
+                // 计算填充卡片需要的高度
+                let fillerHeight = leftHeight - otherHeight;
+
+                // 如果计算出的高度小于最小内容高度，则设为最小内容高度（或隐藏）
+                if (fillerHeight < 50) {
+                    filler.style.display = 'none';
+                } else {
+                    filler.style.display = 'block';
+                    filler.style.height = fillerHeight + 'px';
+                }
+            }
+
+            // 初次调整
+            adjustFillerHeight();
+
+            // 窗口大小变化时重新调整
+            window.addEventListener('resize', function () {
+                adjustFillerHeight();
+            });
+
+            // 图片和3D加载完成后重新调整
+            window.addEventListener('load', function () {
+                // 给3D渲染一点时间
+                setTimeout(adjustFillerHeight, 200);
+            });
+
+            // 如果3D内容异步渲染完成，可以通过 MutationObserver 监听 canvas-container 的子节点变化？暂时用 load 事件
+            // 简单起见，延迟后再执行一次
+            setTimeout(adjustFillerHeight, 500);
         });
+    </script>
+
+    <!-- 3D 预览脚本（使用模块方式） -->
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // 初始化 3D 场景
+        function init3D() {
+            const container = document.getElementById('canvas-container');
+            if (!container) return;
+
+            // 场景
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xf1e9dd); // 与容器背景色一致
+
+            // 相机
+            const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.set(5, 5, 5);
+            camera.lookAt(0, 0, 0);
+
+            // 渲染器
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+
+            // 轨道控制器（支持拖动旋转）
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 2.0;
+            controls.enableZoom = true;
+            controls.enablePan = false;
+
+            // 灯光
+            const ambientLight = new THREE.AmbientLight(0x404060);
+            scene.add(ambientLight);
+
+            const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+            dirLight.position.set(1, 2, 1);
+            scene.add(dirLight);
+
+            const backLight = new THREE.DirectionalLight(0xffffff, 0.5);
+            backLight.position.set(-1, 0, -1);
+            scene.add(backLight);
+
+            // 创建茶壶模型组合（模拟青花瓷茶壶）
+            const teapotGroup = new THREE.Group();
+
+            // 材质：青花瓷风格
+            const materialBody = new THREE.MeshPhongMaterial({ color: 0x3e6b8f, shininess: 30, emissive: 0x000000, specular: 0x444444 });
+            const materialAccent = new THREE.MeshPhongMaterial({ color: 0x1e3a5f, shininess: 40 });
+            const materialLid = new THREE.MeshPhongMaterial({ color: 0x5a7a9a });
+
+            // 壶身：球体压扁
+            const bodyGeo = new THREE.SphereGeometry(1.2, 32, 16);
+            const body = new THREE.Mesh(bodyGeo, materialBody);
+            body.scale.set(1.2, 1, 1.2);
+            body.position.y = 0.5;
+            teapotGroup.add(body);
+
+            // 壶盖：扁圆柱 + 顶珠
+            const lidBaseGeo = new THREE.CylinderGeometry(0.9, 0.9, 0.3, 32);
+            const lidBase = new THREE.Mesh(lidBaseGeo, materialLid);
+            lidBase.position.y = 1.6;
+            teapotGroup.add(lidBase);
+
+            const lidKnobGeo = new THREE.SphereGeometry(0.2, 16);
+            const lidKnob = new THREE.Mesh(lidKnobGeo, materialAccent);
+            lidKnob.position.y = 1.85;
+            teapotGroup.add(lidKnob);
+
+            // 壶嘴：圆锥
+            const spoutGeo = new THREE.ConeGeometry(0.4, 1.2, 16);
+            const spout = new THREE.Mesh(spoutGeo, materialBody);
+            spout.rotation.z = -0.3;
+            spout.position.set(1.5, 0.8, 0.2);
+            teapotGroup.add(spout);
+
+            // 壶把：半圆环
+            const handleGeo = new THREE.TorusGeometry(0.8, 0.15, 16, 32, Math.PI);
+            const handle = new THREE.Mesh(handleGeo, materialBody);
+            handle.rotation.y = 0.2;
+            handle.rotation.x = 0.5;
+            handle.rotation.z = 0.3;
+            handle.position.set(-1.2, 0.9, 0);
+            teapotGroup.add(handle);
+
+            // 添加一些蓝色装饰点（模拟青花图案）
+            const decalGeo = new THREE.SphereGeometry(0.1, 8);
+            const decalMat = new THREE.MeshPhongMaterial({ color: 0x1a2f4a });
+            const decal1 = new THREE.Mesh(decalGeo, decalMat);
+            decal1.position.set(0.5, 0.7, 1.0);
+            teapotGroup.add(decal1);
+            const decal2 = new THREE.Mesh(decalGeo, decalMat);
+            decal2.position.set(-0.3, 0.9, -1.1);
+            teapotGroup.add(decal2);
+
+            scene.add(teapotGroup);
+
+            // 添加一个简单的平面作为桌面
+            const planeGeo = new THREE.CircleGeometry(4, 32);
+            const planeMat = new THREE.MeshPhongMaterial({ color: 0xd6ccc2, side: THREE.DoubleSide, transparent: true, opacity: 0.3 });
+            const plane = new THREE.Mesh(planeGeo, planeMat);
+            plane.rotation.x = -Math.PI / 2;
+            plane.position.y = -0.2;
+            scene.add(plane);
+
+            // 动画循环
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update(); // 自动旋转由 controls 控制
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            // 窗口大小自适应
+            window.addEventListener('resize', onWindowResize, false);
+            function onWindowResize() {
+                const width = container.clientWidth;
+                const height = container.clientHeight;
+                renderer.setSize(width, height);
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+            }
+        }
+
+        // 等待 DOM 完全加载后初始化
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init3D);
+        } else {
+            init3D();
+        }
     </script>
 </body>
 
