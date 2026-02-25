@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>联系我们 - 云间文苑</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image:
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 顶部导航栏 */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 2px solid #d6ccc2;
+        }
+
+        .logo {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.2rem;
+            color: #8c6d46;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            margin-left: 10px;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            padding: 8px 15px;
+            background: #8c6d46;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        .nav-btn:hover {
+            background: #745b3a;
+        }
+
+        /* 页面标题 */
+        .page-header {
+            text-align: center;
+            padding: 40px 0 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .page-header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8c6d46, transparent);
+        }
+
+        .page-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 3rem;
+            color: #8c3c2c;
+            margin-bottom: 15px;
+            letter-spacing: 5px;
+            text-shadow: 2px 2px 4px rgba(92, 76, 62, 0.2);
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #8c6d46;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* 卡片通用样式 */
+        .card {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .section-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: #5c4c3e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6ccc2;
+        }
+
+        /* 联系方式网格 */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .contact-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 253, 245, 0.5);
+            border-radius: 8px;
+            border: 1px solid #d6ccc2;
+        }
+
+        .contact-item i {
+            font-size: 2.5rem;
+            color: #8c6d46;
+            margin-bottom: 15px;
+        }
+
+        .contact-item h4 {
+            font-size: 1.2rem;
+            color: #5c4c3e;
+            margin-bottom: 10px;
+        }
+
+        .contact-item p {
+            color: #745b3a;
+            font-size: 1rem;
+        }
+
+        /* 联系表单 */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #5c4c3e;
+            font-weight: bold;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d6ccc2;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            color: #5c4c3e;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #8c6d46;
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .action-btn {
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #8c6d46;
+            background: #8c6d46;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            background: #745b3a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(92, 76, 62, 0.2);
+        }
+
+        /* 地图容器 */
+        .map-container {
+            width: 100%;
+            height: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #d6ccc2;
+            background: #e9e1d5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8c6d46;
+            font-size: 1rem;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .map-placeholder {
+            text-align: center;
+        }
+
+        .map-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            opacity: 0.7;
+        }
+
+        /* 页脚 */
+        .page-footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 20px;
+            color: #8c6d46;
+            font-size: 0.9rem;
+            border-top: 1px solid #d6ccc2;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .top-nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <div class="top-nav">
+            <div class="logo">
+                <i class="fas fa-mountain"></i>
+                <span>云间文苑</span>
+            </div>
+
+            <div class="user-actions">
+                <button class="nav-btn" id="backBtn">
+                    <i class="fas fa-arrow-left"></i> 返回
+                </button>
+            </div>
+        </div>
+
+        <!-- 页面标题 -->
+        <header class="page-header">
+            <h1 class="page-title">联系我们</h1>
+            <p class="page-subtitle">期待与您的每一次交流</p>
+        </header>
+
+        <!-- 联系方式卡片 -->
+        <div class="card">
+            <h2 class="section-title">联系方式</h2>
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h4>地址</h4>
+                    <p>北京市朝阳区建国门外大街甲6号<br>SK大厦15层</p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <h4>电话</h4>
+                    <p>010-1234 5678<br>客服热线：400-888-1234</p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <h4>邮箱</h4>
+                    <p>contact@yunjian.com<br>service@yunjian.com</p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-clock"></i>
+                    <h4>工作时间</h4>
+                    <p>周一至周五 9:00 - 18:00<br>周六 10:00 - 16:00</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 联系表单卡片 -->
+        <div class="card">
+            <h2 class="section-title">发送留言</h2>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label class="form-label" for="name">您的姓名</label>
+                    <input type="text" class="form-input" id="name" placeholder="例如：张三" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="email">电子邮箱</label>
+                    <input type="email" class="form-input" id="email" placeholder="example@domain.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="message">留言内容</label>
+                    <textarea class="form-textarea" id="message" placeholder="请写下您的宝贵意见或咨询事项..." required></textarea>
+                </div>
+                <button type="submit" class="action-btn">
+                    <i class="fas fa-paper-plane"></i> 发送留言
+                </button>
+            </form>
+        </div>
+
+        <!-- 地图卡片 -->
+        <div class="card">
+            <h2 class="section-title">我们的位置</h2>
+            <div class="map-container">
+                <!-- 这里可以替换为真实的地图 iframe，例如高德地图或百度地图。当前使用占位图 -->
+                <div class="map-placeholder">
+                    <i class="fas fa-map"></i>
+                    <p>地图展示区域<br>（可嵌入实际地图）</p>
+                </div>
+                <!-- 如果您有地图嵌入代码，可以替换下面的注释部分 -->
+                <!-- 
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3058.234567890123!2d116.456789!3d39.912345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMznCsDU0JzQ0LjQiTiAxMTbCsDI3JzI0LjQiRQ!5e0!3m2!1szh-CN!2scn!4v1234567890" allowfullscreen="" loading="lazy"></iframe>
+                -->
+            </div>
+        </div>
+
+        <footer class="page-footer">
+            <p>© 2023 云间文苑 | 传承匠心，品味传统工艺之美</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 返回按钮
+            const backBtn = document.getElementById('backBtn');
+            backBtn.addEventListener('click', function () {
+                // 返回上一页
+                window.history.back();
+            });
+
+            // 联系表单提交
+            const contactForm = document.getElementById('contactForm');
+            contactForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const message = document.getElementById('message').value.trim();
+
+                if (!name || !email || !message) {
+                    alert('请完整填写表单');
+                    return;
+                }
+
+                // 简单邮箱验证
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    alert('请输入有效的电子邮箱地址');
+                    return;
+                }
+
+                // 模拟提交成功
+                alert(`留言已发送，感谢您的联系！\n我们将尽快回复至邮箱：${email}`);
+                contactForm.reset();
+
+                // 实际开发中可使用 fetch 发送到后端
+            });
+        });
+    </script>
+</body>
+
+</html>

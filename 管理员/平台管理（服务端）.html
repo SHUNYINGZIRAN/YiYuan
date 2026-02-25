@@ -1084,6 +1084,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="#" class="nav-link" data-content="announcement">
+                            <i class="fas fa-bullhorn"></i>
+                            <span>公告编辑</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="#" class="nav-link" data-content="donation">
                             <i class="fas fa-hand-holding-heart"></i>
                             <span>公益募捐</span>
@@ -1341,16 +1347,13 @@
 
                 <!-- 商品管理内容 -->
                 <div class="content-section" id="products-content" style="display: none;">
-                    <div class="review-filters" style="justify-content: space-between;">
+                    <div class="review-filters">
                         <div style="display: flex; gap: 15px;">
                             <button class="filter-btn active">全部商品</button>
                             <button class="filter-btn">在售商品</button>
                             <button class="filter-btn">已售罄</button>
                             <button class="filter-btn">已下架</button>
                         </div>
-                        <button class="header-btn" id="addProductBtn">
-                            <i class="fas fa-plus"></i> 添加商品
-                        </button>
                     </div>
 
                     <table class="articles-table">
@@ -1422,7 +1425,7 @@
                     </table>
 
                     <!-- 商品表单 -->
-                    <div class="editor-container" id="product-form" style="display: none; margin-top: 30px;">
+                    <div class="editor-container" id="product-form" style="display: block; margin-top: 30px;">
                         <h3 class="chart-title" id="product-form-title">添加商品</h3>
 
                         <div class="form-group">
@@ -1820,6 +1823,43 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- 公告编辑内容 -->
+                <div class="content-section" id="announcement-content" style="display: none;">
+                    <!-- 公告列表表格 -->
+                    <table class="articles-table">
+                        <thead>
+                            <tr>
+                                <th>标题</th>
+                                <th>正文预览</th>
+                                <th>最后更新</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="announcementTableBody">
+                            <!-- 动态渲染 -->
+                        </tbody>
+                    </table>
+
+                    <!-- 公告表单 (新增/编辑) -->
+                    <div class="editor-container" id="announcementForm" style="display: block; margin-top: 30px;">
+                        <h3 class="chart-title" id="announcementFormTitle">新建公告</h3>
+                        <div class="form-group">
+                            <label for="announcementTitle">公告标题</label>
+                            <input type="text" id="announcementTitle" class="form-control" placeholder="例如：关于我们、隐私政策、使用条款">
+                        </div>
+                        <div class="form-group">
+                            <label for="announcementContent">正文</label>
+                            <textarea id="announcementContent" class="form-control" placeholder="请输入公告内容..." rows="8"></textarea>
+                        </div>
+                        <div class="editor-actions">
+                            <button class="btn btn-outline" id="cancelAnnouncementBtn">取消</button>
+                            <button class="btn btn-primary" id="publishAnnouncementBtn">发布公告</button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- 公益募捐内容 -->
                 <div class="content-section" id="donation-content" style="display: none;">
                     <a href="公益募捐.html" target="_blank" rel="noopener noreferrer">
@@ -2661,7 +2701,6 @@
             // 添加商品按钮点击事件
             if (addProductBtn) {
                 addProductBtn.addEventListener('click', function () {
-                    productForm.style.display = 'block';
                     document.getElementById('product-form-title').textContent = '添加商品';
                     resetProductForm();
                 });
@@ -2670,7 +2709,6 @@
             // 取消商品编辑
             if (cancelProductBtn) {
                 cancelProductBtn.addEventListener('click', function () {
-                    productForm.style.display = 'none';
                     resetProductForm();
                 });
             }
@@ -2692,7 +2730,6 @@
 
                     // 模拟保存成功
                     alert('商品保存成功！');
-                    productForm.style.display = 'none';
                     resetProductForm();
                 });
             }
@@ -2717,6 +2754,11 @@
                 // 添加删除参数事件
                 const removeBtn = paramRow.querySelector('.remove-param-btn');
                 removeBtn.addEventListener('click', function () {
+                    // 检查是否只剩1个参数行，如果是则不允许删除
+                    const allParams = productParams.querySelectorAll('.param-row');
+                    if (allParams.length <= 1) {
+                        return; // 不允许删除
+                    }
                     paramRow.remove();
                 });
 
@@ -2816,8 +2858,137 @@
                 });
             }
 
-            // 初始化一个参数行
-            addParamRow();
+            // ====================== 公告管理功能 ======================
+            (function() {
+                // 初始公告数据
+                let announcements = [
+                    { id: 1, title: '关于我们', content: '云间小阁是一个致力于文化传承与知识共享的平台，我们相信每一份传统都值得被记录。', updated: '2023-12-01', status: '已发布' },
+                    { id: 2, title: '隐私政策', content: '我们尊重用户隐私，承诺保护您的个人信息不被泄露，详细说明请查阅完整政策。', updated: '2023-11-28', status: '已发布' },
+                    { id: 3, title: '使用条款', content: '使用本平台服务即表示您同意以下条款和条件，请仔细阅读。', updated: '2023-11-20', status: '已发布' }
+                ];
+                let currentEditId = null;
+
+                // 获取元素
+                const tbody = document.getElementById('announcementTableBody');
+                const newBtn = document.getElementById('newAnnouncementBtn');
+                const formDiv = document.getElementById('announcementForm');
+                const formTitle = document.getElementById('announcementFormTitle');
+                const titleInput = document.getElementById('announcementTitle');
+                const contentInput = document.getElementById('announcementContent');
+                const cancelBtn = document.getElementById('cancelAnnouncementBtn');
+                const publishBtn = document.getElementById('publishAnnouncementBtn');
+
+                // 渲染表格
+                function renderAnnouncements() {
+                    if (!tbody) return;
+                    tbody.innerHTML = '';
+                    announcements.forEach(item => {
+                        const tr = document.createElement('tr');
+                        const preview = item.content.length > 30 ? item.content.substring(0, 30) + '…' : item.content;
+                        tr.innerHTML = `
+                            <td>${item.title}</td>
+                            <td>${preview}</td>
+                            <td>${item.updated}</td>
+                            <td><span class="article-status status-approved">${item.status}</span></td>
+                            <td>
+                                <button class="action-btn edit-btn" data-id="${item.id}"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete-btn" data-id="${item.id}"><i class="fas fa-trash"></i></button>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+
+                    // 为编辑按钮绑定事件
+                    document.querySelectorAll('#announcementTableBody .edit-btn').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const id = parseInt(e.currentTarget.dataset.id);
+                            const item = announcements.find(a => a.id === id);
+                            if (item) {
+                                currentEditId = id;
+                                titleInput.value = item.title;
+                                contentInput.value = item.content;
+                                formTitle.textContent = '编辑公告';
+                                formDiv.style.display = 'block';
+                            }
+                        });
+                    });
+
+                    // 为删除按钮绑定事件
+                    document.querySelectorAll('#announcementTableBody .delete-btn').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const id = parseInt(e.currentTarget.dataset.id);
+                            if (confirm('确定要删除此公告吗？')) {
+                                announcements = announcements.filter(a => a.id !== id);
+                                renderAnnouncements();
+                            }
+                        });
+                    });
+                }
+
+                // 重置表单
+                function resetForm() {
+                    titleInput.value = '';
+                    contentInput.value = '';
+                    currentEditId = null;
+                    formTitle.textContent = '新建公告';
+                }
+
+                // 新建按钮
+                if (newBtn) {
+                    newBtn.addEventListener('click', () => {
+                        resetForm();
+                        formDiv.style.display = 'block';
+                    });
+                }
+
+                // 取消按钮
+                if (cancelBtn) {
+                    cancelBtn.addEventListener('click', () => {
+                        resetForm();
+                    });
+                }
+
+                // 发布/保存按钮
+                if (publishBtn) {
+                    publishBtn.addEventListener('click', () => {
+                        const title = titleInput.value.trim();
+                        const content = contentInput.value.trim();
+                        if (!title || !content) {
+                            alert('标题和正文不能为空');
+                            return;
+                        }
+
+                        if (currentEditId) {
+                            // 编辑更新
+                            const index = announcements.findIndex(a => a.id === currentEditId);
+                            if (index !== -1) {
+                                announcements[index] = {
+                                    ...announcements[index],
+                                    title,
+                                    content,
+                                    updated: new Date().toISOString().slice(0,10)
+                                };
+                            }
+                        } else {
+                            // 新增
+                            const newId = announcements.length ? Math.max(...announcements.map(a => a.id)) + 1 : 1;
+                            announcements.push({
+                                id: newId,
+                                title,
+                                content,
+                                updated: new Date().toISOString().slice(0,10),
+                                status: '已发布'
+                            });
+                        }
+
+                        renderAnnouncements();
+                        resetForm();
+                    });
+                }
+
+                // 初始渲染
+                renderAnnouncements();
+            })();
 
             // ====================== 一起回家功能 ======================
 

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>告示 - 云间文苑</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image:
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 顶部导航栏 */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 2px solid #d6ccc2;
+        }
+
+        .logo {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.2rem;
+            color: #8c6d46;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            margin-left: 10px;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            padding: 8px 15px;
+            background: #8c6d46;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        .nav-btn:hover {
+            background: #745b3a;
+        }
+
+        /* 页面标题 */
+        .page-header {
+            text-align: center;
+            padding: 40px 0 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .page-header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8c6d46, transparent);
+        }
+
+        .page-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 3rem;
+            color: #8c3c2c;
+            margin-bottom: 15px;
+            letter-spacing: 5px;
+            text-shadow: 2px 2px 4px rgba(92, 76, 62, 0.2);
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #8c6d46;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* 公告卡片 */
+        .notice-card {
+            background: rgba(255, 253, 245, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(92, 76, 62, 0.15);
+            border: 1px solid #d6ccc2;
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .notice-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8c6d46, #c4a77d, #8c6d46);
+            border-radius: 12px 12px 0 0;
+        }
+
+        /* 标签页 */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #d6ccc2;
+            margin-bottom: 25px;
+            gap: 10px;
+        }
+
+        .tab {
+            padding: 12px 25px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: #5c4c3e;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            background: none;
+            border: none;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        .tab.active {
+            color: #8c6d46;
+            border-bottom-color: #8c6d46;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+            line-height: 1.8;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .tab-content h3 {
+            font-family: 'Ma Shan Zheng', cursive;
+            color: #8c3c2c;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+        }
+
+        .tab-content p {
+            margin-bottom: 20px;
+            color: #745b3a;
+            text-align: justify;
+        }
+
+        .tab-content ul {
+            margin-left: 25px;
+            margin-bottom: 20px;
+            color: #745b3a;
+        }
+
+        .tab-content li {
+            margin-bottom: 8px;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 30px;
+            font-style: italic;
+            color: #8c6d46;
+        }
+
+        /* 页脚 */
+        .page-footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 20px;
+            color: #8c6d46;
+            font-size: 0.9rem;
+            border-top: 1px solid #d6ccc2;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .top-nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+            }
+
+            .tab {
+                flex: 1;
+                text-align: center;
+                padding: 10px 15px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <div class="top-nav">
+            <div class="logo">
+                <i class="fas fa-mountain"></i>
+                <span>云间文苑</span>
+            </div>
+
+            <div class="user-actions">
+                <button class="nav-btn" id="backBtn">
+                    <i class="fas fa-arrow-left"></i> 返回
+                </button>
+            </div>
+        </div>
+
+        <!-- 页面标题 -->
+        <header class="page-header">
+            <h1 class="page-title">告示</h1>
+            <p class="page-subtitle">平台公告与用户须知</p>
+        </header>
+
+        <!-- 公告卡片 -->
+        <div class="notice-card">
+            <div class="tabs">
+                <button class="tab active" data-tab="about">关于我们</button>
+                <button class="tab" data-tab="privacy">隐私政策</button>
+                <button class="tab" data-tab="terms">使用条款</button>
+            </div>
+
+            <!-- 关于我们 -->
+            <div class="tab-content active" id="about">
+                <h3>云间文苑 · 匠心传承</h3>
+                <p>云间文苑创立于庚子年（2020年），是一家专注于中国传统手工艺的线上文化平台。我们致力于发掘、保护和推广散落在民间的传统技艺，让更多人在快节奏的现代生活中，依然能触摸到有温度的手工之美。</p>
+                <p>平台名称“云间文苑”取自“云间”之雅意与“文苑”之荟萃，寓意将传统工艺汇聚于云端，跨越时空界限，与每一位热爱传统文化的知音相遇。我们合作的匠人涵盖景德镇陶瓷、宜兴紫砂、苏州刺绣、徽州雕刻等多个非遗领域，每一件作品都经过严格筛选，确保技艺纯正、品质优良。</p>
+                <p>云间文苑不仅是一个购物平台，更是一个文化社区。我们定期推出匠人访谈、工艺纪录片、线上展览等内容，让用户深入了解器物背后的文化与故事。我们相信，好的器物能与使用者产生共鸣，在日复一日的陪伴中，沉淀出生活的诗意。</p>
+                <div class="signature">
+                    —— 云间文苑 敬上
+                </div>
+            </div>
+
+            <!-- 隐私政策 -->
+            <div class="tab-content" id="privacy">
+                <h3>隐私政策</h3>
+                <p>云间文苑（以下简称“我们”）高度重视用户隐私的保护。本隐私政策将向您说明我们如何收集、使用、存储及保护您的个人信息。请您在使用我们的服务前仔细阅读。</p>
+                <h4>一、信息收集</h4>
+                <p>我们可能收集以下类型的信息：</p>
+                <ul>
+                    <li><strong>注册信息：</strong>您注册账号时提供的姓名、手机号、邮箱等。</li>
+                    <li><strong>订单信息：</strong>您在购买商品时提供的收货地址、联系方式、订单备注等。</li>
+                    <li><strong>浏览记录：</strong>您访问我们平台时的IP地址、设备信息、浏览日志等。</li>
+                    <li><strong>客服沟通：</strong>您与客服沟通时提供的聊天记录、反馈内容等。</li>
+                </ul>
+                <h4>二、信息使用</h4>
+                <p>我们收集的信息将用于：</p>
+                <ul>
+                    <li>处理您的订单、完成交易、安排配送；</li>
+                    <li>向您发送订单状态通知、活动提醒；</li>
+                    <li>优化我们的服务，改进用户体验；</li>
+                    <li>预防欺诈及违法行为，保障平台安全。</li>
+                </ul>
+                <h4>三、信息保护</h4>
+                <p>我们采取严格的数据加密、访问控制、安全审计等措施保护您的个人信息，未经您的明确同意，我们不会将您的信息出售或提供给第三方用于营销目的。</p>
+                <h4>四、您的权利</h4>
+                <p>您有权查询、更正、删除您的个人信息，或注销账号。如您有任何疑问，可通过客服与我们联系。</p>
+                <p>本政策更新日期：2023年10月1日</p>
+            </div>
+
+            <!-- 使用条款 -->
+            <div class="tab-content" id="terms">
+                <h3>使用条款</h3>
+                <p>欢迎使用云间文苑平台。以下条款适用于所有访问本平台的用户，请您在使用前仔细阅读并遵守。</p>
+                <h4>一、账户管理</h4>
+                <ul>
+                    <li>您需提供真实、准确、完整的注册信息，并对账户行为负全部责任。</li>
+                    <li>不得将账户转让、出借给他人，如发现异常登录请及时通知我们。</li>
+                </ul>
+                <h4>二、交易规则</h4>
+                <ul>
+                    <li>商品价格、库存等信息以页面展示为准，下单后我们将尽快确认订单。</li>
+                    <li>手工制品可能存在细微差异，属正常现象，不视为质量问题。</li>
+                    <li>退换货政策请参照《售后服务说明》。</li>
+                </ul>
+                <h4>三、知识产权</h4>
+                <ul>
+                    <li>平台上的所有内容（包括文字、图片、视频、标识等）均受知识产权保护，未经许可不得复制、传播、修改。</li>
+                    <li>用户上传的评论等内容，视为授权我们在平台内免费使用。</li>
+                </ul>
+                <h4>四、免责声明</h4>
+                <ul>
+                    <li>因不可抗力或网络故障导致的服务中断，我们尽力修复但不承担赔偿责任。</li>
+                    <li>用户对自身言论和行为负责，不得发布违法或侵权信息。</li>
+                </ul>
+                <h4>五、条款修订</h4>
+                <p>我们保留根据实际情况修订使用条款的权利，修订后的条款将在页面公布，继续使用即视为同意。</p>
+                <p>如有疑问，请联系客服邮箱：service@yunjiangwy.com</p>
+            </div>
+        </div>
+
+        <footer class="page-footer">
+            <p>© 2023 云间文苑 | 传承匠心，品味传统工艺之美</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 返回按钮
+            const backBtn = document.getElementById('backBtn');
+            backBtn.addEventListener('click', function() {
+                // 返回上一页
+                window.history.back();
+            });
+
+            // 标签页切换
+            const tabs = document.querySelectorAll('.tab');
+            const contents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const target = this.getAttribute('data-tab');
+
+                    // 移除所有标签的active状态
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // 隐藏所有内容，显示对应内容
+                    contents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === target) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
