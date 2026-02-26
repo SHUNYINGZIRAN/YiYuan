@@ -1086,7 +1086,7 @@
                     <li class="nav-item">
                         <a href="#" class="nav-link" data-content="announcement">
                             <i class="fas fa-bullhorn"></i>
-                            <span>公告编辑</span>
+                            <span>公告管理</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -1478,7 +1478,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="productVideo" class="upload-label-info">商品视频（可选）</label>
+                            <label for="productVideo" class="upload-label-info">商品视频</label>
                             <div class="custom-file-upload">
                                 <input type="file" id="productVideo" accept="video/*">
                                 <div class="file-upload-box">
@@ -1491,13 +1491,26 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="product3DFile" class="upload-label-info">商品模型</label>
+                            <div class="custom-file-upload">
+                                <input type="file" id="product3DFile" accept=".obj,.gltf,.glb,.fbx,.stl,.ply,.dae">
+                                <div class="file-upload-box">
+                                    <i class="fas fa-cube"></i>
+                                    <span class="upload-text">点击或拖拽3D文件至此处</span>
+                                    <span class="upload-hint">支持OBJ、GLTF、GLB、FBX、STL、PLY、DAE格式，仅限1个</span>
+                                </div>
+                                <div class="video-preview-container" id="product3DPreview"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label for="productDetail" class="upload-label-info">产品详情</label>
                             <textarea id="productDetail" class="form-control" placeholder="请输入产品详情..."
                                 rows="8"></textarea>
                         </div>
 
                         <div class="form-group product-params">
-                            <label class="upload-label-info">产品参数</label>
+                            <label class="upload-label-info">规格参数</label>
                             <div id="productParams">
                                 <div class="param-row">
                                     <input type="text" class="form-control param-name" placeholder="参数名称">
@@ -1824,7 +1837,7 @@
                     </div>
                 </div>
 
-                <!-- 公告编辑内容 -->
+                <!-- 公告管理内容 -->
                 <div class="content-section" id="announcement-content" style="display: none;">
                     <!-- 公告列表表格 -->
                     <table class="articles-table">
@@ -1847,11 +1860,13 @@
                         <h3 class="chart-title" id="announcementFormTitle">新建公告</h3>
                         <div class="form-group">
                             <label for="announcementTitle">公告标题</label>
-                            <input type="text" id="announcementTitle" class="form-control" placeholder="例如：关于我们、隐私政策、使用条款">
+                            <input type="text" id="announcementTitle" class="form-control"
+                                placeholder="例如：关于我们、隐私政策、使用条款">
                         </div>
                         <div class="form-group">
                             <label for="announcementContent">正文</label>
-                            <textarea id="announcementContent" class="form-control" placeholder="请输入公告内容..." rows="8"></textarea>
+                            <textarea id="announcementContent" class="form-control" placeholder="请输入公告内容..."
+                                rows="8"></textarea>
                         </div>
                         <div class="editor-actions">
                             <button class="btn btn-outline" id="cancelAnnouncementBtn">取消</button>
@@ -2697,6 +2712,8 @@
             const productImagePreview = document.getElementById('productImagePreview');
             const productVideoInput = document.getElementById('productVideo');
             const productVideoPreview = document.getElementById('productVideoPreview');
+            const product3DInput = document.getElementById('product3DFile');
+            const product3DPreview = document.getElementById('product3DPreview');
 
             // 添加商品按钮点击事件
             if (addProductBtn) {
@@ -2778,13 +2795,15 @@
                 productParams.innerHTML = '';
                 addParamRow(); // 添加一个初始参数行
 
-                // 清空图片和视频预览
+                // 清空图片、视频和3D文件预览
                 productImagePreview.innerHTML = '';
                 productVideoPreview.innerHTML = '';
+                product3DPreview.innerHTML = '';
 
                 // 清空文件输入
                 productImageInput.value = '';
                 productVideoInput.value = '';
+                product3DInput.value = '';
             }
 
             // 商品图片预览
@@ -2858,8 +2877,41 @@
                 });
             }
 
+            // 商品3D文件预览
+            if (product3DInput) {
+                product3DInput.addEventListener('change', function (e) {
+                    product3DPreview.innerHTML = '';
+
+                    if (this.files && this.files[0]) {
+                        const file = this.files[0];
+                        const fileName = file.name;
+                        const fileSize = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+
+                        const preview = document.createElement('div');
+                        preview.className = 'video-preview';
+                        preview.innerHTML = `
+                            <div style="padding: 20px; text-align: center;">
+                                <i class="fas fa-cube" style="font-size: 3rem; color: #8c6d46; margin-bottom: 10px;"></i>
+                                <div style="font-weight: bold; color: #5c4c3e;">${fileName}</div>
+                                <div style="font-size: 0.9rem; color: #8c6d46;">${fileSize}</div>
+                            </div>
+                            <div class="remove-file">&times;</div>
+                        `;
+
+                        // 添加删除功能
+                        const removeBtn = preview.querySelector('.remove-file');
+                        removeBtn.addEventListener('click', function () {
+                            product3DPreview.innerHTML = '';
+                        });
+
+                        product3DPreview.innerHTML = '';
+                        product3DPreview.appendChild(preview);
+                    }
+                });
+            }
+
             // ====================== 公告管理功能 ======================
-            (function() {
+            (function () {
                 // 初始公告数据
                 let announcements = [
                     { id: 1, title: '关于我们', content: '云间小阁是一个致力于文化传承与知识共享的平台，我们相信每一份传统都值得被记录。', updated: '2023-12-01', status: '已发布' },
@@ -2966,7 +3018,7 @@
                                     ...announcements[index],
                                     title,
                                     content,
-                                    updated: new Date().toISOString().slice(0,10)
+                                    updated: new Date().toISOString().slice(0, 10)
                                 };
                             }
                         } else {
@@ -2976,7 +3028,7 @@
                                 id: newId,
                                 title,
                                 content,
-                                updated: new Date().toISOString().slice(0,10),
+                                updated: new Date().toISOString().slice(0, 10),
                                 status: '已发布'
                             });
                         }
