@@ -526,8 +526,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // 商品操作按钮 - 只针对产品卡片内部的按钮
+    // 排除 class="liu" 中的"点击购买"按钮
     const productBtns = document.querySelectorAll('.product-card .product-actions .product-btn');
     productBtns.forEach(btn => {
+        // 检查按钮是否是"点击购买"按钮且在 class="liu" 内部
+        const isInLiuClass = btn.closest('.liu');
+        const isBuyButton = btn.classList.contains('primary') && btn.textContent.trim() === '点击购买';
+        
+        // 如果是 .liu 中的"点击购买"按钮,则不添加事件监听
+        if (isInLiuClass && isBuyButton) {
+            return;
+        }
+        
         btn.addEventListener('click', function (e) {
             // 阻止事件冒泡和默认行为，避免a标签跳转
             e.preventDefault();
